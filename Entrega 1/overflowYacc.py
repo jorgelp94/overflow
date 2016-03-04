@@ -58,7 +58,7 @@ def p_asignacion(p):
 
 def p_g(p):
     '''g : ASSIGN expresion
-      | LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMiCOLON'''
+      | LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON'''
 
 def p_h(p):
     '''h : expresion

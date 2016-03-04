@@ -40,7 +40,6 @@ tokens = [
    'RBRACKET',
    'LPARENTHESIS',
    'RPARENTHESIS',
-   'L'
    'CTESTRING',
    'INT',
    'FLOAT',
