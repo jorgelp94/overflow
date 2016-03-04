@@ -58,7 +58,7 @@ def p_asignacion(p):
     '''asignacion : ID g'''
 
 def p_g(p):
-    '''g : ASSIGN expresion
+    '''g : ASSIGN expresion SEMICOLON
       | LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON'''
 
 def p_h(p):
@@ -158,7 +158,7 @@ def p_u(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error at %s!"%(p.lineno))
+    print("Syntax error at %s, illegal token %s!"%(p.lineno, p.value))
 
 # Build the parser
 parser = yacc.yacc(start='programa')
