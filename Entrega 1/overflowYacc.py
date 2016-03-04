@@ -47,6 +47,7 @@ def p_d(p):
 def p_e(p):
     '''e : ID
       | ID LBRACKET RBRACKET COMA e
+      | ID LBRACKET RBRACKET
       | ID COMA e'''
 
 def p_f(p):
@@ -157,7 +158,7 @@ def p_u(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error!")
+    print("Syntax error at %s!"%(p.lineno))
 
 # Build the parser
 parser = yacc.yacc(start='programa')
