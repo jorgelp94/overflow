@@ -1,0 +1,9 @@
+program overflow;
+
+var numero : int;
+
+{
+	numero = 5;
+}
+
+end
