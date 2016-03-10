@@ -1,0 +1,19 @@
+program overflow;
+var numero: int;
+{
+  numero = 4;
+
+  if (4 > 3) {
+    numero = 1;
+  } else {
+    numero = 2;
+  }
+
+  print("Hola");
+
+  while(numero > 10) {
+    numero = numero - 1;
+  }
+}
+
+end

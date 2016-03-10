@@ -1,0 +1,2280 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a b bloque END
+Rule 2     createProcDir -> <empty>
+Rule 3     addProcDir -> <empty>
+Rule 4     a -> variable
+Rule 5     a -> <empty>
+Rule 6     b -> funcion b
+Rule 7     b -> <empty>
+Rule 8     bloque -> LCURLY c RCURLY
+Rule 9     c -> estatuto c
+Rule 10    c -> <empty>
+Rule 11    tipo -> INTTYPE
+Rule 12    tipo -> FLOATTYPE
+Rule 13    tipo -> CHARTYPE
+Rule 14    tipo -> BOOLTYPE
+Rule 15    tipo -> STRINGTYPE
+Rule 16    estatuto -> asignacion
+Rule 17    estatuto -> condicion
+Rule 18    estatuto -> escritura
+Rule 19    estatuto -> ciclo
+Rule 20    variable -> VAR createVarDir d
+Rule 21    createVarDir -> <empty>
+Rule 22    d -> e COLON tipo addType SEMICOLON f
+Rule 23    addType -> <empty>
+Rule 24    e -> ID addVarDir
+Rule 25    e -> ID addVarDir LBRACKET RBRACKET COMA e
+Rule 26    e -> ID addVarDir LBRACKET RBRACKET
+Rule 27    e -> ID addVarDir COMA e
+Rule 28    addVarDir -> <empty>
+Rule 29    f -> d
+Rule 30    f -> <empty>
+Rule 31    asignacion -> ID g
+Rule 32    g -> ASSIGN expresion SEMICOLON
+Rule 33    g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON
+Rule 34    h -> expresion
+Rule 35    h -> expresion COMA h
+Rule 36    exp -> termino i
+Rule 37    i -> j
+Rule 38    i -> <empty>
+Rule 39    j -> ADDITION exp
+Rule 40    j -> SUBTRACTION exp
+Rule 41    termino -> factor k
+Rule 42    k -> l
+Rule 43    k -> <empty>
+Rule 44    l -> MULTIPLICATION termino
+Rule 45    l -> DIVISION termino
+Rule 46    factor -> m
+Rule 47    factor -> n
+Rule 48    m -> varcte
+Rule 49    n -> LPARENTHESIS expresion RPARENTHESIS
+Rule 50    expresion -> exp o
+Rule 51    o -> LESS exp
+Rule 52    o -> GREATER exp
+Rule 53    o -> LESSEQUAL exp
+Rule 54    o -> GREATEREQUAL exp
+Rule 55    o -> NOTEQUAL exp
+Rule 56    o -> EQUAL exp
+Rule 57    o -> <empty>
+Rule 58    varcte -> p
+Rule 59    p -> ID q
+Rule 60    p -> INT
+Rule 61    p -> FLOAT
+Rule 62    p -> CHAR
+Rule 63    p -> STRING
+Rule 64    p -> BOOL
+Rule 65    q -> LBRACKET RBRACKET
+Rule 66    q -> <empty>
+Rule 67    condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r
+Rule 68    r -> ELSE bloque
+Rule 69    r -> <empty>
+Rule 70    escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON
+Rule 71    s -> expresion
+Rule 72    s -> QUOTE CTESTRING QUOTE
+Rule 73    ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+Rule 74    funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+Rule 75    addProcDirFunc -> <empty>
+Rule 76    t -> argumentos
+Rule 77    t -> <empty>
+Rule 78    argumentos -> u
+Rule 79    u -> ID addVarDirFunc tipo addTypeFunc
+Rule 80    u -> ID addVarDirFunc tipo addTypeFunc COMA u
+Rule 81    addVarDirFunc -> <empty>
+Rule 82    addTypeFunc -> <empty>
+
+Terminals, with rules where they appear
+
+ADDITION             : 39
+ASSIGN               : 32 33
+BOOL                 : 64
+BOOLTYPE             : 14
+CHAR                 : 62
+CHARTYPE             : 13
+COLON                : 22
+COMA                 : 25 27 35 80
+CTESTRING            : 72
+DIVISION             : 45
+ELSE                 : 68
+END                  : 1
+EQUAL                : 56
+FLOAT                : 61
+FLOATTYPE            : 12
+FUNC                 : 74
+GREATER              : 52
+GREATEREQUAL         : 54
+ID                   : 1 24 25 26 27 31 59 74 79 80
+IF                   : 67
+INT                  : 60
+INTTYPE              : 11
+LBRACKET             : 25 26 33 33 65
+LCURLY               : 8
+LESS                 : 51
+LESSEQUAL            : 53
+LPARENTHESIS         : 49 67 70 73 74
+MULTIPLICATION       : 44
+NOTEQUAL             : 55
+PRINT                : 70
+PROGRAM              : 1
+QUOTE                : 72 72
+RBRACKET             : 25 26 33 33 65
+RCURLY               : 8
+RPARENTHESIS         : 49 67 70 73 74
+SEMICOLON            : 1 22 32 33 70
+STRING               : 63
+STRINGTYPE           : 15
+SUBTRACTION          : 40
+VAR                  : 20
+WHILE                : 73
+error                : 
+
+Nonterminals, with rules where they appear
+
+a                    : 1
+addProcDir           : 1
+addProcDirFunc       : 74
+addType              : 22
+addTypeFunc          : 79 80
+addVarDir            : 24 25 26 27
+addVarDirFunc        : 79 80
+argumentos           : 76
+asignacion           : 16
+b                    : 1 6
+bloque               : 1 67 68 73 74
+c                    : 8 9
+ciclo                : 19
+condicion            : 17
+createProcDir        : 1
+createVarDir         : 20
+d                    : 20 29
+e                    : 22 25 27
+escritura            : 18
+estatuto             : 9
+exp                  : 39 40 50 51 52 53 54 55 56
+expresion            : 32 34 35 49 67 71 73
+f                    : 22
+factor               : 41
+funcion              : 6
+g                    : 31
+h                    : 33 35
+i                    : 36
+j                    : 37
+k                    : 41
+l                    : 42
+m                    : 46
+n                    : 47
+o                    : 50
+p                    : 58
+programa             : 0
+q                    : 59
+r                    : 67
+s                    : 70
+t                    : 74
+termino              : 36 44 45
+tipo                 : 22 74 79 80
+u                    : 78 80
+varcte               : 48
+variable             : 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . PROGRAM createProcDir ID addProcDir SEMICOLON a b bloque END
+
+    PROGRAM         shift and go to state 1
+
+    programa                       shift and go to state 2
+
+state 1
+
+    (1) programa -> PROGRAM . createProcDir ID addProcDir SEMICOLON a b bloque END
+    (2) createProcDir -> .
+
+    ID              reduce using rule 2 (createProcDir -> .)
+
+    createProcDir                  shift and go to state 3
+
+state 2
+
+    (0) S' -> programa .
+
+
+
+state 3
+
+    (1) programa -> PROGRAM createProcDir . ID addProcDir SEMICOLON a b bloque END
+
+    ID              shift and go to state 4
+
+
+state 4
+
+    (1) programa -> PROGRAM createProcDir ID . addProcDir SEMICOLON a b bloque END
+    (3) addProcDir -> .
+
+    SEMICOLON       reduce using rule 3 (addProcDir -> .)
+
+    addProcDir                     shift and go to state 5
+
+state 5
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir . SEMICOLON a b bloque END
+
+    SEMICOLON       shift and go to state 6
+
+
+state 6
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON . a b bloque END
+    (4) a -> . variable
+    (5) a -> .
+    (20) variable -> . VAR createVarDir d
+
+    INTTYPE         reduce using rule 5 (a -> .)
+    FLOATTYPE       reduce using rule 5 (a -> .)
+    CHARTYPE        reduce using rule 5 (a -> .)
+    BOOLTYPE        reduce using rule 5 (a -> .)
+    STRINGTYPE      reduce using rule 5 (a -> .)
+    LCURLY          reduce using rule 5 (a -> .)
+    VAR             shift and go to state 8
+
+    a                              shift and go to state 7
+    variable                       shift and go to state 9
+
+state 7
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a . b bloque END
+    (6) b -> . funcion b
+    (7) b -> .
+    (74) funcion -> . tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+    (11) tipo -> . INTTYPE
+    (12) tipo -> . FLOATTYPE
+    (13) tipo -> . CHARTYPE
+    (14) tipo -> . BOOLTYPE
+    (15) tipo -> . STRINGTYPE
+
+    LCURLY          reduce using rule 7 (b -> .)
+    INTTYPE         shift and go to state 16
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 14
+    BOOLTYPE        shift and go to state 10
+    STRINGTYPE      shift and go to state 15
+
+    b                              shift and go to state 11
+    tipo                           shift and go to state 12
+    funcion                        shift and go to state 17
+
+state 8
+
+    (20) variable -> VAR . createVarDir d
+    (21) createVarDir -> .
+
+    ID              reduce using rule 21 (createVarDir -> .)
+
+    createVarDir                   shift and go to state 18
+
+state 9
+
+    (4) a -> variable .
+
+    INTTYPE         reduce using rule 4 (a -> variable .)
+    FLOATTYPE       reduce using rule 4 (a -> variable .)
+    CHARTYPE        reduce using rule 4 (a -> variable .)
+    BOOLTYPE        reduce using rule 4 (a -> variable .)
+    STRINGTYPE      reduce using rule 4 (a -> variable .)
+    LCURLY          reduce using rule 4 (a -> variable .)
+
+
+state 10
+
+    (14) tipo -> BOOLTYPE .
+
+    COMA            reduce using rule 14 (tipo -> BOOLTYPE .)
+    RPARENTHESIS    reduce using rule 14 (tipo -> BOOLTYPE .)
+    FUNC            reduce using rule 14 (tipo -> BOOLTYPE .)
+    SEMICOLON       reduce using rule 14 (tipo -> BOOLTYPE .)
+
+
+state 11
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a b . bloque END
+    (8) bloque -> . LCURLY c RCURLY
+
+    LCURLY          shift and go to state 19
+
+    bloque                         shift and go to state 20
+
+state 12
+
+    (74) funcion -> tipo . FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+
+    FUNC            shift and go to state 21
+
+
+state 13
+
+    (12) tipo -> FLOATTYPE .
+
+    COMA            reduce using rule 12 (tipo -> FLOATTYPE .)
+    RPARENTHESIS    reduce using rule 12 (tipo -> FLOATTYPE .)
+    FUNC            reduce using rule 12 (tipo -> FLOATTYPE .)
+    SEMICOLON       reduce using rule 12 (tipo -> FLOATTYPE .)
+
+
+state 14
+
+    (13) tipo -> CHARTYPE .
+
+    COMA            reduce using rule 13 (tipo -> CHARTYPE .)
+    RPARENTHESIS    reduce using rule 13 (tipo -> CHARTYPE .)
+    FUNC            reduce using rule 13 (tipo -> CHARTYPE .)
+    SEMICOLON       reduce using rule 13 (tipo -> CHARTYPE .)
+
+
+state 15
+
+    (15) tipo -> STRINGTYPE .
+
+    COMA            reduce using rule 15 (tipo -> STRINGTYPE .)
+    RPARENTHESIS    reduce using rule 15 (tipo -> STRINGTYPE .)
+    FUNC            reduce using rule 15 (tipo -> STRINGTYPE .)
+    SEMICOLON       reduce using rule 15 (tipo -> STRINGTYPE .)
+
+
+state 16
+
+    (11) tipo -> INTTYPE .
+
+    COMA            reduce using rule 11 (tipo -> INTTYPE .)
+    RPARENTHESIS    reduce using rule 11 (tipo -> INTTYPE .)
+    FUNC            reduce using rule 11 (tipo -> INTTYPE .)
+    SEMICOLON       reduce using rule 11 (tipo -> INTTYPE .)
+
+
+state 17
+
+    (6) b -> funcion . b
+    (6) b -> . funcion b
+    (7) b -> .
+    (74) funcion -> . tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+    (11) tipo -> . INTTYPE
+    (12) tipo -> . FLOATTYPE
+    (13) tipo -> . CHARTYPE
+    (14) tipo -> . BOOLTYPE
+    (15) tipo -> . STRINGTYPE
+
+    LCURLY          reduce using rule 7 (b -> .)
+    INTTYPE         shift and go to state 16
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 14
+    BOOLTYPE        shift and go to state 10
+    STRINGTYPE      shift and go to state 15
+
+    b                              shift and go to state 22
+    tipo                           shift and go to state 12
+    funcion                        shift and go to state 17
+
+state 18
+
+    (20) variable -> VAR createVarDir . d
+    (22) d -> . e COLON tipo addType SEMICOLON f
+    (24) e -> . ID addVarDir
+    (25) e -> . ID addVarDir LBRACKET RBRACKET COMA e
+    (26) e -> . ID addVarDir LBRACKET RBRACKET
+    (27) e -> . ID addVarDir COMA e
+
+    ID              shift and go to state 25
+
+    e                              shift and go to state 23
+    d                              shift and go to state 24
+
+state 19
+
+    (8) bloque -> LCURLY . c RCURLY
+    (9) c -> . estatuto c
+    (10) c -> .
+    (16) estatuto -> . asignacion
+    (17) estatuto -> . condicion
+    (18) estatuto -> . escritura
+    (19) estatuto -> . ciclo
+    (31) asignacion -> . ID g
+    (67) condicion -> . IF LPARENTHESIS expresion RPARENTHESIS bloque r
+    (70) escritura -> . PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON
+    (73) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+
+    RCURLY          reduce using rule 10 (c -> .)
+    ID              shift and go to state 34
+    IF              shift and go to state 33
+    PRINT           shift and go to state 32
+    WHILE           shift and go to state 30
+
+    c                              shift and go to state 26
+    ciclo                          shift and go to state 27
+    asignacion                     shift and go to state 28
+    estatuto                       shift and go to state 29
+    condicion                      shift and go to state 31
+    escritura                      shift and go to state 35
+
+state 20
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a b bloque . END
+
+    END             shift and go to state 36
+
+
+state 21
+
+    (74) funcion -> tipo FUNC . ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+
+    ID              shift and go to state 37
+
+
+state 22
+
+    (6) b -> funcion b .
+
+    LCURLY          reduce using rule 6 (b -> funcion b .)
+
+
+state 23
+
+    (22) d -> e . COLON tipo addType SEMICOLON f
+
+    COLON           shift and go to state 38
+
+
+state 24
+
+    (20) variable -> VAR createVarDir d .
+
+    INTTYPE         reduce using rule 20 (variable -> VAR createVarDir d .)
+    FLOATTYPE       reduce using rule 20 (variable -> VAR createVarDir d .)
+    CHARTYPE        reduce using rule 20 (variable -> VAR createVarDir d .)
+    BOOLTYPE        reduce using rule 20 (variable -> VAR createVarDir d .)
+    STRINGTYPE      reduce using rule 20 (variable -> VAR createVarDir d .)
+    LCURLY          reduce using rule 20 (variable -> VAR createVarDir d .)
+
+
+state 25
+
+    (24) e -> ID . addVarDir
+    (25) e -> ID . addVarDir LBRACKET RBRACKET COMA e
+    (26) e -> ID . addVarDir LBRACKET RBRACKET
+    (27) e -> ID . addVarDir COMA e
+    (28) addVarDir -> .
+
+    LBRACKET        reduce using rule 28 (addVarDir -> .)
+    COMA            reduce using rule 28 (addVarDir -> .)
+    COLON           reduce using rule 28 (addVarDir -> .)
+
+    addVarDir                      shift and go to state 39
+
+state 26
+
+    (8) bloque -> LCURLY c . RCURLY
+
+    RCURLY          shift and go to state 40
+
+
+state 27
+
+    (19) estatuto -> ciclo .
+
+    ID              reduce using rule 19 (estatuto -> ciclo .)
+    IF              reduce using rule 19 (estatuto -> ciclo .)
+    PRINT           reduce using rule 19 (estatuto -> ciclo .)
+    WHILE           reduce using rule 19 (estatuto -> ciclo .)
+    RCURLY          reduce using rule 19 (estatuto -> ciclo .)
+
+
+state 28
+
+    (16) estatuto -> asignacion .
+
+    ID              reduce using rule 16 (estatuto -> asignacion .)
+    IF              reduce using rule 16 (estatuto -> asignacion .)
+    PRINT           reduce using rule 16 (estatuto -> asignacion .)
+    WHILE           reduce using rule 16 (estatuto -> asignacion .)
+    RCURLY          reduce using rule 16 (estatuto -> asignacion .)
+
+
+state 29
+
+    (9) c -> estatuto . c
+    (9) c -> . estatuto c
+    (10) c -> .
+    (16) estatuto -> . asignacion
+    (17) estatuto -> . condicion
+    (18) estatuto -> . escritura
+    (19) estatuto -> . ciclo
+    (31) asignacion -> . ID g
+    (67) condicion -> . IF LPARENTHESIS expresion RPARENTHESIS bloque r
+    (70) escritura -> . PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON
+    (73) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+
+    RCURLY          reduce using rule 10 (c -> .)
+    ID              shift and go to state 34
+    IF              shift and go to state 33
+    PRINT           shift and go to state 32
+    WHILE           shift and go to state 30
+
+    c                              shift and go to state 41
+    ciclo                          shift and go to state 27
+    asignacion                     shift and go to state 28
+    estatuto                       shift and go to state 29
+    condicion                      shift and go to state 31
+    escritura                      shift and go to state 35
+
+state 30
+
+    (73) ciclo -> WHILE . LPARENTHESIS expresion RPARENTHESIS bloque
+
+    LPARENTHESIS    shift and go to state 42
+
+
+state 31
+
+    (17) estatuto -> condicion .
+
+    ID              reduce using rule 17 (estatuto -> condicion .)
+    IF              reduce using rule 17 (estatuto -> condicion .)
+    PRINT           reduce using rule 17 (estatuto -> condicion .)
+    WHILE           reduce using rule 17 (estatuto -> condicion .)
+    RCURLY          reduce using rule 17 (estatuto -> condicion .)
+
+
+state 32
+
+    (70) escritura -> PRINT . LPARENTHESIS s RPARENTHESIS SEMICOLON
+
+    LPARENTHESIS    shift and go to state 43
+
+
+state 33
+
+    (67) condicion -> IF . LPARENTHESIS expresion RPARENTHESIS bloque r
+
+    LPARENTHESIS    shift and go to state 44
+
+
+state 34
+
+    (31) asignacion -> ID . g
+    (32) g -> . ASSIGN expresion SEMICOLON
+    (33) g -> . LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON
+
+    ASSIGN          shift and go to state 46
+    LBRACKET        shift and go to state 47
+
+    g                              shift and go to state 45
+
+state 35
+
+    (18) estatuto -> escritura .
+
+    ID              reduce using rule 18 (estatuto -> escritura .)
+    IF              reduce using rule 18 (estatuto -> escritura .)
+    PRINT           reduce using rule 18 (estatuto -> escritura .)
+    WHILE           reduce using rule 18 (estatuto -> escritura .)
+    RCURLY          reduce using rule 18 (estatuto -> escritura .)
+
+
+state 36
+
+    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a b bloque END .
+
+    $end            reduce using rule 1 (programa -> PROGRAM createProcDir ID addProcDir SEMICOLON a b bloque END .)
+
+
+state 37
+
+    (74) funcion -> tipo FUNC ID . addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque
+    (75) addProcDirFunc -> .
+
+    LPARENTHESIS    reduce using rule 75 (addProcDirFunc -> .)
+
+    addProcDirFunc                 shift and go to state 48
+
+state 38
+
+    (22) d -> e COLON . tipo addType SEMICOLON f
+    (11) tipo -> . INTTYPE
+    (12) tipo -> . FLOATTYPE
+    (13) tipo -> . CHARTYPE
+    (14) tipo -> . BOOLTYPE
+    (15) tipo -> . STRINGTYPE
+
+    INTTYPE         shift and go to state 16
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 14
+    BOOLTYPE        shift and go to state 10
+    STRINGTYPE      shift and go to state 15
+
+    tipo                           shift and go to state 49
+
+state 39
+
+    (24) e -> ID addVarDir .
+    (25) e -> ID addVarDir . LBRACKET RBRACKET COMA e
+    (26) e -> ID addVarDir . LBRACKET RBRACKET
+    (27) e -> ID addVarDir . COMA e
+
+    COLON           reduce using rule 24 (e -> ID addVarDir .)
+    LBRACKET        shift and go to state 50
+    COMA            shift and go to state 51
+
+
+state 40
+
+    (8) bloque -> LCURLY c RCURLY .
+
+    ID              reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    IF              reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    PRINT           reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    WHILE           reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    RCURLY          reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    END             reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    ELSE            reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    INTTYPE         reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    FLOATTYPE       reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    CHARTYPE        reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    BOOLTYPE        reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    STRINGTYPE      reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+    LCURLY          reduce using rule 8 (bloque -> LCURLY c RCURLY .)
+
+
+state 41
+
+    (9) c -> estatuto c .
+
+    RCURLY          reduce using rule 9 (c -> estatuto c .)
+
+
+state 42
+
+    (73) ciclo -> WHILE LPARENTHESIS . expresion RPARENTHESIS bloque
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 59
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 43
+
+    (70) escritura -> PRINT LPARENTHESIS . s RPARENTHESIS SEMICOLON
+    (71) s -> . expresion
+    (72) s -> . QUOTE CTESTRING QUOTE
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    QUOTE           shift and go to state 67
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 68
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    s                              shift and go to state 69
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 44
+
+    (67) condicion -> IF LPARENTHESIS . expresion RPARENTHESIS bloque r
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 70
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 45
+
+    (31) asignacion -> ID g .
+
+    ID              reduce using rule 31 (asignacion -> ID g .)
+    IF              reduce using rule 31 (asignacion -> ID g .)
+    PRINT           reduce using rule 31 (asignacion -> ID g .)
+    WHILE           reduce using rule 31 (asignacion -> ID g .)
+    RCURLY          reduce using rule 31 (asignacion -> ID g .)
+
+
+state 46
+
+    (32) g -> ASSIGN . expresion SEMICOLON
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 71
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 47
+
+    (33) g -> LBRACKET . RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON
+
+    RBRACKET        shift and go to state 72
+
+
+state 48
+
+    (74) funcion -> tipo FUNC ID addProcDirFunc . LPARENTHESIS t RPARENTHESIS bloque
+
+    LPARENTHESIS    shift and go to state 73
+
+
+state 49
+
+    (22) d -> e COLON tipo . addType SEMICOLON f
+    (23) addType -> .
+
+    SEMICOLON       reduce using rule 23 (addType -> .)
+
+    addType                        shift and go to state 74
+
+state 50
+
+    (25) e -> ID addVarDir LBRACKET . RBRACKET COMA e
+    (26) e -> ID addVarDir LBRACKET . RBRACKET
+
+    RBRACKET        shift and go to state 75
+
+
+state 51
+
+    (27) e -> ID addVarDir COMA . e
+    (24) e -> . ID addVarDir
+    (25) e -> . ID addVarDir LBRACKET RBRACKET COMA e
+    (26) e -> . ID addVarDir LBRACKET RBRACKET
+    (27) e -> . ID addVarDir COMA e
+
+    ID              shift and go to state 25
+
+    e                              shift and go to state 76
+
+state 52
+
+    (62) p -> CHAR .
+
+    MULTIPLICATION  reduce using rule 62 (p -> CHAR .)
+    DIVISION        reduce using rule 62 (p -> CHAR .)
+    ADDITION        reduce using rule 62 (p -> CHAR .)
+    SUBTRACTION     reduce using rule 62 (p -> CHAR .)
+    LESS            reduce using rule 62 (p -> CHAR .)
+    GREATER         reduce using rule 62 (p -> CHAR .)
+    LESSEQUAL       reduce using rule 62 (p -> CHAR .)
+    GREATEREQUAL    reduce using rule 62 (p -> CHAR .)
+    NOTEQUAL        reduce using rule 62 (p -> CHAR .)
+    EQUAL           reduce using rule 62 (p -> CHAR .)
+    SEMICOLON       reduce using rule 62 (p -> CHAR .)
+    RPARENTHESIS    reduce using rule 62 (p -> CHAR .)
+    COMA            reduce using rule 62 (p -> CHAR .)
+    RBRACKET        reduce using rule 62 (p -> CHAR .)
+
+
+state 53
+
+    (36) exp -> termino . i
+    (37) i -> . j
+    (38) i -> .
+    (39) j -> . ADDITION exp
+    (40) j -> . SUBTRACTION exp
+
+    LESS            reduce using rule 38 (i -> .)
+    GREATER         reduce using rule 38 (i -> .)
+    LESSEQUAL       reduce using rule 38 (i -> .)
+    GREATEREQUAL    reduce using rule 38 (i -> .)
+    NOTEQUAL        reduce using rule 38 (i -> .)
+    EQUAL           reduce using rule 38 (i -> .)
+    RPARENTHESIS    reduce using rule 38 (i -> .)
+    SEMICOLON       reduce using rule 38 (i -> .)
+    COMA            reduce using rule 38 (i -> .)
+    RBRACKET        reduce using rule 38 (i -> .)
+    ADDITION        shift and go to state 79
+    SUBTRACTION     shift and go to state 80
+
+    i                              shift and go to state 77
+    j                              shift and go to state 78
+
+state 54
+
+    (48) m -> varcte .
+
+    MULTIPLICATION  reduce using rule 48 (m -> varcte .)
+    DIVISION        reduce using rule 48 (m -> varcte .)
+    ADDITION        reduce using rule 48 (m -> varcte .)
+    SUBTRACTION     reduce using rule 48 (m -> varcte .)
+    LESS            reduce using rule 48 (m -> varcte .)
+    GREATER         reduce using rule 48 (m -> varcte .)
+    LESSEQUAL       reduce using rule 48 (m -> varcte .)
+    GREATEREQUAL    reduce using rule 48 (m -> varcte .)
+    NOTEQUAL        reduce using rule 48 (m -> varcte .)
+    EQUAL           reduce using rule 48 (m -> varcte .)
+    RPARENTHESIS    reduce using rule 48 (m -> varcte .)
+    SEMICOLON       reduce using rule 48 (m -> varcte .)
+    COMA            reduce using rule 48 (m -> varcte .)
+    RBRACKET        reduce using rule 48 (m -> varcte .)
+
+
+state 55
+
+    (41) termino -> factor . k
+    (42) k -> . l
+    (43) k -> .
+    (44) l -> . MULTIPLICATION termino
+    (45) l -> . DIVISION termino
+
+    ADDITION        reduce using rule 43 (k -> .)
+    SUBTRACTION     reduce using rule 43 (k -> .)
+    LESS            reduce using rule 43 (k -> .)
+    GREATER         reduce using rule 43 (k -> .)
+    LESSEQUAL       reduce using rule 43 (k -> .)
+    GREATEREQUAL    reduce using rule 43 (k -> .)
+    NOTEQUAL        reduce using rule 43 (k -> .)
+    EQUAL           reduce using rule 43 (k -> .)
+    RPARENTHESIS    reduce using rule 43 (k -> .)
+    SEMICOLON       reduce using rule 43 (k -> .)
+    COMA            reduce using rule 43 (k -> .)
+    RBRACKET        reduce using rule 43 (k -> .)
+    MULTIPLICATION  shift and go to state 84
+    DIVISION        shift and go to state 81
+
+    k                              shift and go to state 82
+    l                              shift and go to state 83
+
+state 56
+
+    (63) p -> STRING .
+
+    MULTIPLICATION  reduce using rule 63 (p -> STRING .)
+    DIVISION        reduce using rule 63 (p -> STRING .)
+    ADDITION        reduce using rule 63 (p -> STRING .)
+    SUBTRACTION     reduce using rule 63 (p -> STRING .)
+    LESS            reduce using rule 63 (p -> STRING .)
+    GREATER         reduce using rule 63 (p -> STRING .)
+    LESSEQUAL       reduce using rule 63 (p -> STRING .)
+    GREATEREQUAL    reduce using rule 63 (p -> STRING .)
+    NOTEQUAL        reduce using rule 63 (p -> STRING .)
+    EQUAL           reduce using rule 63 (p -> STRING .)
+    SEMICOLON       reduce using rule 63 (p -> STRING .)
+    RPARENTHESIS    reduce using rule 63 (p -> STRING .)
+    COMA            reduce using rule 63 (p -> STRING .)
+    RBRACKET        reduce using rule 63 (p -> STRING .)
+
+
+state 57
+
+    (49) n -> LPARENTHESIS . expresion RPARENTHESIS
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 85
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 58
+
+    (59) p -> ID . q
+    (65) q -> . LBRACKET RBRACKET
+    (66) q -> .
+
+    LBRACKET        shift and go to state 87
+    MULTIPLICATION  reduce using rule 66 (q -> .)
+    DIVISION        reduce using rule 66 (q -> .)
+    ADDITION        reduce using rule 66 (q -> .)
+    SUBTRACTION     reduce using rule 66 (q -> .)
+    LESS            reduce using rule 66 (q -> .)
+    GREATER         reduce using rule 66 (q -> .)
+    LESSEQUAL       reduce using rule 66 (q -> .)
+    GREATEREQUAL    reduce using rule 66 (q -> .)
+    NOTEQUAL        reduce using rule 66 (q -> .)
+    EQUAL           reduce using rule 66 (q -> .)
+    RPARENTHESIS    reduce using rule 66 (q -> .)
+    SEMICOLON       reduce using rule 66 (q -> .)
+    COMA            reduce using rule 66 (q -> .)
+    RBRACKET        reduce using rule 66 (q -> .)
+
+    q                              shift and go to state 86
+
+state 59
+
+    (73) ciclo -> WHILE LPARENTHESIS expresion . RPARENTHESIS bloque
+
+    RPARENTHESIS    shift and go to state 88
+
+
+state 60
+
+    (61) p -> FLOAT .
+
+    MULTIPLICATION  reduce using rule 61 (p -> FLOAT .)
+    DIVISION        reduce using rule 61 (p -> FLOAT .)
+    ADDITION        reduce using rule 61 (p -> FLOAT .)
+    SUBTRACTION     reduce using rule 61 (p -> FLOAT .)
+    LESS            reduce using rule 61 (p -> FLOAT .)
+    GREATER         reduce using rule 61 (p -> FLOAT .)
+    LESSEQUAL       reduce using rule 61 (p -> FLOAT .)
+    GREATEREQUAL    reduce using rule 61 (p -> FLOAT .)
+    NOTEQUAL        reduce using rule 61 (p -> FLOAT .)
+    EQUAL           reduce using rule 61 (p -> FLOAT .)
+    SEMICOLON       reduce using rule 61 (p -> FLOAT .)
+    RPARENTHESIS    reduce using rule 61 (p -> FLOAT .)
+    COMA            reduce using rule 61 (p -> FLOAT .)
+    RBRACKET        reduce using rule 61 (p -> FLOAT .)
+
+
+state 61
+
+    (46) factor -> m .
+
+    MULTIPLICATION  reduce using rule 46 (factor -> m .)
+    DIVISION        reduce using rule 46 (factor -> m .)
+    ADDITION        reduce using rule 46 (factor -> m .)
+    SUBTRACTION     reduce using rule 46 (factor -> m .)
+    RPARENTHESIS    reduce using rule 46 (factor -> m .)
+    SEMICOLON       reduce using rule 46 (factor -> m .)
+    COMA            reduce using rule 46 (factor -> m .)
+    RBRACKET        reduce using rule 46 (factor -> m .)
+    LESS            reduce using rule 46 (factor -> m .)
+    GREATER         reduce using rule 46 (factor -> m .)
+    LESSEQUAL       reduce using rule 46 (factor -> m .)
+    GREATEREQUAL    reduce using rule 46 (factor -> m .)
+    NOTEQUAL        reduce using rule 46 (factor -> m .)
+    EQUAL           reduce using rule 46 (factor -> m .)
+
+
+state 62
+
+    (47) factor -> n .
+
+    MULTIPLICATION  reduce using rule 47 (factor -> n .)
+    DIVISION        reduce using rule 47 (factor -> n .)
+    ADDITION        reduce using rule 47 (factor -> n .)
+    SUBTRACTION     reduce using rule 47 (factor -> n .)
+    RPARENTHESIS    reduce using rule 47 (factor -> n .)
+    SEMICOLON       reduce using rule 47 (factor -> n .)
+    COMA            reduce using rule 47 (factor -> n .)
+    RBRACKET        reduce using rule 47 (factor -> n .)
+    LESS            reduce using rule 47 (factor -> n .)
+    GREATER         reduce using rule 47 (factor -> n .)
+    LESSEQUAL       reduce using rule 47 (factor -> n .)
+    GREATEREQUAL    reduce using rule 47 (factor -> n .)
+    NOTEQUAL        reduce using rule 47 (factor -> n .)
+    EQUAL           reduce using rule 47 (factor -> n .)
+
+
+state 63
+
+    (58) varcte -> p .
+
+    MULTIPLICATION  reduce using rule 58 (varcte -> p .)
+    DIVISION        reduce using rule 58 (varcte -> p .)
+    ADDITION        reduce using rule 58 (varcte -> p .)
+    SUBTRACTION     reduce using rule 58 (varcte -> p .)
+    RPARENTHESIS    reduce using rule 58 (varcte -> p .)
+    SEMICOLON       reduce using rule 58 (varcte -> p .)
+    COMA            reduce using rule 58 (varcte -> p .)
+    RBRACKET        reduce using rule 58 (varcte -> p .)
+    LESS            reduce using rule 58 (varcte -> p .)
+    GREATER         reduce using rule 58 (varcte -> p .)
+    LESSEQUAL       reduce using rule 58 (varcte -> p .)
+    GREATEREQUAL    reduce using rule 58 (varcte -> p .)
+    NOTEQUAL        reduce using rule 58 (varcte -> p .)
+    EQUAL           reduce using rule 58 (varcte -> p .)
+
+
+state 64
+
+    (64) p -> BOOL .
+
+    MULTIPLICATION  reduce using rule 64 (p -> BOOL .)
+    DIVISION        reduce using rule 64 (p -> BOOL .)
+    ADDITION        reduce using rule 64 (p -> BOOL .)
+    SUBTRACTION     reduce using rule 64 (p -> BOOL .)
+    LESS            reduce using rule 64 (p -> BOOL .)
+    GREATER         reduce using rule 64 (p -> BOOL .)
+    LESSEQUAL       reduce using rule 64 (p -> BOOL .)
+    GREATEREQUAL    reduce using rule 64 (p -> BOOL .)
+    NOTEQUAL        reduce using rule 64 (p -> BOOL .)
+    EQUAL           reduce using rule 64 (p -> BOOL .)
+    SEMICOLON       reduce using rule 64 (p -> BOOL .)
+    RPARENTHESIS    reduce using rule 64 (p -> BOOL .)
+    COMA            reduce using rule 64 (p -> BOOL .)
+    RBRACKET        reduce using rule 64 (p -> BOOL .)
+
+
+state 65
+
+    (50) expresion -> exp . o
+    (51) o -> . LESS exp
+    (52) o -> . GREATER exp
+    (53) o -> . LESSEQUAL exp
+    (54) o -> . GREATEREQUAL exp
+    (55) o -> . NOTEQUAL exp
+    (56) o -> . EQUAL exp
+    (57) o -> .
+
+    LESS            shift and go to state 92
+    GREATER         shift and go to state 91
+    LESSEQUAL       shift and go to state 95
+    GREATEREQUAL    shift and go to state 90
+    NOTEQUAL        shift and go to state 89
+    EQUAL           shift and go to state 93
+    RPARENTHESIS    reduce using rule 57 (o -> .)
+    SEMICOLON       reduce using rule 57 (o -> .)
+    COMA            reduce using rule 57 (o -> .)
+    RBRACKET        reduce using rule 57 (o -> .)
+
+    o                              shift and go to state 94
+
+state 66
+
+    (60) p -> INT .
+
+    MULTIPLICATION  reduce using rule 60 (p -> INT .)
+    DIVISION        reduce using rule 60 (p -> INT .)
+    ADDITION        reduce using rule 60 (p -> INT .)
+    SUBTRACTION     reduce using rule 60 (p -> INT .)
+    LESS            reduce using rule 60 (p -> INT .)
+    GREATER         reduce using rule 60 (p -> INT .)
+    LESSEQUAL       reduce using rule 60 (p -> INT .)
+    GREATEREQUAL    reduce using rule 60 (p -> INT .)
+    NOTEQUAL        reduce using rule 60 (p -> INT .)
+    EQUAL           reduce using rule 60 (p -> INT .)
+    SEMICOLON       reduce using rule 60 (p -> INT .)
+    RPARENTHESIS    reduce using rule 60 (p -> INT .)
+    COMA            reduce using rule 60 (p -> INT .)
+    RBRACKET        reduce using rule 60 (p -> INT .)
+
+
+state 67
+
+    (72) s -> QUOTE . CTESTRING QUOTE
+
+    CTESTRING       shift and go to state 96
+
+
+state 68
+
+    (71) s -> expresion .
+
+    RPARENTHESIS    reduce using rule 71 (s -> expresion .)
+
+
+state 69
+
+    (70) escritura -> PRINT LPARENTHESIS s . RPARENTHESIS SEMICOLON
+
+    RPARENTHESIS    shift and go to state 97
+
+
+state 70
+
+    (67) condicion -> IF LPARENTHESIS expresion . RPARENTHESIS bloque r
+
+    RPARENTHESIS    shift and go to state 98
+
+
+state 71
+
+    (32) g -> ASSIGN expresion . SEMICOLON
+
+    SEMICOLON       shift and go to state 99
+
+
+state 72
+
+    (33) g -> LBRACKET RBRACKET . ASSIGN LBRACKET h RBRACKET SEMICOLON
+
+    ASSIGN          shift and go to state 100
+
+
+state 73
+
+    (74) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS . t RPARENTHESIS bloque
+    (76) t -> . argumentos
+    (77) t -> .
+    (78) argumentos -> . u
+    (79) u -> . ID addVarDirFunc tipo addTypeFunc
+    (80) u -> . ID addVarDirFunc tipo addTypeFunc COMA u
+
+    RPARENTHESIS    reduce using rule 77 (t -> .)
+    ID              shift and go to state 104
+
+    u                              shift and go to state 101
+    t                              shift and go to state 102
+    argumentos                     shift and go to state 103
+
+state 74
+
+    (22) d -> e COLON tipo addType . SEMICOLON f
+
+    SEMICOLON       shift and go to state 105
+
+
+state 75
+
+    (25) e -> ID addVarDir LBRACKET RBRACKET . COMA e
+    (26) e -> ID addVarDir LBRACKET RBRACKET .
+
+    COMA            shift and go to state 106
+    COLON           reduce using rule 26 (e -> ID addVarDir LBRACKET RBRACKET .)
+
+
+state 76
+
+    (27) e -> ID addVarDir COMA e .
+
+    COLON           reduce using rule 27 (e -> ID addVarDir COMA e .)
+
+
+state 77
+
+    (36) exp -> termino i .
+
+    RPARENTHESIS    reduce using rule 36 (exp -> termino i .)
+    SEMICOLON       reduce using rule 36 (exp -> termino i .)
+    COMA            reduce using rule 36 (exp -> termino i .)
+    RBRACKET        reduce using rule 36 (exp -> termino i .)
+    LESS            reduce using rule 36 (exp -> termino i .)
+    GREATER         reduce using rule 36 (exp -> termino i .)
+    LESSEQUAL       reduce using rule 36 (exp -> termino i .)
+    GREATEREQUAL    reduce using rule 36 (exp -> termino i .)
+    NOTEQUAL        reduce using rule 36 (exp -> termino i .)
+    EQUAL           reduce using rule 36 (exp -> termino i .)
+
+
+state 78
+
+    (37) i -> j .
+
+    LESS            reduce using rule 37 (i -> j .)
+    GREATER         reduce using rule 37 (i -> j .)
+    LESSEQUAL       reduce using rule 37 (i -> j .)
+    GREATEREQUAL    reduce using rule 37 (i -> j .)
+    NOTEQUAL        reduce using rule 37 (i -> j .)
+    EQUAL           reduce using rule 37 (i -> j .)
+    RPARENTHESIS    reduce using rule 37 (i -> j .)
+    SEMICOLON       reduce using rule 37 (i -> j .)
+    COMA            reduce using rule 37 (i -> j .)
+    RBRACKET        reduce using rule 37 (i -> j .)
+
+
+state 79
+
+    (39) j -> ADDITION . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 107
+    factor                         shift and go to state 55
+
+state 80
+
+    (40) j -> SUBTRACTION . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 108
+    factor                         shift and go to state 55
+
+state 81
+
+    (45) l -> DIVISION . termino
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 109
+    factor                         shift and go to state 55
+
+state 82
+
+    (41) termino -> factor k .
+
+    ADDITION        reduce using rule 41 (termino -> factor k .)
+    SUBTRACTION     reduce using rule 41 (termino -> factor k .)
+    LESS            reduce using rule 41 (termino -> factor k .)
+    GREATER         reduce using rule 41 (termino -> factor k .)
+    LESSEQUAL       reduce using rule 41 (termino -> factor k .)
+    GREATEREQUAL    reduce using rule 41 (termino -> factor k .)
+    NOTEQUAL        reduce using rule 41 (termino -> factor k .)
+    EQUAL           reduce using rule 41 (termino -> factor k .)
+    RPARENTHESIS    reduce using rule 41 (termino -> factor k .)
+    SEMICOLON       reduce using rule 41 (termino -> factor k .)
+    COMA            reduce using rule 41 (termino -> factor k .)
+    RBRACKET        reduce using rule 41 (termino -> factor k .)
+
+
+state 83
+
+    (42) k -> l .
+
+    ADDITION        reduce using rule 42 (k -> l .)
+    SUBTRACTION     reduce using rule 42 (k -> l .)
+    LESS            reduce using rule 42 (k -> l .)
+    GREATER         reduce using rule 42 (k -> l .)
+    LESSEQUAL       reduce using rule 42 (k -> l .)
+    GREATEREQUAL    reduce using rule 42 (k -> l .)
+    NOTEQUAL        reduce using rule 42 (k -> l .)
+    EQUAL           reduce using rule 42 (k -> l .)
+    RPARENTHESIS    reduce using rule 42 (k -> l .)
+    SEMICOLON       reduce using rule 42 (k -> l .)
+    COMA            reduce using rule 42 (k -> l .)
+    RBRACKET        reduce using rule 42 (k -> l .)
+
+
+state 84
+
+    (44) l -> MULTIPLICATION . termino
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 110
+    factor                         shift and go to state 55
+
+state 85
+
+    (49) n -> LPARENTHESIS expresion . RPARENTHESIS
+
+    RPARENTHESIS    shift and go to state 111
+
+
+state 86
+
+    (59) p -> ID q .
+
+    MULTIPLICATION  reduce using rule 59 (p -> ID q .)
+    DIVISION        reduce using rule 59 (p -> ID q .)
+    ADDITION        reduce using rule 59 (p -> ID q .)
+    SUBTRACTION     reduce using rule 59 (p -> ID q .)
+    LESS            reduce using rule 59 (p -> ID q .)
+    GREATER         reduce using rule 59 (p -> ID q .)
+    LESSEQUAL       reduce using rule 59 (p -> ID q .)
+    GREATEREQUAL    reduce using rule 59 (p -> ID q .)
+    NOTEQUAL        reduce using rule 59 (p -> ID q .)
+    EQUAL           reduce using rule 59 (p -> ID q .)
+    SEMICOLON       reduce using rule 59 (p -> ID q .)
+    RPARENTHESIS    reduce using rule 59 (p -> ID q .)
+    COMA            reduce using rule 59 (p -> ID q .)
+    RBRACKET        reduce using rule 59 (p -> ID q .)
+
+
+state 87
+
+    (65) q -> LBRACKET . RBRACKET
+
+    RBRACKET        shift and go to state 112
+
+
+state 88
+
+    (73) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS . bloque
+    (8) bloque -> . LCURLY c RCURLY
+
+    LCURLY          shift and go to state 19
+
+    bloque                         shift and go to state 113
+
+state 89
+
+    (55) o -> NOTEQUAL . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 114
+    factor                         shift and go to state 55
+
+state 90
+
+    (54) o -> GREATEREQUAL . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 115
+    factor                         shift and go to state 55
+
+state 91
+
+    (52) o -> GREATER . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 116
+    factor                         shift and go to state 55
+
+state 92
+
+    (51) o -> LESS . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 117
+    factor                         shift and go to state 55
+
+state 93
+
+    (56) o -> EQUAL . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 118
+    factor                         shift and go to state 55
+
+state 94
+
+    (50) expresion -> exp o .
+
+    COMA            reduce using rule 50 (expresion -> exp o .)
+    RBRACKET        reduce using rule 50 (expresion -> exp o .)
+    RPARENTHESIS    reduce using rule 50 (expresion -> exp o .)
+    SEMICOLON       reduce using rule 50 (expresion -> exp o .)
+
+
+state 95
+
+    (53) o -> LESSEQUAL . exp
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    varcte                         shift and go to state 54
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 119
+    factor                         shift and go to state 55
+
+state 96
+
+    (72) s -> QUOTE CTESTRING . QUOTE
+
+    QUOTE           shift and go to state 120
+
+
+state 97
+
+    (70) escritura -> PRINT LPARENTHESIS s RPARENTHESIS . SEMICOLON
+
+    SEMICOLON       shift and go to state 121
+
+
+state 98
+
+    (67) condicion -> IF LPARENTHESIS expresion RPARENTHESIS . bloque r
+    (8) bloque -> . LCURLY c RCURLY
+
+    LCURLY          shift and go to state 19
+
+    bloque                         shift and go to state 122
+
+state 99
+
+    (32) g -> ASSIGN expresion SEMICOLON .
+
+    ID              reduce using rule 32 (g -> ASSIGN expresion SEMICOLON .)
+    IF              reduce using rule 32 (g -> ASSIGN expresion SEMICOLON .)
+    PRINT           reduce using rule 32 (g -> ASSIGN expresion SEMICOLON .)
+    WHILE           reduce using rule 32 (g -> ASSIGN expresion SEMICOLON .)
+    RCURLY          reduce using rule 32 (g -> ASSIGN expresion SEMICOLON .)
+
+
+state 100
+
+    (33) g -> LBRACKET RBRACKET ASSIGN . LBRACKET h RBRACKET SEMICOLON
+
+    LBRACKET        shift and go to state 123
+
+
+state 101
+
+    (78) argumentos -> u .
+
+    RPARENTHESIS    reduce using rule 78 (argumentos -> u .)
+
+
+state 102
+
+    (74) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t . RPARENTHESIS bloque
+
+    RPARENTHESIS    shift and go to state 124
+
+
+state 103
+
+    (76) t -> argumentos .
+
+    RPARENTHESIS    reduce using rule 76 (t -> argumentos .)
+
+
+state 104
+
+    (79) u -> ID . addVarDirFunc tipo addTypeFunc
+    (80) u -> ID . addVarDirFunc tipo addTypeFunc COMA u
+    (81) addVarDirFunc -> .
+
+    INTTYPE         reduce using rule 81 (addVarDirFunc -> .)
+    FLOATTYPE       reduce using rule 81 (addVarDirFunc -> .)
+    CHARTYPE        reduce using rule 81 (addVarDirFunc -> .)
+    BOOLTYPE        reduce using rule 81 (addVarDirFunc -> .)
+    STRINGTYPE      reduce using rule 81 (addVarDirFunc -> .)
+
+    addVarDirFunc                  shift and go to state 125
+
+state 105
+
+    (22) d -> e COLON tipo addType SEMICOLON . f
+    (29) f -> . d
+    (30) f -> .
+    (22) d -> . e COLON tipo addType SEMICOLON f
+    (24) e -> . ID addVarDir
+    (25) e -> . ID addVarDir LBRACKET RBRACKET COMA e
+    (26) e -> . ID addVarDir LBRACKET RBRACKET
+    (27) e -> . ID addVarDir COMA e
+
+    INTTYPE         reduce using rule 30 (f -> .)
+    FLOATTYPE       reduce using rule 30 (f -> .)
+    CHARTYPE        reduce using rule 30 (f -> .)
+    BOOLTYPE        reduce using rule 30 (f -> .)
+    STRINGTYPE      reduce using rule 30 (f -> .)
+    LCURLY          reduce using rule 30 (f -> .)
+    ID              shift and go to state 25
+
+    e                              shift and go to state 23
+    d                              shift and go to state 127
+    f                              shift and go to state 126
+
+state 106
+
+    (25) e -> ID addVarDir LBRACKET RBRACKET COMA . e
+    (24) e -> . ID addVarDir
+    (25) e -> . ID addVarDir LBRACKET RBRACKET COMA e
+    (26) e -> . ID addVarDir LBRACKET RBRACKET
+    (27) e -> . ID addVarDir COMA e
+
+    ID              shift and go to state 25
+
+    e                              shift and go to state 128
+
+state 107
+
+    (39) j -> ADDITION exp .
+
+    LESS            reduce using rule 39 (j -> ADDITION exp .)
+    GREATER         reduce using rule 39 (j -> ADDITION exp .)
+    LESSEQUAL       reduce using rule 39 (j -> ADDITION exp .)
+    GREATEREQUAL    reduce using rule 39 (j -> ADDITION exp .)
+    NOTEQUAL        reduce using rule 39 (j -> ADDITION exp .)
+    EQUAL           reduce using rule 39 (j -> ADDITION exp .)
+    RPARENTHESIS    reduce using rule 39 (j -> ADDITION exp .)
+    SEMICOLON       reduce using rule 39 (j -> ADDITION exp .)
+    COMA            reduce using rule 39 (j -> ADDITION exp .)
+    RBRACKET        reduce using rule 39 (j -> ADDITION exp .)
+
+
+state 108
+
+    (40) j -> SUBTRACTION exp .
+
+    LESS            reduce using rule 40 (j -> SUBTRACTION exp .)
+    GREATER         reduce using rule 40 (j -> SUBTRACTION exp .)
+    LESSEQUAL       reduce using rule 40 (j -> SUBTRACTION exp .)
+    GREATEREQUAL    reduce using rule 40 (j -> SUBTRACTION exp .)
+    NOTEQUAL        reduce using rule 40 (j -> SUBTRACTION exp .)
+    EQUAL           reduce using rule 40 (j -> SUBTRACTION exp .)
+    RPARENTHESIS    reduce using rule 40 (j -> SUBTRACTION exp .)
+    SEMICOLON       reduce using rule 40 (j -> SUBTRACTION exp .)
+    COMA            reduce using rule 40 (j -> SUBTRACTION exp .)
+    RBRACKET        reduce using rule 40 (j -> SUBTRACTION exp .)
+
+
+state 109
+
+    (45) l -> DIVISION termino .
+
+    ADDITION        reduce using rule 45 (l -> DIVISION termino .)
+    SUBTRACTION     reduce using rule 45 (l -> DIVISION termino .)
+    LESS            reduce using rule 45 (l -> DIVISION termino .)
+    GREATER         reduce using rule 45 (l -> DIVISION termino .)
+    LESSEQUAL       reduce using rule 45 (l -> DIVISION termino .)
+    GREATEREQUAL    reduce using rule 45 (l -> DIVISION termino .)
+    NOTEQUAL        reduce using rule 45 (l -> DIVISION termino .)
+    EQUAL           reduce using rule 45 (l -> DIVISION termino .)
+    RPARENTHESIS    reduce using rule 45 (l -> DIVISION termino .)
+    SEMICOLON       reduce using rule 45 (l -> DIVISION termino .)
+    COMA            reduce using rule 45 (l -> DIVISION termino .)
+    RBRACKET        reduce using rule 45 (l -> DIVISION termino .)
+
+
+state 110
+
+    (44) l -> MULTIPLICATION termino .
+
+    ADDITION        reduce using rule 44 (l -> MULTIPLICATION termino .)
+    SUBTRACTION     reduce using rule 44 (l -> MULTIPLICATION termino .)
+    LESS            reduce using rule 44 (l -> MULTIPLICATION termino .)
+    GREATER         reduce using rule 44 (l -> MULTIPLICATION termino .)
+    LESSEQUAL       reduce using rule 44 (l -> MULTIPLICATION termino .)
+    GREATEREQUAL    reduce using rule 44 (l -> MULTIPLICATION termino .)
+    NOTEQUAL        reduce using rule 44 (l -> MULTIPLICATION termino .)
+    EQUAL           reduce using rule 44 (l -> MULTIPLICATION termino .)
+    RPARENTHESIS    reduce using rule 44 (l -> MULTIPLICATION termino .)
+    SEMICOLON       reduce using rule 44 (l -> MULTIPLICATION termino .)
+    COMA            reduce using rule 44 (l -> MULTIPLICATION termino .)
+    RBRACKET        reduce using rule 44 (l -> MULTIPLICATION termino .)
+
+
+state 111
+
+    (49) n -> LPARENTHESIS expresion RPARENTHESIS .
+
+    MULTIPLICATION  reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    DIVISION        reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    ADDITION        reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    SUBTRACTION     reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    RPARENTHESIS    reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    SEMICOLON       reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    COMA            reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    RBRACKET        reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    LESS            reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    GREATER         reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    LESSEQUAL       reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    GREATEREQUAL    reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    NOTEQUAL        reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+    EQUAL           reduce using rule 49 (n -> LPARENTHESIS expresion RPARENTHESIS .)
+
+
+state 112
+
+    (65) q -> LBRACKET RBRACKET .
+
+    MULTIPLICATION  reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    DIVISION        reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    ADDITION        reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    SUBTRACTION     reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    LESS            reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    GREATER         reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    LESSEQUAL       reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    GREATEREQUAL    reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    NOTEQUAL        reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    EQUAL           reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    RPARENTHESIS    reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    SEMICOLON       reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    COMA            reduce using rule 65 (q -> LBRACKET RBRACKET .)
+    RBRACKET        reduce using rule 65 (q -> LBRACKET RBRACKET .)
+
+
+state 113
+
+    (73) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .
+
+    ID              reduce using rule 73 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    IF              reduce using rule 73 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    PRINT           reduce using rule 73 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    WHILE           reduce using rule 73 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    RCURLY          reduce using rule 73 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+
+
+state 114
+
+    (55) o -> NOTEQUAL exp .
+
+    RPARENTHESIS    reduce using rule 55 (o -> NOTEQUAL exp .)
+    SEMICOLON       reduce using rule 55 (o -> NOTEQUAL exp .)
+    COMA            reduce using rule 55 (o -> NOTEQUAL exp .)
+    RBRACKET        reduce using rule 55 (o -> NOTEQUAL exp .)
+
+
+state 115
+
+    (54) o -> GREATEREQUAL exp .
+
+    RPARENTHESIS    reduce using rule 54 (o -> GREATEREQUAL exp .)
+    SEMICOLON       reduce using rule 54 (o -> GREATEREQUAL exp .)
+    COMA            reduce using rule 54 (o -> GREATEREQUAL exp .)
+    RBRACKET        reduce using rule 54 (o -> GREATEREQUAL exp .)
+
+
+state 116
+
+    (52) o -> GREATER exp .
+
+    RPARENTHESIS    reduce using rule 52 (o -> GREATER exp .)
+    SEMICOLON       reduce using rule 52 (o -> GREATER exp .)
+    COMA            reduce using rule 52 (o -> GREATER exp .)
+    RBRACKET        reduce using rule 52 (o -> GREATER exp .)
+
+
+state 117
+
+    (51) o -> LESS exp .
+
+    RPARENTHESIS    reduce using rule 51 (o -> LESS exp .)
+    SEMICOLON       reduce using rule 51 (o -> LESS exp .)
+    COMA            reduce using rule 51 (o -> LESS exp .)
+    RBRACKET        reduce using rule 51 (o -> LESS exp .)
+
+
+state 118
+
+    (56) o -> EQUAL exp .
+
+    RPARENTHESIS    reduce using rule 56 (o -> EQUAL exp .)
+    SEMICOLON       reduce using rule 56 (o -> EQUAL exp .)
+    COMA            reduce using rule 56 (o -> EQUAL exp .)
+    RBRACKET        reduce using rule 56 (o -> EQUAL exp .)
+
+
+state 119
+
+    (53) o -> LESSEQUAL exp .
+
+    RPARENTHESIS    reduce using rule 53 (o -> LESSEQUAL exp .)
+    SEMICOLON       reduce using rule 53 (o -> LESSEQUAL exp .)
+    COMA            reduce using rule 53 (o -> LESSEQUAL exp .)
+    RBRACKET        reduce using rule 53 (o -> LESSEQUAL exp .)
+
+
+state 120
+
+    (72) s -> QUOTE CTESTRING QUOTE .
+
+    RPARENTHESIS    reduce using rule 72 (s -> QUOTE CTESTRING QUOTE .)
+
+
+state 121
+
+    (70) escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .
+
+    ID              reduce using rule 70 (escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .)
+    IF              reduce using rule 70 (escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .)
+    PRINT           reduce using rule 70 (escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .)
+    WHILE           reduce using rule 70 (escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .)
+    RCURLY          reduce using rule 70 (escritura -> PRINT LPARENTHESIS s RPARENTHESIS SEMICOLON .)
+
+
+state 122
+
+    (67) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque . r
+    (68) r -> . ELSE bloque
+    (69) r -> .
+
+    ELSE            shift and go to state 129
+    ID              reduce using rule 69 (r -> .)
+    IF              reduce using rule 69 (r -> .)
+    PRINT           reduce using rule 69 (r -> .)
+    WHILE           reduce using rule 69 (r -> .)
+    RCURLY          reduce using rule 69 (r -> .)
+
+    r                              shift and go to state 130
+
+state 123
+
+    (33) g -> LBRACKET RBRACKET ASSIGN LBRACKET . h RBRACKET SEMICOLON
+    (34) h -> . expresion
+    (35) h -> . expresion COMA h
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 131
+    varcte                         shift and go to state 54
+    h                              shift and go to state 132
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 124
+
+    (74) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS . bloque
+    (8) bloque -> . LCURLY c RCURLY
+
+    LCURLY          shift and go to state 19
+
+    bloque                         shift and go to state 133
+
+state 125
+
+    (79) u -> ID addVarDirFunc . tipo addTypeFunc
+    (80) u -> ID addVarDirFunc . tipo addTypeFunc COMA u
+    (11) tipo -> . INTTYPE
+    (12) tipo -> . FLOATTYPE
+    (13) tipo -> . CHARTYPE
+    (14) tipo -> . BOOLTYPE
+    (15) tipo -> . STRINGTYPE
+
+    INTTYPE         shift and go to state 16
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 14
+    BOOLTYPE        shift and go to state 10
+    STRINGTYPE      shift and go to state 15
+
+    tipo                           shift and go to state 134
+
+state 126
+
+    (22) d -> e COLON tipo addType SEMICOLON f .
+
+    INTTYPE         reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+    FLOATTYPE       reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+    CHARTYPE        reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+    BOOLTYPE        reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+    STRINGTYPE      reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+    LCURLY          reduce using rule 22 (d -> e COLON tipo addType SEMICOLON f .)
+
+
+state 127
+
+    (29) f -> d .
+
+    INTTYPE         reduce using rule 29 (f -> d .)
+    FLOATTYPE       reduce using rule 29 (f -> d .)
+    CHARTYPE        reduce using rule 29 (f -> d .)
+    BOOLTYPE        reduce using rule 29 (f -> d .)
+    STRINGTYPE      reduce using rule 29 (f -> d .)
+    LCURLY          reduce using rule 29 (f -> d .)
+
+
+state 128
+
+    (25) e -> ID addVarDir LBRACKET RBRACKET COMA e .
+
+    COLON           reduce using rule 25 (e -> ID addVarDir LBRACKET RBRACKET COMA e .)
+
+
+state 129
+
+    (68) r -> ELSE . bloque
+    (8) bloque -> . LCURLY c RCURLY
+
+    LCURLY          shift and go to state 19
+
+    bloque                         shift and go to state 135
+
+state 130
+
+    (67) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .
+
+    ID              reduce using rule 67 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .)
+    IF              reduce using rule 67 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .)
+    PRINT           reduce using rule 67 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .)
+    WHILE           reduce using rule 67 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .)
+    RCURLY          reduce using rule 67 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque r .)
+
+
+state 131
+
+    (34) h -> expresion .
+    (35) h -> expresion . COMA h
+
+    RBRACKET        reduce using rule 34 (h -> expresion .)
+    COMA            shift and go to state 136
+
+
+state 132
+
+    (33) g -> LBRACKET RBRACKET ASSIGN LBRACKET h . RBRACKET SEMICOLON
+
+    RBRACKET        shift and go to state 137
+
+
+state 133
+
+    (74) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .
+
+    INTTYPE         reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+    FLOATTYPE       reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+    CHARTYPE        reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+    BOOLTYPE        reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+    STRINGTYPE      reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+    LCURLY          reduce using rule 74 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS t RPARENTHESIS bloque .)
+
+
+state 134
+
+    (79) u -> ID addVarDirFunc tipo . addTypeFunc
+    (80) u -> ID addVarDirFunc tipo . addTypeFunc COMA u
+    (82) addTypeFunc -> .
+
+    COMA            reduce using rule 82 (addTypeFunc -> .)
+    RPARENTHESIS    reduce using rule 82 (addTypeFunc -> .)
+
+    addTypeFunc                    shift and go to state 138
+
+state 135
+
+    (68) r -> ELSE bloque .
+
+    ID              reduce using rule 68 (r -> ELSE bloque .)
+    IF              reduce using rule 68 (r -> ELSE bloque .)
+    PRINT           reduce using rule 68 (r -> ELSE bloque .)
+    WHILE           reduce using rule 68 (r -> ELSE bloque .)
+    RCURLY          reduce using rule 68 (r -> ELSE bloque .)
+
+
+state 136
+
+    (35) h -> expresion COMA . h
+    (34) h -> . expresion
+    (35) h -> . expresion COMA h
+    (50) expresion -> . exp o
+    (36) exp -> . termino i
+    (41) termino -> . factor k
+    (46) factor -> . m
+    (47) factor -> . n
+    (48) m -> . varcte
+    (49) n -> . LPARENTHESIS expresion RPARENTHESIS
+    (58) varcte -> . p
+    (59) p -> . ID q
+    (60) p -> . INT
+    (61) p -> . FLOAT
+    (62) p -> . CHAR
+    (63) p -> . STRING
+    (64) p -> . BOOL
+
+    LPARENTHESIS    shift and go to state 57
+    ID              shift and go to state 58
+    INT             shift and go to state 66
+    FLOAT           shift and go to state 60
+    CHAR            shift and go to state 52
+    STRING          shift and go to state 56
+    BOOL            shift and go to state 64
+
+    expresion                      shift and go to state 131
+    varcte                         shift and go to state 54
+    h                              shift and go to state 139
+    m                              shift and go to state 61
+    n                              shift and go to state 62
+    p                              shift and go to state 63
+    termino                        shift and go to state 53
+    exp                            shift and go to state 65
+    factor                         shift and go to state 55
+
+state 137
+
+    (33) g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET . SEMICOLON
+
+    SEMICOLON       shift and go to state 140
+
+
+state 138
+
+    (79) u -> ID addVarDirFunc tipo addTypeFunc .
+    (80) u -> ID addVarDirFunc tipo addTypeFunc . COMA u
+
+    RPARENTHESIS    reduce using rule 79 (u -> ID addVarDirFunc tipo addTypeFunc .)
+    COMA            shift and go to state 141
+
+
+state 139
+
+    (35) h -> expresion COMA h .
+
+    RBRACKET        reduce using rule 35 (h -> expresion COMA h .)
+
+
+state 140
+
+    (33) g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .
+
+    ID              reduce using rule 33 (g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .)
+    IF              reduce using rule 33 (g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .)
+    PRINT           reduce using rule 33 (g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .)
+    WHILE           reduce using rule 33 (g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .)
+    RCURLY          reduce using rule 33 (g -> LBRACKET RBRACKET ASSIGN LBRACKET h RBRACKET SEMICOLON .)
+
+
+state 141
+
+    (80) u -> ID addVarDirFunc tipo addTypeFunc COMA . u
+    (79) u -> . ID addVarDirFunc tipo addTypeFunc
+    (80) u -> . ID addVarDirFunc tipo addTypeFunc COMA u
+
+    ID              shift and go to state 104
+
+    u                              shift and go to state 142
+
+state 142
+
+    (80) u -> ID addVarDirFunc tipo addTypeFunc COMA u .
+
+    RPARENTHESIS    reduce using rule 80 (u -> ID addVarDirFunc tipo addTypeFunc COMA u .)
+

@@ -1,0 +1,14 @@
+program overflow;
+
+var
+  numero1,a,b,c : int;
+  x,y,z : float;
+  int func testing (j int, g int)
+  {
+
+  }
+{
+
+}
+
+end
