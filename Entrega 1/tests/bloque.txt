@@ -1,5 +1,5 @@
 program overflow;
-
+var numero: int;
 {
   numero = 4;
 

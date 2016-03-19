@@ -1,0 +1,14 @@
+program overflow;
+
+var
+  numero1, numero2 : int;
+  decimal1, decimal2 : float;
+  caracter1, caracter2 : char;
+  booleano1, booleano2 : bool;
+  palabra1, palabra2 : string;
+  arreglo1 [], arreglo2 [] : int;
+{
+
+}
+
+end

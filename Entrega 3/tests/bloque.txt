@@ -1,0 +1,34 @@
+program overflow;
+
+var edad: int;
+var estatura: float;
+var nombe: string;
+
+void func cuadrado(age: int)
+{
+    age = age * age;
+    return age;
+}
+
+int func numero(edad: int)
+{
+    return edad;
+}
+
+main () {
+  numero = 4;
+
+  if (4 > 3 or 8 < 10) {
+    numero = 1;
+  } else {
+    numero = 2;
+  }
+
+  print("Hola");
+
+  while(numero > 10) {
+    numero = numero - 1;
+  }
+}
+
+end
