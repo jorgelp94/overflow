@@ -93,12 +93,26 @@ Blockly.Blocks['float_arr_variable'] = {
   }
 };
 
-Blockly.Blocks['variable'] = {
+Blockly.Blocks['assignment'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldTextInput("var"), "NAME")
         .appendField(" =");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['assignment_array'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldTextInput("var"), "NAME")
+        .appendField(" [] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
