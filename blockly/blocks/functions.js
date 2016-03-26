@@ -19,8 +19,8 @@ Blockly.Blocks['function_statement'] = {
 Blockly.Blocks['function_param'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["bool", "bool"], ["char", "char"], ["string", "string"]]), "TYPE")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
+        .appendField(new Blockly.FieldTextInput("name"), "VAR")
+        .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["bool", "bool"], ["char", "char"], ["string", "string"]]), "TYPE");
     this.setOutput(true);
     this.setColour(210);
     this.setTooltip('');
@@ -31,8 +31,8 @@ Blockly.Blocks['function_param'] = {
 Blockly.Blocks['function_param_coma'] = {
   init: function() {
     this.appendValueInput("NAME")
-        .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["bool", "bool"], ["char", "char"], ["string", "string"]]), "TYPE")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
+        .appendField(new Blockly.FieldTextInput("name"), "VAR")
+        .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["bool", "bool"], ["char", "char"], ["string", "string"]]), "TYPE");
     this.setOutput(true);
     this.setColour(210);
     this.setTooltip('');
