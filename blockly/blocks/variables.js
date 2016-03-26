@@ -67,6 +67,32 @@ Blockly.Blocks['string_variable'] = {
   }
 };
 
+Blockly.Blocks['int_arr_variable'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .setCheck("Number")
+        .appendField("int []")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['float_arr_variable'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .setCheck("Number")
+        .appendField("float []")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['variable'] = {
   init: function() {
     this.appendValueInput("NAME")

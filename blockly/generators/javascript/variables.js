@@ -37,6 +37,20 @@ Blockly.JavaScript['string_variable'] = function(block) {
   return code;
 };
 
+Blockly.JavaScript['int_arr_variable'] = function(block) {
+  var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  value_name = value_name.substring(1,value_name.length-1);
+  var code = 'var ' + value_name + ' : int[];\n';
+  return code;
+};
+
+Blockly.JavaScript['float_arr_variable'] = function(block) {
+  var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  value_name = value_name.substring(1,value_name.length-1);
+  var code = 'var ' + value_name + ' : float[];\n';
+  return code;
+};
+
 Blockly.JavaScript['variable'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
