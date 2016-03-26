@@ -4,49 +4,63 @@ goog.require('Blockly.JavaScript');
 
 Blockly.JavaScript['int_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : int;\n';
   return code;
 };
 
 Blockly.JavaScript['float_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : float;\n';
   return code;
 };
 
 Blockly.JavaScript['bool_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : bool;\n';
   return code;
 };
 
 Blockly.JavaScript['char_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : char;\n';
   return code;
 };
 
 Blockly.JavaScript['string_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : string;\n';
   return code;
 };
 
 Blockly.JavaScript['int_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : int[];\n';
   return code;
 };
 
 Blockly.JavaScript['float_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") > -1) {
+    value_name = value_name.substring(1,value_name.length-1);
+  }
   var code = 'var ' + value_name + ' : float[];\n';
   return code;
 };

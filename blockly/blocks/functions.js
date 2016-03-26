@@ -10,6 +10,8 @@ Blockly.Blocks['function_statement'] = {
         .appendField("function name:")
         .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.appendStatementInput("BLOCK");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
     this.setColour(210);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
@@ -46,6 +48,17 @@ Blockly.Blocks['function_call'] = {
         .appendField("call function")
         .appendField(new Blockly.FieldTextInput("name"), "FNAME");
     this.setOutput(true);
+    this.setColour(210);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['return'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .appendField("return");
+    this.setPreviousStatement(true);
     this.setColour(210);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
