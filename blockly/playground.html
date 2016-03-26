@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Playground</title>
+  <script src="blockly_uncompressed.js"></script>
+  <script src="generators/javascript.js"></script>
+  <script src="generators/javascript/logic.js"></script>
+  <script src="generators/javascript/loops.js"></script>
+  <script src="generators/javascript/math.js"></script>
+  <script src="generators/javascript/text.js"></script>
+  <script src="generators/javascript/lists.js"></script>
+  <script src="generators/javascript/variables.js"></script>
+  <script src="generators/javascript/functions.js"></script>
+  <script src="generators/javascript/program.js"></script>
+  <script src="msg/messages.js"></script>
+  <script src="blocks/logic.js"></script>
+  <script src="blocks/loops.js"></script>
+  <script src="blocks/math.js"></script>
+  <script src="blocks/text.js"></script>
+  <script src="blocks/lists.js"></script>
+  <script src="blocks/variables.js"></script>
+  <script src="blocks/functions.js"></script>
+  <script src="blocks/program.js"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
+</head>
+
+<body onload="start()">
+
+  <div id="collaborators"></div>
+  <div id="blocklyDiv"></div>
+
+  <xml id="toolbox" style="display: none">
+
+    <category name="Program" colour="60">
+      <block type="program"></block>
+      <block type="main"></block>
+    </category>
+
+    <category name="Variables" colour="330">
+      <block type="variable"></block>
+      <block type="int_variable"></block>
+      <block type="float_variable"></block>
+      <block type="bool_variable"></block>
+      <block type="char_variable"></block>
+      <block type="string_variable"></block>
+      <block type="var"></block>
+    </category>
+
+    <category name="Numeric" colour="230">
+      <block type="math_number" gap="32"></block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+    <category name="Text" colour="160">
+      <block type="text"></block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+    <category name="Logic" colour="0">
+      <block type="logic_boolean"></block>
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+    </category>
+
+    <category name="Functions" colour="210">
+      <block type="function_statement"></block>
+      <block type="function_param"></block>
+      <block type="function_param_coma"></block>
+    </category>
+
+    <category name="Loops" colour="120">
+      <block type="controls_whileUntil"></block>
+    </category>
+
+    <category name="Lists" colour="260">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+    </category>
+  </xml>
+
+  <h1>Overflow</h1>
+
+  <p>
+    <input type="button" value="Export to XML" onclick="toXml()">
+    &nbsp;
+    <input type="button" value="Import from XML" onclick="fromXml()" id="import">
+    <br><br>
+    <input type="button" value="To JavaScript" onclick="toCode('JavaScript')">
+    &nbsp;
+    <br><br>
+    <textarea id="importExport" style="width: 26%; height: 40em"
+      onchange="taChange();" onkeyup="taChange()"></textarea>
+  </p>
+
+</body>
+</html>
