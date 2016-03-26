@@ -7,7 +7,6 @@ Blockly.Blocks['int_variable'] = {
     this.appendValueInput("NAME")
         .setCheck("Number")
         .appendField("int")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -21,7 +20,6 @@ Blockly.Blocks['float_variable'] = {
     this.appendValueInput("NAME")
         .setCheck("Number")
         .appendField("float")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -35,7 +33,6 @@ Blockly.Blocks['bool_variable'] = {
     this.appendValueInput("NAME")
         .setCheck("Boolean")
         .appendField("bool")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -49,7 +46,6 @@ Blockly.Blocks['char_variable'] = {
     this.appendValueInput("NAME")
         .setCheck("String")
         .appendField("char")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -63,7 +59,6 @@ Blockly.Blocks['string_variable'] = {
     this.appendValueInput("NAME")
         .setCheck("String")
         .appendField("string")
-        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -89,7 +84,7 @@ Blockly.Blocks['variable'] = {
 Blockly.Blocks['var'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("var"), "VAR");
+        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setOutput(true);
     this.setColour(290);
     this.setTooltip('');
@@ -100,7 +95,7 @@ Blockly.Blocks['var'] = {
 Blockly.Blocks['var_coma'] = {
   init: function() {
     this.appendValueInput("NAME")
-        .appendField(new Blockly.FieldTextInput("var"), "VAR");
+        .appendField(new Blockly.FieldTextInput("name"), "VAR");
     this.setOutput(true);
     this.setColour(290);
     this.setTooltip('');
