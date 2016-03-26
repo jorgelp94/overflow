@@ -39,3 +39,15 @@ Blockly.Blocks['function_param_coma'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['function_call'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .appendField("call function")
+        .appendField(new Blockly.FieldTextInput("name"), "FNAME");
+    this.setOutput(true);
+    this.setColour(210);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

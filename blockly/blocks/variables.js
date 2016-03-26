@@ -75,6 +75,7 @@ Blockly.Blocks['string_variable'] = {
 Blockly.Blocks['variable'] = {
   init: function() {
     this.appendValueInput("NAME")
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldTextInput("var"), "NAME")
         .appendField(" =");
     this.setPreviousStatement(true);
@@ -88,6 +89,17 @@ Blockly.Blocks['variable'] = {
 Blockly.Blocks['var'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("var"), "VAR");
+    this.setOutput(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['var_coma'] = {
+  init: function() {
+    this.appendValueInput("NAME")
         .appendField(new Blockly.FieldTextInput("var"), "VAR");
     this.setOutput(true);
     this.setColour(290);
