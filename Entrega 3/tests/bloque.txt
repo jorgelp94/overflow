@@ -2,6 +2,7 @@ program overflow;
 
 var edad, cantidad, peso: int;
 var saludos, hola: string;
+var arr[]: int;
 
 void func cuadrado(age: int)
 {

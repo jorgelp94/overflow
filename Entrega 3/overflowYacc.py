@@ -54,6 +54,11 @@ def p_tipo(p):
           | VOIDTYPE'''
     p[0] = p[1]
 
+def p_subtipo(p):
+    '''subtipo : INTTYPE
+        | FLOATTYPE'''
+    p[0] = p[1]
+
 def p_estatuto(p):
     '''estatuto : asignacion
       | condicion
@@ -72,7 +77,8 @@ def p_createVarDir(p):
     varDir = {}
 
 def p_variable_loop(p):
-    '''variable_loop : variable_id_loop COLON tipo addType SEMICOLON variable_end_loop'''
+    '''variable_loop : variable_id_loop SEMICOLON variable_end_loop
+                    | variable_arr_loop SEMICOLON variable_end_loop'''
 
 def p_addType(p):
     '''addType :'''
@@ -82,10 +88,18 @@ def p_addType(p):
     #print(varDir)
 
 def p_variable_id_loop(p):
-    '''variable_id_loop : ID addVarDir
-      | ID addVarDir LBRACKET RBRACKET COMA variable_id_loop
-      | ID addVarDir LBRACKET RBRACKET
-      | ID addVarDir COMA variable_id_loop'''
+    '''variable_id_loop : variable_id_loop_coma COLON tipo addType'''
+
+def p_variable_id_loop_coma(p):
+    '''variable_id_loop_coma : ID addVarDir
+        | ID addVarDir COMA variable_id_loop_coma'''
+
+def p_variable_arr_loop(p):
+    '''variable_arr_loop : variable_arr_coma COLON subtipo addType'''
+
+def p_variable_arr_coma(p):
+    '''variable_arr_coma : ID addVarDir LBRACKET RBRACKET
+        | ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma'''
 
 def p_addVarDir(p):
     '''addVarDir :'''
