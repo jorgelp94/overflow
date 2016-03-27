@@ -9,9 +9,9 @@ Blockly.JavaScript['function_statement'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
   var statements_block = Blockly.JavaScript.statementToCode(block, 'BLOCK');
   if(value_name) {
-    var code = dropdown_type + ' function ' + text_var + '' + value_name + ' {\n' + statements_block + '}';
+    var code = dropdown_type + ' func ' + text_var + '' + value_name + ' {\n' + statements_block + '}';
   } else {
-    var code = dropdown_type + ' function ' + text_var + '()' + ' {\n' + statements_block + '}';
+    var code = dropdown_type + ' func ' + text_var + '()' + ' {\n' + statements_block + '}';
   }
   return code;
 };

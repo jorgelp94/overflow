@@ -1,8 +1,7 @@
 program overflow;
 
-var edad: int;
-var estatura: float;
-var nombe: string;
+var edad, cantidad, peso: int;
+var saludos, hola: string;
 
 void func cuadrado(age: int)
 {
@@ -12,9 +11,8 @@ void func cuadrado(age: int)
 
 int func numero(edad: int)
 {
-    return edad;
-}
 
+}
 main () {
   numero = 4;
 
