@@ -4,7 +4,7 @@ var edad, cantidad, peso: int;
 var saludos, hola: string;
 var arr[]: int;
 
-void func cuadrado(age: int)
+void func cuadrado(age: int, ht: int)
 {
     age = age * age;
     return age;
@@ -12,6 +12,10 @@ void func cuadrado(age: int)
 
 int func numero(edad: int)
 {
+
+}
+
+float func brinca(nose: float, vida: float, status: string) {
 
 }
 main () {

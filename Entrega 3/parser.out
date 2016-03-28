@@ -3,7 +3,7 @@ Created by PLY version 3.8 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> programa
-Rule 1     programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+Rule 1     programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
 Rule 2     createProcDir -> <empty>
 Rule 3     addProcDir -> <empty>
 Rule 4     addMainProc -> <empty>
@@ -93,7 +93,7 @@ Rule 87    escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
 Rule 88    escritura_type -> expresion
 Rule 89    escritura_type -> QUOTE CTESTRING QUOTE
 Rule 90    ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque
-Rule 91    funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
+Rule 91    funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
 Rule 92    addProcDirFunc -> <empty>
 Rule 93    funcion_option -> argumentos
 Rule 94    funcion_option -> <empty>
@@ -215,7 +215,7 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . programa
-    (1) programa -> . PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (1) programa -> . PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
 
     PROGRAM         shift and go to state 1
 
@@ -223,7 +223,7 @@ state 0
 
 state 1
 
-    (1) programa -> PROGRAM . createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (1) programa -> PROGRAM . createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
     (2) createProcDir -> .
 
     ID              reduce using rule 2 (createProcDir -> .)
@@ -238,30 +238,21 @@ state 2
 
 state 3
 
-    (1) programa -> PROGRAM createProcDir . ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (1) programa -> PROGRAM createProcDir . ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
 
     ID              shift and go to state 4
 
 
 state 4
 
-    (1) programa -> PROGRAM createProcDir ID . addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
-    (3) addProcDir -> .
+    (1) programa -> PROGRAM createProcDir ID . SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
 
-    SEMICOLON       reduce using rule 3 (addProcDir -> .)
+    SEMICOLON       shift and go to state 5
 
-    addProcDir                     shift and go to state 5
 
 state 5
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir . SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
-
-    SEMICOLON       shift and go to state 6
-
-
-state 6
-
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON . programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON . programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
     (5) programa_var_loop -> . variable programa_var_loop
     (6) programa_var_loop -> .
     (26) variable -> . VAR createVarDir variable_loop
@@ -273,26 +264,26 @@ state 6
     STRINGTYPE      reduce using rule 6 (programa_var_loop -> .)
     VOIDTYPE        reduce using rule 6 (programa_var_loop -> .)
     MAIN            reduce using rule 6 (programa_var_loop -> .)
-    VAR             shift and go to state 7
+    VAR             shift and go to state 6
 
-    programa_var_loop              shift and go to state 8
-    variable                       shift and go to state 9
+    programa_var_loop              shift and go to state 7
+    variable                       shift and go to state 8
 
-state 7
+state 6
 
     (26) variable -> VAR . createVarDir variable_loop
     (27) createVarDir -> .
 
     ID              reduce using rule 27 (createVarDir -> .)
 
-    createVarDir                   shift and go to state 10
+    createVarDir                   shift and go to state 9
 
-state 8
+state 7
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop . programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop . programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
     (7) programa_func_loop -> . funcion programa_func_loop
     (8) programa_func_loop -> .
-    (91) funcion -> . tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
+    (91) funcion -> . tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
     (12) tipo -> . INTTYPE
     (13) tipo -> . FLOATTYPE
     (14) tipo -> . CHARTYPE
@@ -301,18 +292,18 @@ state 8
     (17) tipo -> . VOIDTYPE
 
     MAIN            reduce using rule 8 (programa_func_loop -> .)
-    INTTYPE         shift and go to state 16
-    FLOATTYPE       shift and go to state 14
-    CHARTYPE        shift and go to state 19
-    BOOLTYPE        shift and go to state 13
-    STRINGTYPE      shift and go to state 11
-    VOIDTYPE        shift and go to state 18
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
 
-    tipo                           shift and go to state 17
-    programa_func_loop             shift and go to state 15
-    funcion                        shift and go to state 12
+    tipo                           shift and go to state 16
+    programa_func_loop             shift and go to state 14
+    funcion                        shift and go to state 11
 
-state 9
+state 8
 
     (5) programa_var_loop -> variable . programa_var_loop
     (5) programa_var_loop -> . variable programa_var_loop
@@ -326,12 +317,12 @@ state 9
     STRINGTYPE      reduce using rule 6 (programa_var_loop -> .)
     VOIDTYPE        reduce using rule 6 (programa_var_loop -> .)
     MAIN            reduce using rule 6 (programa_var_loop -> .)
-    VAR             shift and go to state 7
+    VAR             shift and go to state 6
 
-    variable                       shift and go to state 9
-    programa_var_loop              shift and go to state 20
+    variable                       shift and go to state 8
+    programa_var_loop              shift and go to state 19
 
-state 10
+state 9
 
     (26) variable -> VAR createVarDir . variable_loop
     (28) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
@@ -343,30 +334,30 @@ state 10
     (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
     (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
 
-    ID              shift and go to state 26
+    ID              shift and go to state 25
 
-    variable_arr_loop              shift and go to state 21
-    variable_id_loop_coma          shift and go to state 22
-    variable_id_loop               shift and go to state 23
-    variable_arr_coma              shift and go to state 24
-    variable_loop                  shift and go to state 25
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 24
 
-state 11
+state 10
 
     (16) tipo -> STRINGTYPE .
 
     FUNC            reduce using rule 16 (tipo -> STRINGTYPE .)
+    SEMICOLON       reduce using rule 16 (tipo -> STRINGTYPE .)
     COMA            reduce using rule 16 (tipo -> STRINGTYPE .)
     RPARENTHESIS    reduce using rule 16 (tipo -> STRINGTYPE .)
-    SEMICOLON       reduce using rule 16 (tipo -> STRINGTYPE .)
 
 
-state 12
+state 11
 
     (7) programa_func_loop -> funcion . programa_func_loop
     (7) programa_func_loop -> . funcion programa_func_loop
     (8) programa_func_loop -> .
-    (91) funcion -> . tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
+    (91) funcion -> . tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
     (12) tipo -> . INTTYPE
     (13) tipo -> . FLOATTYPE
     (14) tipo -> . CHARTYPE
@@ -375,82 +366,84 @@ state 12
     (17) tipo -> . VOIDTYPE
 
     MAIN            reduce using rule 8 (programa_func_loop -> .)
-    INTTYPE         shift and go to state 16
-    FLOATTYPE       shift and go to state 14
-    CHARTYPE        shift and go to state 19
-    BOOLTYPE        shift and go to state 13
-    STRINGTYPE      shift and go to state 11
-    VOIDTYPE        shift and go to state 18
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
 
-    tipo                           shift and go to state 17
-    programa_func_loop             shift and go to state 27
-    funcion                        shift and go to state 12
+    tipo                           shift and go to state 16
+    programa_func_loop             shift and go to state 26
+    funcion                        shift and go to state 11
 
-state 13
+state 12
 
     (15) tipo -> BOOLTYPE .
 
     FUNC            reduce using rule 15 (tipo -> BOOLTYPE .)
+    SEMICOLON       reduce using rule 15 (tipo -> BOOLTYPE .)
     COMA            reduce using rule 15 (tipo -> BOOLTYPE .)
     RPARENTHESIS    reduce using rule 15 (tipo -> BOOLTYPE .)
-    SEMICOLON       reduce using rule 15 (tipo -> BOOLTYPE .)
 
 
-state 14
+state 13
 
     (13) tipo -> FLOATTYPE .
 
     FUNC            reduce using rule 13 (tipo -> FLOATTYPE .)
+    SEMICOLON       reduce using rule 13 (tipo -> FLOATTYPE .)
     COMA            reduce using rule 13 (tipo -> FLOATTYPE .)
     RPARENTHESIS    reduce using rule 13 (tipo -> FLOATTYPE .)
-    SEMICOLON       reduce using rule 13 (tipo -> FLOATTYPE .)
 
+
+state 14
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop . addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (3) addProcDir -> .
+
+    MAIN            reduce using rule 3 (addProcDir -> .)
+
+    addProcDir                     shift and go to state 27
 
 state 15
-
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop . MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
-
-    MAIN            shift and go to state 28
-
-
-state 16
 
     (12) tipo -> INTTYPE .
 
     FUNC            reduce using rule 12 (tipo -> INTTYPE .)
+    SEMICOLON       reduce using rule 12 (tipo -> INTTYPE .)
     COMA            reduce using rule 12 (tipo -> INTTYPE .)
     RPARENTHESIS    reduce using rule 12 (tipo -> INTTYPE .)
-    SEMICOLON       reduce using rule 12 (tipo -> INTTYPE .)
+
+
+state 16
+
+    (91) funcion -> tipo . FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+
+    FUNC            shift and go to state 28
 
 
 state 17
 
-    (91) funcion -> tipo . FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
+    (17) tipo -> VOIDTYPE .
 
-    FUNC            shift and go to state 29
+    FUNC            reduce using rule 17 (tipo -> VOIDTYPE .)
+    SEMICOLON       reduce using rule 17 (tipo -> VOIDTYPE .)
+    COMA            reduce using rule 17 (tipo -> VOIDTYPE .)
+    RPARENTHESIS    reduce using rule 17 (tipo -> VOIDTYPE .)
 
 
 state 18
 
-    (17) tipo -> VOIDTYPE .
-
-    FUNC            reduce using rule 17 (tipo -> VOIDTYPE .)
-    COMA            reduce using rule 17 (tipo -> VOIDTYPE .)
-    RPARENTHESIS    reduce using rule 17 (tipo -> VOIDTYPE .)
-    SEMICOLON       reduce using rule 17 (tipo -> VOIDTYPE .)
-
-
-state 19
-
     (14) tipo -> CHARTYPE .
 
     FUNC            reduce using rule 14 (tipo -> CHARTYPE .)
+    SEMICOLON       reduce using rule 14 (tipo -> CHARTYPE .)
     COMA            reduce using rule 14 (tipo -> CHARTYPE .)
     RPARENTHESIS    reduce using rule 14 (tipo -> CHARTYPE .)
-    SEMICOLON       reduce using rule 14 (tipo -> CHARTYPE .)
 
 
-state 20
+state 19
 
     (5) programa_var_loop -> variable programa_var_loop .
 
@@ -463,35 +456,35 @@ state 20
     MAIN            reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
 
 
-state 21
+state 20
 
     (29) variable_loop -> variable_arr_loop . SEMICOLON variable_end_loop
 
-    SEMICOLON       shift and go to state 30
+    SEMICOLON       shift and go to state 29
+
+
+state 21
+
+    (31) variable_id_loop -> variable_id_loop_coma . COLON tipo addType
+
+    COLON           shift and go to state 30
 
 
 state 22
 
-    (31) variable_id_loop -> variable_id_loop_coma . COLON tipo addType
+    (28) variable_loop -> variable_id_loop . SEMICOLON variable_end_loop
 
-    COLON           shift and go to state 31
+    SEMICOLON       shift and go to state 31
 
 
 state 23
 
-    (28) variable_loop -> variable_id_loop . SEMICOLON variable_end_loop
+    (34) variable_arr_loop -> variable_arr_coma . COLON subtipo addType
 
-    SEMICOLON       shift and go to state 32
+    COLON           shift and go to state 32
 
 
 state 24
-
-    (34) variable_arr_loop -> variable_arr_coma . COLON subtipo addType
-
-    COLON           shift and go to state 33
-
-
-state 25
 
     (26) variable -> VAR createVarDir variable_loop .
 
@@ -505,7 +498,7 @@ state 25
     MAIN            reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
 
 
-state 26
+state 25
 
     (32) variable_id_loop_coma -> ID . addVarDir
     (33) variable_id_loop_coma -> ID . addVarDir COMA variable_id_loop_coma
@@ -517,32 +510,30 @@ state 26
     LBRACKET        reduce using rule 37 (addVarDir -> .)
     COLON           reduce using rule 37 (addVarDir -> .)
 
-    addVarDir                      shift and go to state 34
+    addVarDir                      shift and go to state 33
 
-state 27
+state 26
 
     (7) programa_func_loop -> funcion programa_func_loop .
 
     MAIN            reduce using rule 7 (programa_func_loop -> funcion programa_func_loop .)
 
 
+state 27
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir . MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+
+    MAIN            shift and go to state 34
+
+
 state 28
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN . addMainProc LPARENTHESIS RPARENTHESIS bloque END
-    (4) addMainProc -> .
+    (91) funcion -> tipo FUNC . ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
 
-    LPARENTHESIS    reduce using rule 4 (addMainProc -> .)
+    ID              shift and go to state 35
 
-    addMainProc                    shift and go to state 35
 
 state 29
-
-    (91) funcion -> tipo FUNC . ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
-
-    ID              shift and go to state 36
-
-
-state 30
 
     (29) variable_loop -> variable_arr_loop SEMICOLON . variable_end_loop
     (38) variable_end_loop -> . variable_loop
@@ -564,16 +555,16 @@ state 30
     STRINGTYPE      reduce using rule 39 (variable_end_loop -> .)
     VOIDTYPE        reduce using rule 39 (variable_end_loop -> .)
     MAIN            reduce using rule 39 (variable_end_loop -> .)
-    ID              shift and go to state 26
+    ID              shift and go to state 25
 
-    variable_arr_loop              shift and go to state 21
-    variable_id_loop_coma          shift and go to state 22
-    variable_id_loop               shift and go to state 23
-    variable_end_loop              shift and go to state 37
-    variable_arr_coma              shift and go to state 24
-    variable_loop                  shift and go to state 38
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_end_loop              shift and go to state 36
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 37
 
-state 31
+state 30
 
     (31) variable_id_loop -> variable_id_loop_coma COLON . tipo addType
     (12) tipo -> . INTTYPE
@@ -583,16 +574,16 @@ state 31
     (16) tipo -> . STRINGTYPE
     (17) tipo -> . VOIDTYPE
 
-    INTTYPE         shift and go to state 16
-    FLOATTYPE       shift and go to state 14
-    CHARTYPE        shift and go to state 19
-    BOOLTYPE        shift and go to state 13
-    STRINGTYPE      shift and go to state 11
-    VOIDTYPE        shift and go to state 18
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
 
-    tipo                           shift and go to state 39
+    tipo                           shift and go to state 38
 
-state 32
+state 31
 
     (28) variable_loop -> variable_id_loop SEMICOLON . variable_end_loop
     (38) variable_end_loop -> . variable_loop
@@ -614,27 +605,27 @@ state 32
     STRINGTYPE      reduce using rule 39 (variable_end_loop -> .)
     VOIDTYPE        reduce using rule 39 (variable_end_loop -> .)
     MAIN            reduce using rule 39 (variable_end_loop -> .)
-    ID              shift and go to state 26
+    ID              shift and go to state 25
 
-    variable_arr_loop              shift and go to state 21
-    variable_id_loop_coma          shift and go to state 22
-    variable_id_loop               shift and go to state 23
-    variable_end_loop              shift and go to state 40
-    variable_arr_coma              shift and go to state 24
-    variable_loop                  shift and go to state 38
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_end_loop              shift and go to state 39
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 37
 
-state 33
+state 32
 
     (34) variable_arr_loop -> variable_arr_coma COLON . subtipo addType
     (18) subtipo -> . INTTYPE
     (19) subtipo -> . FLOATTYPE
 
-    INTTYPE         shift and go to state 41
-    FLOATTYPE       shift and go to state 42
+    INTTYPE         shift and go to state 40
+    FLOATTYPE       shift and go to state 41
 
-    subtipo                        shift and go to state 43
+    subtipo                        shift and go to state 42
 
-state 34
+state 33
 
     (32) variable_id_loop_coma -> ID addVarDir .
     (33) variable_id_loop_coma -> ID addVarDir . COMA variable_id_loop_coma
@@ -642,27 +633,27 @@ state 34
     (36) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET COMA variable_arr_coma
 
     COLON           reduce using rule 32 (variable_id_loop_coma -> ID addVarDir .)
-    COMA            shift and go to state 45
-    LBRACKET        shift and go to state 44
+    COMA            shift and go to state 44
+    LBRACKET        shift and go to state 43
 
+
+state 34
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN . addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (4) addMainProc -> .
+
+    LPARENTHESIS    reduce using rule 4 (addMainProc -> .)
+
+    addMainProc                    shift and go to state 45
 
 state 35
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc . LPARENTHESIS RPARENTHESIS bloque END
+    (91) funcion -> tipo FUNC ID . LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
 
     LPARENTHESIS    shift and go to state 46
 
 
 state 36
-
-    (91) funcion -> tipo FUNC ID . addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque
-    (92) addProcDirFunc -> .
-
-    LPARENTHESIS    reduce using rule 92 (addProcDirFunc -> .)
-
-    addProcDirFunc                 shift and go to state 47
-
-state 37
 
     (29) variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .
 
@@ -676,7 +667,7 @@ state 37
     MAIN            reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
 
 
-state 38
+state 37
 
     (38) variable_end_loop -> variable_loop .
 
@@ -690,16 +681,16 @@ state 38
     MAIN            reduce using rule 38 (variable_end_loop -> variable_loop .)
 
 
-state 39
+state 38
 
     (31) variable_id_loop -> variable_id_loop_coma COLON tipo . addType
     (30) addType -> .
 
     SEMICOLON       reduce using rule 30 (addType -> .)
 
-    addType                        shift and go to state 48
+    addType                        shift and go to state 47
 
-state 40
+state 39
 
     (28) variable_loop -> variable_id_loop SEMICOLON variable_end_loop .
 
@@ -713,85 +704,91 @@ state 40
     MAIN            reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
 
 
-state 41
+state 40
 
     (18) subtipo -> INTTYPE .
 
     SEMICOLON       reduce using rule 18 (subtipo -> INTTYPE .)
 
 
-state 42
+state 41
 
     (19) subtipo -> FLOATTYPE .
 
     SEMICOLON       reduce using rule 19 (subtipo -> FLOATTYPE .)
 
 
-state 43
+state 42
 
     (34) variable_arr_loop -> variable_arr_coma COLON subtipo . addType
     (30) addType -> .
 
     SEMICOLON       reduce using rule 30 (addType -> .)
 
-    addType                        shift and go to state 49
+    addType                        shift and go to state 48
 
-state 44
+state 43
 
     (35) variable_arr_coma -> ID addVarDir LBRACKET . RBRACKET
     (36) variable_arr_coma -> ID addVarDir LBRACKET . RBRACKET COMA variable_arr_coma
 
-    RBRACKET        shift and go to state 50
+    RBRACKET        shift and go to state 49
 
 
-state 45
+state 44
 
     (33) variable_id_loop_coma -> ID addVarDir COMA . variable_id_loop_coma
     (32) variable_id_loop_coma -> . ID addVarDir
     (33) variable_id_loop_coma -> . ID addVarDir COMA variable_id_loop_coma
 
-    ID              shift and go to state 51
+    ID              shift and go to state 50
 
-    variable_id_loop_coma          shift and go to state 52
+    variable_id_loop_coma          shift and go to state 51
+
+state 45
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc . LPARENTHESIS RPARENTHESIS bloque END
+
+    LPARENTHESIS    shift and go to state 52
+
 
 state 46
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS . RPARENTHESIS bloque END
+    (91) funcion -> tipo FUNC ID LPARENTHESIS . funcion_option RPARENTHESIS addProcDirFunc bloque
+    (93) funcion_option -> . argumentos
+    (94) funcion_option -> .
+    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
 
-    RPARENTHESIS    shift and go to state 53
+    RPARENTHESIS    reduce using rule 94 (funcion_option -> .)
+    ID              shift and go to state 55
 
+    funcion_option                 shift and go to state 53
+    argumentos                     shift and go to state 54
 
 state 47
-
-    (91) funcion -> tipo FUNC ID addProcDirFunc . LPARENTHESIS funcion_option RPARENTHESIS bloque
-
-    LPARENTHESIS    shift and go to state 54
-
-
-state 48
 
     (31) variable_id_loop -> variable_id_loop_coma COLON tipo addType .
 
     SEMICOLON       reduce using rule 31 (variable_id_loop -> variable_id_loop_coma COLON tipo addType .)
 
 
-state 49
+state 48
 
     (34) variable_arr_loop -> variable_arr_coma COLON subtipo addType .
 
     SEMICOLON       reduce using rule 34 (variable_arr_loop -> variable_arr_coma COLON subtipo addType .)
 
 
-state 50
+state 49
 
     (35) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET .
     (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET . COMA variable_arr_coma
 
     COLON           reduce using rule 35 (variable_arr_coma -> ID addVarDir LBRACKET RBRACKET .)
-    COMA            shift and go to state 55
+    COMA            shift and go to state 56
 
 
-state 51
+state 50
 
     (32) variable_id_loop_coma -> ID . addVarDir
     (33) variable_id_loop_coma -> ID . addVarDir COMA variable_id_loop_coma
@@ -800,57 +797,107 @@ state 51
     COMA            reduce using rule 37 (addVarDir -> .)
     COLON           reduce using rule 37 (addVarDir -> .)
 
-    addVarDir                      shift and go to state 56
+    addVarDir                      shift and go to state 57
 
-state 52
+state 51
 
     (33) variable_id_loop_coma -> ID addVarDir COMA variable_id_loop_coma .
 
     COLON           reduce using rule 33 (variable_id_loop_coma -> ID addVarDir COMA variable_id_loop_coma .)
 
 
+state 52
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS . RPARENTHESIS bloque END
+
+    RPARENTHESIS    shift and go to state 58
+
+
 state 53
 
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS . bloque END
-    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option . RPARENTHESIS addProcDirFunc bloque
 
-    LCURLY          shift and go to state 57
+    RPARENTHESIS    shift and go to state 59
 
-    bloque                         shift and go to state 58
 
 state 54
 
-    (91) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS . funcion_option RPARENTHESIS bloque
-    (93) funcion_option -> . argumentos
-    (94) funcion_option -> .
-    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+    (93) funcion_option -> argumentos .
 
-    RPARENTHESIS    reduce using rule 94 (funcion_option -> .)
-    ID              shift and go to state 61
+    RPARENTHESIS    reduce using rule 93 (funcion_option -> argumentos .)
 
-    funcion_option                 shift and go to state 59
-    argumentos                     shift and go to state 60
 
 state 55
+
+    (95) argumentos -> ID . addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+    (98) addVarDirFunc -> .
+
+    COLON           reduce using rule 98 (addVarDirFunc -> .)
+
+    addVarDirFunc                  shift and go to state 60
+
+state 56
 
     (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA . variable_arr_coma
     (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
     (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
 
-    ID              shift and go to state 63
+    ID              shift and go to state 62
 
-    variable_arr_coma              shift and go to state 62
+    variable_arr_coma              shift and go to state 61
 
-state 56
+state 57
 
     (32) variable_id_loop_coma -> ID addVarDir .
     (33) variable_id_loop_coma -> ID addVarDir . COMA variable_id_loop_coma
 
     COLON           reduce using rule 32 (variable_id_loop_coma -> ID addVarDir .)
-    COMA            shift and go to state 45
+    COMA            shift and go to state 44
 
 
-state 57
+state 58
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS . bloque END
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 64
+
+state 59
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS . addProcDirFunc bloque
+    (92) addProcDirFunc -> .
+
+    LCURLY          reduce using rule 92 (addProcDirFunc -> .)
+
+    addProcDirFunc                 shift and go to state 65
+
+state 60
+
+    (95) argumentos -> ID addVarDirFunc . COLON tipo addTypeFunc argumentos_loop
+
+    COLON           shift and go to state 66
+
+
+state 61
+
+    (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .
+
+    COLON           reduce using rule 36 (variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .)
+
+
+state 62
+
+    (35) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+    (37) addVarDir -> .
+
+    LBRACKET        reduce using rule 37 (addVarDir -> .)
+
+    addVarDir                      shift and go to state 67
+
+state 63
 
     (9) bloque -> LCURLY . bloque_est_loop RCURLY
     (10) bloque_est_loop -> . estatuto bloque_est_loop
@@ -867,68 +914,64 @@ state 57
     (90) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
 
     RCURLY          reduce using rule 11 (bloque_est_loop -> .)
-    ID              shift and go to state 70
-    IF              shift and go to state 71
-    PRINT           shift and go to state 66
-    RETURN          shift and go to state 64
-    WHILE           shift and go to state 65
+    ID              shift and go to state 74
+    IF              shift and go to state 75
+    PRINT           shift and go to state 70
+    RETURN          shift and go to state 68
+    WHILE           shift and go to state 69
 
-    regreso                        shift and go to state 72
-    ciclo                          shift and go to state 67
-    asignacion                     shift and go to state 73
-    estatuto                       shift and go to state 68
-    condicion                      shift and go to state 69
-    bloque_est_loop                shift and go to state 74
-    escritura                      shift and go to state 75
-
-state 58
-
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque . END
-
-    END             shift and go to state 76
-
-
-state 59
-
-    (91) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option . RPARENTHESIS bloque
-
-    RPARENTHESIS    shift and go to state 77
-
-
-state 60
-
-    (93) funcion_option -> argumentos .
-
-    RPARENTHESIS    reduce using rule 93 (funcion_option -> argumentos .)
-
-
-state 61
-
-    (95) argumentos -> ID . addVarDirFunc COLON tipo addTypeFunc argumentos_loop
-    (98) addVarDirFunc -> .
-
-    COLON           reduce using rule 98 (addVarDirFunc -> .)
-
-    addVarDirFunc                  shift and go to state 78
-
-state 62
-
-    (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .
-
-    COLON           reduce using rule 36 (variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .)
-
-
-state 63
-
-    (35) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET
-    (36) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET COMA variable_arr_coma
-    (37) addVarDir -> .
-
-    LBRACKET        reduce using rule 37 (addVarDir -> .)
-
-    addVarDir                      shift and go to state 79
+    regreso                        shift and go to state 76
+    ciclo                          shift and go to state 71
+    asignacion                     shift and go to state 77
+    estatuto                       shift and go to state 72
+    condicion                      shift and go to state 73
+    bloque_est_loop                shift and go to state 78
+    escritura                      shift and go to state 79
 
 state 64
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque . END
+
+    END             shift and go to state 80
+
+
+state 65
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc . bloque
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 81
+
+state 66
+
+    (95) argumentos -> ID addVarDirFunc COLON . tipo addTypeFunc argumentos_loop
+    (12) tipo -> . INTTYPE
+    (13) tipo -> . FLOATTYPE
+    (14) tipo -> . CHARTYPE
+    (15) tipo -> . BOOLTYPE
+    (16) tipo -> . STRINGTYPE
+    (17) tipo -> . VOIDTYPE
+
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
+
+    tipo                           shift and go to state 82
+
+state 67
+
+    (35) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET COMA variable_arr_coma
+
+    LBRACKET        shift and go to state 43
+
+
+state 68
 
     (25) regreso -> RETURN . exp SEMICOLON
     (47) exp -> . termino exp_loop
@@ -945,37 +988,37 @@ state 64
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 90
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 93
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 65
+state 69
 
     (90) ciclo -> WHILE . LPARENTHESIS expresion RPARENTHESIS bloque
 
-    LPARENTHESIS    shift and go to state 94
+    LPARENTHESIS    shift and go to state 97
 
 
-state 66
+state 70
 
     (87) escritura -> PRINT . LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
 
-    LPARENTHESIS    shift and go to state 95
+    LPARENTHESIS    shift and go to state 98
 
 
-state 67
+state 71
 
     (24) estatuto -> ciclo .
 
@@ -987,7 +1030,7 @@ state 67
     RCURLY          reduce using rule 24 (estatuto -> ciclo .)
 
 
-state 68
+state 72
 
     (10) bloque_est_loop -> estatuto . bloque_est_loop
     (10) bloque_est_loop -> . estatuto bloque_est_loop
@@ -1004,21 +1047,21 @@ state 68
     (90) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
 
     RCURLY          reduce using rule 11 (bloque_est_loop -> .)
-    ID              shift and go to state 70
-    IF              shift and go to state 71
-    PRINT           shift and go to state 66
-    RETURN          shift and go to state 64
-    WHILE           shift and go to state 65
+    ID              shift and go to state 74
+    IF              shift and go to state 75
+    PRINT           shift and go to state 70
+    RETURN          shift and go to state 68
+    WHILE           shift and go to state 69
 
-    regreso                        shift and go to state 72
-    ciclo                          shift and go to state 67
-    asignacion                     shift and go to state 73
-    estatuto                       shift and go to state 68
-    condicion                      shift and go to state 69
-    bloque_est_loop                shift and go to state 96
-    escritura                      shift and go to state 75
+    regreso                        shift and go to state 76
+    ciclo                          shift and go to state 71
+    asignacion                     shift and go to state 77
+    estatuto                       shift and go to state 72
+    condicion                      shift and go to state 73
+    bloque_est_loop                shift and go to state 99
+    escritura                      shift and go to state 79
 
-state 69
+state 73
 
     (21) estatuto -> condicion .
 
@@ -1030,25 +1073,25 @@ state 69
     RCURLY          reduce using rule 21 (estatuto -> condicion .)
 
 
-state 70
+state 74
 
     (40) asignacion -> ID . asignacion_option
     (41) asignacion_option -> . ASSIGN expresion SEMICOLON
     (42) asignacion_option -> . LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
 
-    ASSIGN          shift and go to state 98
-    LBRACKET        shift and go to state 99
+    ASSIGN          shift and go to state 101
+    LBRACKET        shift and go to state 102
 
-    asignacion_option              shift and go to state 97
+    asignacion_option              shift and go to state 100
 
-state 71
+state 75
 
     (84) condicion -> IF . LPARENTHESIS expresion RPARENTHESIS bloque condicion_option
 
-    LPARENTHESIS    shift and go to state 100
+    LPARENTHESIS    shift and go to state 103
 
 
-state 72
+state 76
 
     (23) estatuto -> regreso .
 
@@ -1060,7 +1103,7 @@ state 72
     RCURLY          reduce using rule 23 (estatuto -> regreso .)
 
 
-state 73
+state 77
 
     (20) estatuto -> asignacion .
 
@@ -1072,14 +1115,14 @@ state 73
     RCURLY          reduce using rule 20 (estatuto -> asignacion .)
 
 
-state 74
+state 78
 
     (9) bloque -> LCURLY bloque_est_loop . RCURLY
 
-    RCURLY          shift and go to state 101
+    RCURLY          shift and go to state 104
 
 
-state 75
+state 79
 
     (22) estatuto -> escritura .
 
@@ -1091,38 +1134,37 @@ state 75
     RCURLY          reduce using rule 22 (estatuto -> escritura .)
 
 
-state 76
-
-    (1) programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .
-
-    $end            reduce using rule 1 (programa -> PROGRAM createProcDir ID addProcDir SEMICOLON programa_var_loop programa_func_loop MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .)
-
-
-state 77
-
-    (91) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS . bloque
-    (9) bloque -> . LCURLY bloque_est_loop RCURLY
-
-    LCURLY          shift and go to state 57
-
-    bloque                         shift and go to state 102
-
-state 78
-
-    (95) argumentos -> ID addVarDirFunc . COLON tipo addTypeFunc argumentos_loop
-
-    COLON           shift and go to state 103
-
-
-state 79
-
-    (35) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET
-    (36) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET COMA variable_arr_coma
-
-    LBRACKET        shift and go to state 44
-
-
 state 80
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .
+
+    $end            reduce using rule 1 (programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .)
+
+
+state 81
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .
+
+    INTTYPE         reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    FLOATTYPE       reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    CHARTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    BOOLTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    STRINGTYPE      reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    VOIDTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    MAIN            reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+
+
+state 82
+
+    (95) argumentos -> ID addVarDirFunc COLON tipo . addTypeFunc argumentos_loop
+    (99) addTypeFunc -> .
+
+    COMA            reduce using rule 99 (addTypeFunc -> .)
+    RPARENTHESIS    reduce using rule 99 (addTypeFunc -> .)
+
+    addTypeFunc                    shift and go to state 105
+
+state 83
 
     (78) varcte_type -> FLOAT .
 
@@ -1149,7 +1191,7 @@ state 80
     RPARENTHESIS    reduce using rule 78 (varcte_type -> FLOAT .)
 
 
-state 81
+state 84
 
     (59) factor_var -> varcte .
 
@@ -1158,6 +1200,12 @@ state 81
     ADDITION        reduce using rule 59 (factor_var -> varcte .)
     SUBTRACTION     reduce using rule 59 (factor_var -> varcte .)
     SEMICOLON       reduce using rule 59 (factor_var -> varcte .)
+    LESS            reduce using rule 59 (factor_var -> varcte .)
+    GREATER         reduce using rule 59 (factor_var -> varcte .)
+    LESSEQUAL       reduce using rule 59 (factor_var -> varcte .)
+    GREATEREQUAL    reduce using rule 59 (factor_var -> varcte .)
+    NOTEQUAL        reduce using rule 59 (factor_var -> varcte .)
+    EQUAL           reduce using rule 59 (factor_var -> varcte .)
     AND             reduce using rule 59 (factor_var -> varcte .)
     OR              reduce using rule 59 (factor_var -> varcte .)
     LPARENTHESIS    reduce using rule 59 (factor_var -> varcte .)
@@ -1168,15 +1216,9 @@ state 81
     STRING          reduce using rule 59 (factor_var -> varcte .)
     BOOL            reduce using rule 59 (factor_var -> varcte .)
     RPARENTHESIS    reduce using rule 59 (factor_var -> varcte .)
-    LESS            reduce using rule 59 (factor_var -> varcte .)
-    GREATER         reduce using rule 59 (factor_var -> varcte .)
-    LESSEQUAL       reduce using rule 59 (factor_var -> varcte .)
-    GREATEREQUAL    reduce using rule 59 (factor_var -> varcte .)
-    NOTEQUAL        reduce using rule 59 (factor_var -> varcte .)
-    EQUAL           reduce using rule 59 (factor_var -> varcte .)
 
 
-state 82
+state 85
 
     (77) varcte_type -> INT .
 
@@ -1203,7 +1245,7 @@ state 82
     RPARENTHESIS    reduce using rule 77 (varcte_type -> INT .)
 
 
-state 83
+state 86
 
     (58) factor -> factor_exp .
 
@@ -1226,11 +1268,11 @@ state 83
     CHAR            reduce using rule 58 (factor -> factor_exp .)
     STRING          reduce using rule 58 (factor -> factor_exp .)
     BOOL            reduce using rule 58 (factor -> factor_exp .)
-    RPARENTHESIS    reduce using rule 58 (factor -> factor_exp .)
     SEMICOLON       reduce using rule 58 (factor -> factor_exp .)
+    RPARENTHESIS    reduce using rule 58 (factor -> factor_exp .)
 
 
-state 84
+state 87
 
     (60) factor_exp -> LPARENTHESIS . expresion RPARENTHESIS
     (61) expresion -> . nuevaexp expresion_option expresion_loop
@@ -1249,25 +1291,25 @@ state 84
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 105
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 107
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 85
+state 88
 
     (75) varcte -> varcte_type .
 
@@ -1275,14 +1317,13 @@ state 85
     DIVISION        reduce using rule 75 (varcte -> varcte_type .)
     ADDITION        reduce using rule 75 (varcte -> varcte_type .)
     SUBTRACTION     reduce using rule 75 (varcte -> varcte_type .)
+    SEMICOLON       reduce using rule 75 (varcte -> varcte_type .)
     LESS            reduce using rule 75 (varcte -> varcte_type .)
     GREATER         reduce using rule 75 (varcte -> varcte_type .)
     LESSEQUAL       reduce using rule 75 (varcte -> varcte_type .)
     GREATEREQUAL    reduce using rule 75 (varcte -> varcte_type .)
     NOTEQUAL        reduce using rule 75 (varcte -> varcte_type .)
     EQUAL           reduce using rule 75 (varcte -> varcte_type .)
-    AND             reduce using rule 75 (varcte -> varcte_type .)
-    OR              reduce using rule 75 (varcte -> varcte_type .)
     LPARENTHESIS    reduce using rule 75 (varcte -> varcte_type .)
     ID              reduce using rule 75 (varcte -> varcte_type .)
     INT             reduce using rule 75 (varcte -> varcte_type .)
@@ -1291,10 +1332,11 @@ state 85
     STRING          reduce using rule 75 (varcte -> varcte_type .)
     BOOL            reduce using rule 75 (varcte -> varcte_type .)
     RPARENTHESIS    reduce using rule 75 (varcte -> varcte_type .)
-    SEMICOLON       reduce using rule 75 (varcte -> varcte_type .)
+    AND             reduce using rule 75 (varcte -> varcte_type .)
+    OR              reduce using rule 75 (varcte -> varcte_type .)
 
 
-state 86
+state 89
 
     (79) varcte_type -> CHAR .
 
@@ -1321,7 +1363,7 @@ state 86
     RPARENTHESIS    reduce using rule 79 (varcte_type -> CHAR .)
 
 
-state 87
+state 90
 
     (80) varcte_type -> STRING .
 
@@ -1348,7 +1390,7 @@ state 87
     RPARENTHESIS    reduce using rule 80 (varcte_type -> STRING .)
 
 
-state 88
+state 91
 
     (81) varcte_type -> BOOL .
 
@@ -1375,7 +1417,7 @@ state 88
     RPARENTHESIS    reduce using rule 81 (varcte_type -> BOOL .)
 
 
-state 89
+state 92
 
     (47) exp -> termino . exp_loop
     (48) exp_loop -> . exp_type_loop
@@ -1400,20 +1442,20 @@ state 89
     STRING          reduce using rule 49 (exp_loop -> .)
     BOOL            reduce using rule 49 (exp_loop -> .)
     RPARENTHESIS    reduce using rule 49 (exp_loop -> .)
-    ADDITION        shift and go to state 108
-    SUBTRACTION     shift and go to state 110
+    ADDITION        shift and go to state 110
+    SUBTRACTION     shift and go to state 112
 
-    exp_loop                       shift and go to state 109
-    exp_type_loop                  shift and go to state 107
+    exp_loop                       shift and go to state 111
+    exp_type_loop                  shift and go to state 109
 
-state 90
+state 93
 
     (25) regreso -> RETURN exp . SEMICOLON
 
-    SEMICOLON       shift and go to state 111
+    SEMICOLON       shift and go to state 113
 
 
-state 91
+state 94
 
     (52) termino -> factor . termino_loop
     (53) termino_loop -> . termino_type_loop
@@ -1440,19 +1482,19 @@ state 91
     STRING          reduce using rule 54 (termino_loop -> .)
     BOOL            reduce using rule 54 (termino_loop -> .)
     RPARENTHESIS    reduce using rule 54 (termino_loop -> .)
-    MULTIPLICATION  shift and go to state 114
-    DIVISION        shift and go to state 112
+    MULTIPLICATION  shift and go to state 116
+    DIVISION        shift and go to state 114
 
-    termino_type_loop              shift and go to state 113
-    termino_loop                   shift and go to state 115
+    termino_type_loop              shift and go to state 115
+    termino_loop                   shift and go to state 117
 
-state 92
+state 95
 
     (76) varcte_type -> ID . varcte_arr
     (82) varcte_arr -> . LBRACKET RBRACKET
     (83) varcte_arr -> .
 
-    LBRACKET        shift and go to state 116
+    LBRACKET        shift and go to state 118
     MULTIPLICATION  reduce using rule 83 (varcte_arr -> .)
     DIVISION        reduce using rule 83 (varcte_arr -> .)
     ADDITION        reduce using rule 83 (varcte_arr -> .)
@@ -1475,9 +1517,9 @@ state 92
     BOOL            reduce using rule 83 (varcte_arr -> .)
     RPARENTHESIS    reduce using rule 83 (varcte_arr -> .)
 
-    varcte_arr                     shift and go to state 117
+    varcte_arr                     shift and go to state 119
 
-state 93
+state 96
 
     (57) factor -> factor_var .
 
@@ -1500,11 +1542,11 @@ state 93
     CHAR            reduce using rule 57 (factor -> factor_var .)
     STRING          reduce using rule 57 (factor -> factor_var .)
     BOOL            reduce using rule 57 (factor -> factor_var .)
-    RPARENTHESIS    reduce using rule 57 (factor -> factor_var .)
     SEMICOLON       reduce using rule 57 (factor -> factor_var .)
+    RPARENTHESIS    reduce using rule 57 (factor -> factor_var .)
 
 
-state 94
+state 97
 
     (90) ciclo -> WHILE LPARENTHESIS . expresion RPARENTHESIS bloque
     (61) expresion -> . nuevaexp expresion_option expresion_loop
@@ -1523,25 +1565,25 @@ state 94
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 118
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 120
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 95
+state 98
 
     (87) escritura -> PRINT LPARENTHESIS . escritura_type RPARENTHESIS SEMICOLON
     (88) escritura_type -> . expresion
@@ -1562,34 +1604,34 @@ state 95
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    QUOTE           shift and go to state 119
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    QUOTE           shift and go to state 121
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 121
-    factor_exp                     shift and go to state 83
-    varcte                         shift and go to state 81
-    escritura_type                 shift and go to state 120
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 123
+    factor_exp                     shift and go to state 86
+    varcte                         shift and go to state 84
+    escritura_type                 shift and go to state 122
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 96
+state 99
 
     (10) bloque_est_loop -> estatuto bloque_est_loop .
 
     RCURLY          reduce using rule 10 (bloque_est_loop -> estatuto bloque_est_loop .)
 
 
-state 97
+state 100
 
     (40) asignacion -> ID asignacion_option .
 
@@ -1601,7 +1643,7 @@ state 97
     RCURLY          reduce using rule 40 (asignacion -> ID asignacion_option .)
 
 
-state 98
+state 101
 
     (41) asignacion_option -> ASSIGN . expresion SEMICOLON
     (61) expresion -> . nuevaexp expresion_option expresion_loop
@@ -1620,32 +1662,32 @@ state 98
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 122
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 124
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 99
+state 102
 
     (42) asignacion_option -> LBRACKET . INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
 
-    INT             shift and go to state 123
+    INT             shift and go to state 125
 
 
-state 100
+state 103
 
     (84) condicion -> IF LPARENTHESIS . expresion RPARENTHESIS bloque condicion_option
     (61) expresion -> . nuevaexp expresion_option expresion_loop
@@ -1664,25 +1706,25 @@ state 100
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 124
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 126
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 101
+state 104
 
     (9) bloque -> LCURLY bloque_est_loop RCURLY .
 
@@ -1703,47 +1745,26 @@ state 101
     MAIN            reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
 
 
-state 102
+state 105
 
-    (91) funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .
+    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc . argumentos_loop
+    (96) argumentos_loop -> . COMA argumentos
+    (97) argumentos_loop -> .
 
-    INTTYPE         reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    FLOATTYPE       reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    CHARTYPE        reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    BOOLTYPE        reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    STRINGTYPE      reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    VOIDTYPE        reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
-    MAIN            reduce using rule 91 (funcion -> tipo FUNC ID addProcDirFunc LPARENTHESIS funcion_option RPARENTHESIS bloque .)
+    COMA            shift and go to state 128
+    RPARENTHESIS    reduce using rule 97 (argumentos_loop -> .)
 
+    argumentos_loop                shift and go to state 127
 
-state 103
-
-    (95) argumentos -> ID addVarDirFunc COLON . tipo addTypeFunc argumentos_loop
-    (12) tipo -> . INTTYPE
-    (13) tipo -> . FLOATTYPE
-    (14) tipo -> . CHARTYPE
-    (15) tipo -> . BOOLTYPE
-    (16) tipo -> . STRINGTYPE
-    (17) tipo -> . VOIDTYPE
-
-    INTTYPE         shift and go to state 16
-    FLOATTYPE       shift and go to state 14
-    CHARTYPE        shift and go to state 19
-    BOOLTYPE        shift and go to state 13
-    STRINGTYPE      shift and go to state 11
-    VOIDTYPE        shift and go to state 18
-
-    tipo                           shift and go to state 125
-
-state 104
+state 106
 
     (61) expresion -> nuevaexp . expresion_option expresion_loop
     (62) expresion_option -> . AND nuevaexp
     (63) expresion_option -> . OR nuevaexp
     (64) expresion_option -> .
 
-    AND             shift and go to state 126
-    OR              shift and go to state 127
+    AND             shift and go to state 129
+    OR              shift and go to state 130
     LPARENTHESIS    reduce using rule 64 (expresion_option -> .)
     ID              reduce using rule 64 (expresion_option -> .)
     INT             reduce using rule 64 (expresion_option -> .)
@@ -1754,16 +1775,16 @@ state 104
     RPARENTHESIS    reduce using rule 64 (expresion_option -> .)
     SEMICOLON       reduce using rule 64 (expresion_option -> .)
 
-    expresion_option               shift and go to state 128
+    expresion_option               shift and go to state 131
 
-state 105
+state 107
 
     (60) factor_exp -> LPARENTHESIS expresion . RPARENTHESIS
 
-    RPARENTHESIS    shift and go to state 129
+    RPARENTHESIS    shift and go to state 132
 
 
-state 106
+state 108
 
     (67) nuevaexp -> exp . nuevaexp_type
     (68) nuevaexp_type -> . LESS exp
@@ -1774,12 +1795,12 @@ state 106
     (73) nuevaexp_type -> . EQUAL exp
     (74) nuevaexp_type -> .
 
-    LESS            shift and go to state 133
-    GREATER         shift and go to state 132
-    LESSEQUAL       shift and go to state 136
-    GREATEREQUAL    shift and go to state 131
-    NOTEQUAL        shift and go to state 130
-    EQUAL           shift and go to state 134
+    LESS            shift and go to state 136
+    GREATER         shift and go to state 135
+    LESSEQUAL       shift and go to state 139
+    GREATEREQUAL    shift and go to state 134
+    NOTEQUAL        shift and go to state 133
+    EQUAL           shift and go to state 137
     AND             reduce using rule 74 (nuevaexp_type -> .)
     OR              reduce using rule 74 (nuevaexp_type -> .)
     LPARENTHESIS    reduce using rule 74 (nuevaexp_type -> .)
@@ -1792,9 +1813,9 @@ state 106
     RPARENTHESIS    reduce using rule 74 (nuevaexp_type -> .)
     SEMICOLON       reduce using rule 74 (nuevaexp_type -> .)
 
-    nuevaexp_type                  shift and go to state 135
+    nuevaexp_type                  shift and go to state 138
 
-state 107
+state 109
 
     (48) exp_loop -> exp_type_loop .
 
@@ -1817,7 +1838,7 @@ state 107
     RPARENTHESIS    reduce using rule 48 (exp_loop -> exp_type_loop .)
 
 
-state 108
+state 110
 
     (50) exp_type_loop -> ADDITION . exp
     (47) exp -> . termino exp_loop
@@ -1834,26 +1855,32 @@ state 108
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 137
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 140
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 109
+state 111
 
     (47) exp -> termino exp_loop .
 
+    LESS            reduce using rule 47 (exp -> termino exp_loop .)
+    GREATER         reduce using rule 47 (exp -> termino exp_loop .)
+    LESSEQUAL       reduce using rule 47 (exp -> termino exp_loop .)
+    GREATEREQUAL    reduce using rule 47 (exp -> termino exp_loop .)
+    NOTEQUAL        reduce using rule 47 (exp -> termino exp_loop .)
+    EQUAL           reduce using rule 47 (exp -> termino exp_loop .)
     AND             reduce using rule 47 (exp -> termino exp_loop .)
     OR              reduce using rule 47 (exp -> termino exp_loop .)
     LPARENTHESIS    reduce using rule 47 (exp -> termino exp_loop .)
@@ -1865,15 +1892,9 @@ state 109
     BOOL            reduce using rule 47 (exp -> termino exp_loop .)
     RPARENTHESIS    reduce using rule 47 (exp -> termino exp_loop .)
     SEMICOLON       reduce using rule 47 (exp -> termino exp_loop .)
-    LESS            reduce using rule 47 (exp -> termino exp_loop .)
-    GREATER         reduce using rule 47 (exp -> termino exp_loop .)
-    LESSEQUAL       reduce using rule 47 (exp -> termino exp_loop .)
-    GREATEREQUAL    reduce using rule 47 (exp -> termino exp_loop .)
-    NOTEQUAL        reduce using rule 47 (exp -> termino exp_loop .)
-    EQUAL           reduce using rule 47 (exp -> termino exp_loop .)
 
 
-state 110
+state 112
 
     (51) exp_type_loop -> SUBTRACTION . exp
     (47) exp -> . termino exp_loop
@@ -1890,23 +1911,23 @@ state 110
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 138
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 141
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 111
+state 113
 
     (25) regreso -> RETURN exp SEMICOLON .
 
@@ -1918,7 +1939,7 @@ state 111
     RCURLY          reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
 
 
-state 112
+state 114
 
     (56) termino_type_loop -> DIVISION . termino
     (52) termino -> . factor termino_loop
@@ -1934,22 +1955,22 @@ state 112
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 139
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 142
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 113
+state 115
 
     (53) termino_loop -> termino_type_loop .
 
@@ -1974,7 +1995,7 @@ state 113
     RPARENTHESIS    reduce using rule 53 (termino_loop -> termino_type_loop .)
 
 
-state 114
+state 116
 
     (55) termino_type_loop -> MULTIPLICATION . termino
     (52) termino -> . factor termino_loop
@@ -1990,22 +2011,22 @@ state 114
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 140
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 143
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 115
+state 117
 
     (52) termino -> factor termino_loop .
 
@@ -2030,14 +2051,14 @@ state 115
     RPARENTHESIS    reduce using rule 52 (termino -> factor termino_loop .)
 
 
-state 116
+state 118
 
     (82) varcte_arr -> LBRACKET . RBRACKET
 
-    RBRACKET        shift and go to state 141
+    RBRACKET        shift and go to state 144
 
 
-state 117
+state 119
 
     (76) varcte_type -> ID varcte_arr .
 
@@ -2064,66 +2085,72 @@ state 117
     RPARENTHESIS    reduce using rule 76 (varcte_type -> ID varcte_arr .)
 
 
-state 118
+state 120
 
     (90) ciclo -> WHILE LPARENTHESIS expresion . RPARENTHESIS bloque
 
-    RPARENTHESIS    shift and go to state 142
-
-
-state 119
-
-    (89) escritura_type -> QUOTE . CTESTRING QUOTE
-
-    CTESTRING       shift and go to state 143
-
-
-state 120
-
-    (87) escritura -> PRINT LPARENTHESIS escritura_type . RPARENTHESIS SEMICOLON
-
-    RPARENTHESIS    shift and go to state 144
+    RPARENTHESIS    shift and go to state 145
 
 
 state 121
+
+    (89) escritura_type -> QUOTE . CTESTRING QUOTE
+
+    CTESTRING       shift and go to state 146
+
+
+state 122
+
+    (87) escritura -> PRINT LPARENTHESIS escritura_type . RPARENTHESIS SEMICOLON
+
+    RPARENTHESIS    shift and go to state 147
+
+
+state 123
 
     (88) escritura_type -> expresion .
 
     RPARENTHESIS    reduce using rule 88 (escritura_type -> expresion .)
 
 
-state 122
+state 124
 
     (41) asignacion_option -> ASSIGN expresion . SEMICOLON
 
-    SEMICOLON       shift and go to state 145
-
-
-state 123
-
-    (42) asignacion_option -> LBRACKET INT . RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
-
-    RBRACKET        shift and go to state 146
-
-
-state 124
-
-    (84) condicion -> IF LPARENTHESIS expresion . RPARENTHESIS bloque condicion_option
-
-    RPARENTHESIS    shift and go to state 147
+    SEMICOLON       shift and go to state 148
 
 
 state 125
 
-    (95) argumentos -> ID addVarDirFunc COLON tipo . addTypeFunc argumentos_loop
-    (99) addTypeFunc -> .
+    (42) asignacion_option -> LBRACKET INT . RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
 
-    COMA            reduce using rule 99 (addTypeFunc -> .)
-    RPARENTHESIS    reduce using rule 99 (addTypeFunc -> .)
+    RBRACKET        shift and go to state 149
 
-    addTypeFunc                    shift and go to state 148
 
 state 126
+
+    (84) condicion -> IF LPARENTHESIS expresion . RPARENTHESIS bloque condicion_option
+
+    RPARENTHESIS    shift and go to state 150
+
+
+state 127
+
+    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .
+
+    RPARENTHESIS    reduce using rule 95 (argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .)
+
+
+state 128
+
+    (96) argumentos_loop -> COMA . argumentos
+    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+
+    ID              shift and go to state 55
+
+    argumentos                     shift and go to state 151
+
+state 129
 
     (62) expresion_option -> AND . nuevaexp
     (67) nuevaexp -> . exp nuevaexp_type
@@ -2141,24 +2168,24 @@ state 126
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 149
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 152
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 127
+state 130
 
     (63) expresion_option -> OR . nuevaexp
     (67) nuevaexp -> . exp nuevaexp_type
@@ -2176,24 +2203,24 @@ state 127
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 150
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 153
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 128
+state 131
 
     (61) expresion -> nuevaexp expresion_option . expresion_loop
     (65) expresion_loop -> . expresion
@@ -2216,26 +2243,26 @@ state 128
 
     RPARENTHESIS    reduce using rule 66 (expresion_loop -> .)
     SEMICOLON       reduce using rule 66 (expresion_loop -> .)
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    expresion                      shift and go to state 152
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    nuevaexp                       shift and go to state 104
-    termino                        shift and go to state 89
-    exp                            shift and go to state 106
-    factor                         shift and go to state 91
-    expresion_loop                 shift and go to state 151
-    factor_var                     shift and go to state 93
+    expresion                      shift and go to state 155
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    expresion_loop                 shift and go to state 154
+    factor_var                     shift and go to state 96
 
-state 129
+state 132
 
     (60) factor_exp -> LPARENTHESIS expresion RPARENTHESIS .
 
@@ -2262,7 +2289,7 @@ state 129
     EQUAL           reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
 
 
-state 130
+state 133
 
     (72) nuevaexp_type -> NOTEQUAL . exp
     (47) exp -> . termino exp_loop
@@ -2279,23 +2306,23 @@ state 130
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 153
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 156
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 131
+state 134
 
     (71) nuevaexp_type -> GREATEREQUAL . exp
     (47) exp -> . termino exp_loop
@@ -2312,23 +2339,23 @@ state 131
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 154
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 157
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 132
+state 135
 
     (69) nuevaexp_type -> GREATER . exp
     (47) exp -> . termino exp_loop
@@ -2345,23 +2372,23 @@ state 132
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 155
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 158
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 133
+state 136
 
     (68) nuevaexp_type -> LESS . exp
     (47) exp -> . termino exp_loop
@@ -2378,23 +2405,23 @@ state 133
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 156
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 159
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 134
+state 137
 
     (73) nuevaexp_type -> EQUAL . exp
     (47) exp -> . termino exp_loop
@@ -2411,23 +2438,23 @@ state 134
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 157
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 160
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 135
+state 138
 
     (67) nuevaexp -> exp nuevaexp_type .
 
@@ -2440,11 +2467,11 @@ state 135
     CHAR            reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
     STRING          reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
     BOOL            reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
-    RPARENTHESIS    reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
     SEMICOLON       reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    RPARENTHESIS    reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
 
 
-state 136
+state 139
 
     (70) nuevaexp_type -> LESSEQUAL . exp
     (47) exp -> . termino exp_loop
@@ -2461,23 +2488,23 @@ state 136
     (80) varcte_type -> . STRING
     (81) varcte_type -> . BOOL
 
-    LPARENTHESIS    shift and go to state 84
-    ID              shift and go to state 92
-    INT             shift and go to state 82
-    FLOAT           shift and go to state 80
-    CHAR            shift and go to state 86
-    STRING          shift and go to state 87
-    BOOL            shift and go to state 88
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
 
-    varcte                         shift and go to state 81
-    factor_exp                     shift and go to state 83
-    varcte_type                    shift and go to state 85
-    termino                        shift and go to state 89
-    exp                            shift and go to state 158
-    factor                         shift and go to state 91
-    factor_var                     shift and go to state 93
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 161
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
 
-state 137
+state 140
 
     (50) exp_type_loop -> ADDITION exp .
 
@@ -2500,7 +2527,7 @@ state 137
     RPARENTHESIS    reduce using rule 50 (exp_type_loop -> ADDITION exp .)
 
 
-state 138
+state 141
 
     (51) exp_type_loop -> SUBTRACTION exp .
 
@@ -2523,7 +2550,7 @@ state 138
     RPARENTHESIS    reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
 
 
-state 139
+state 142
 
     (56) termino_type_loop -> DIVISION termino .
 
@@ -2548,7 +2575,7 @@ state 139
     RPARENTHESIS    reduce using rule 56 (termino_type_loop -> DIVISION termino .)
 
 
-state 140
+state 143
 
     (55) termino_type_loop -> MULTIPLICATION termino .
 
@@ -2573,7 +2600,7 @@ state 140
     RPARENTHESIS    reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
 
 
-state 141
+state 144
 
     (82) varcte_arr -> LBRACKET RBRACKET .
 
@@ -2600,30 +2627,30 @@ state 141
     RPARENTHESIS    reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
 
 
-state 142
+state 145
 
     (90) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS . bloque
     (9) bloque -> . LCURLY bloque_est_loop RCURLY
 
-    LCURLY          shift and go to state 57
+    LCURLY          shift and go to state 63
 
-    bloque                         shift and go to state 159
+    bloque                         shift and go to state 162
 
-state 143
+state 146
 
     (89) escritura_type -> QUOTE CTESTRING . QUOTE
 
-    QUOTE           shift and go to state 160
+    QUOTE           shift and go to state 163
 
 
-state 144
+state 147
 
     (87) escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 161
+    SEMICOLON       shift and go to state 164
 
 
-state 145
+state 148
 
     (41) asignacion_option -> ASSIGN expresion SEMICOLON .
 
@@ -2635,34 +2662,30 @@ state 145
     RCURLY          reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
 
 
-state 146
+state 149
 
     (42) asignacion_option -> LBRACKET INT RBRACKET . ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
 
-    ASSIGN          shift and go to state 162
+    ASSIGN          shift and go to state 165
 
 
-state 147
+state 150
 
     (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS . bloque condicion_option
     (9) bloque -> . LCURLY bloque_est_loop RCURLY
 
-    LCURLY          shift and go to state 57
+    LCURLY          shift and go to state 63
 
-    bloque                         shift and go to state 163
+    bloque                         shift and go to state 166
 
-state 148
+state 151
 
-    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc . argumentos_loop
-    (96) argumentos_loop -> . COMA argumentos
-    (97) argumentos_loop -> .
+    (96) argumentos_loop -> COMA argumentos .
 
-    COMA            shift and go to state 165
-    RPARENTHESIS    reduce using rule 97 (argumentos_loop -> .)
+    RPARENTHESIS    reduce using rule 96 (argumentos_loop -> COMA argumentos .)
 
-    argumentos_loop                shift and go to state 164
 
-state 149
+state 152
 
     (62) expresion_option -> AND nuevaexp .
 
@@ -2677,7 +2700,7 @@ state 149
     SEMICOLON       reduce using rule 62 (expresion_option -> AND nuevaexp .)
 
 
-state 150
+state 153
 
     (63) expresion_option -> OR nuevaexp .
 
@@ -2692,7 +2715,7 @@ state 150
     SEMICOLON       reduce using rule 63 (expresion_option -> OR nuevaexp .)
 
 
-state 151
+state 154
 
     (61) expresion -> nuevaexp expresion_option expresion_loop .
 
@@ -2700,7 +2723,7 @@ state 151
     SEMICOLON       reduce using rule 61 (expresion -> nuevaexp expresion_option expresion_loop .)
 
 
-state 152
+state 155
 
     (65) expresion_loop -> expresion .
 
@@ -2708,7 +2731,7 @@ state 152
     SEMICOLON       reduce using rule 65 (expresion_loop -> expresion .)
 
 
-state 153
+state 156
 
     (72) nuevaexp_type -> NOTEQUAL exp .
 
@@ -2725,7 +2748,7 @@ state 153
     SEMICOLON       reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
 
 
-state 154
+state 157
 
     (71) nuevaexp_type -> GREATEREQUAL exp .
 
@@ -2742,7 +2765,7 @@ state 154
     SEMICOLON       reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
 
 
-state 155
+state 158
 
     (69) nuevaexp_type -> GREATER exp .
 
@@ -2759,7 +2782,7 @@ state 155
     SEMICOLON       reduce using rule 69 (nuevaexp_type -> GREATER exp .)
 
 
-state 156
+state 159
 
     (68) nuevaexp_type -> LESS exp .
 
@@ -2776,7 +2799,7 @@ state 156
     SEMICOLON       reduce using rule 68 (nuevaexp_type -> LESS exp .)
 
 
-state 157
+state 160
 
     (73) nuevaexp_type -> EQUAL exp .
 
@@ -2793,7 +2816,7 @@ state 157
     SEMICOLON       reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
 
 
-state 158
+state 161
 
     (70) nuevaexp_type -> LESSEQUAL exp .
 
@@ -2810,7 +2833,7 @@ state 158
     SEMICOLON       reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
 
 
-state 159
+state 162
 
     (90) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .
 
@@ -2822,14 +2845,14 @@ state 159
     RCURLY          reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
 
 
-state 160
+state 163
 
     (89) escritura_type -> QUOTE CTESTRING QUOTE .
 
     RPARENTHESIS    reduce using rule 89 (escritura_type -> QUOTE CTESTRING QUOTE .)
 
 
-state 161
+state 164
 
     (87) escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .
 
@@ -2841,20 +2864,20 @@ state 161
     RCURLY          reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
 
 
-state 162
+state 165
 
     (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN . LBRACKET asignacion_type RBRACKET SEMICOLON
 
-    LBRACKET        shift and go to state 166
+    LBRACKET        shift and go to state 167
 
 
-state 163
+state 166
 
     (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque . condicion_option
     (85) condicion_option -> . ELSE bloque
     (86) condicion_option -> .
 
-    ELSE            shift and go to state 167
+    ELSE            shift and go to state 168
     ID              reduce using rule 86 (condicion_option -> .)
     IF              reduce using rule 86 (condicion_option -> .)
     PRINT           reduce using rule 86 (condicion_option -> .)
@@ -2862,25 +2885,9 @@ state 163
     WHILE           reduce using rule 86 (condicion_option -> .)
     RCURLY          reduce using rule 86 (condicion_option -> .)
 
-    condicion_option               shift and go to state 168
+    condicion_option               shift and go to state 169
 
-state 164
-
-    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .
-
-    RPARENTHESIS    reduce using rule 95 (argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .)
-
-
-state 165
-
-    (96) argumentos_loop -> COMA . argumentos
-    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
-
-    ID              shift and go to state 61
-
-    argumentos                     shift and go to state 169
-
-state 166
+state 167
 
     (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET . asignacion_type RBRACKET SEMICOLON
     (43) asignacion_type -> . INT
@@ -2893,16 +2900,16 @@ state 166
 
     asignacion_type                shift and go to state 172
 
-state 167
+state 168
 
     (85) condicion_option -> ELSE . bloque
     (9) bloque -> . LCURLY bloque_est_loop RCURLY
 
-    LCURLY          shift and go to state 57
+    LCURLY          shift and go to state 63
 
     bloque                         shift and go to state 173
 
-state 168
+state 169
 
     (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .
 
@@ -2912,13 +2919,6 @@ state 168
     RETURN          reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
     WHILE           reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
     RCURLY          reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
-
-
-state 169
-
-    (96) argumentos_loop -> COMA argumentos .
-
-    RPARENTHESIS    reduce using rule 96 (argumentos_loop -> COMA argumentos .)
 
 
 state 170
