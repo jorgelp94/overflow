@@ -1,0 +1,3018 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+Rule 2     createProcDir -> <empty>
+Rule 3     addProcDir -> <empty>
+Rule 4     addMainProc -> <empty>
+Rule 5     programa_var_loop -> variable programa_var_loop
+Rule 6     programa_var_loop -> <empty>
+Rule 7     programa_func_loop -> funcion programa_func_loop
+Rule 8     programa_func_loop -> <empty>
+Rule 9     bloque -> LCURLY bloque_est_loop RCURLY
+Rule 10    bloque_est_loop -> estatuto bloque_est_loop
+Rule 11    bloque_est_loop -> <empty>
+Rule 12    tipo -> INTTYPE
+Rule 13    tipo -> FLOATTYPE
+Rule 14    tipo -> CHARTYPE
+Rule 15    tipo -> BOOLTYPE
+Rule 16    tipo -> STRINGTYPE
+Rule 17    tipo -> VOIDTYPE
+Rule 18    subtipo -> INTTYPE
+Rule 19    subtipo -> FLOATTYPE
+Rule 20    estatuto -> asignacion
+Rule 21    estatuto -> condicion
+Rule 22    estatuto -> escritura
+Rule 23    estatuto -> regreso
+Rule 24    estatuto -> ciclo
+Rule 25    regreso -> RETURN exp SEMICOLON
+Rule 26    variable -> VAR createVarDir variable_loop
+Rule 27    createVarDir -> <empty>
+Rule 28    variable_loop -> variable_id_loop SEMICOLON variable_end_loop
+Rule 29    variable_loop -> variable_arr_loop SEMICOLON variable_end_loop
+Rule 30    addType -> <empty>
+Rule 31    variable_id_loop -> variable_id_loop_coma COLON tipo addType
+Rule 32    variable_id_loop_coma -> ID addVarDir
+Rule 33    variable_id_loop_coma -> ID addVarDir COMA variable_id_loop_coma
+Rule 34    variable_arr_loop -> variable_arr_coma COLON subtipo addType
+Rule 35    variable_arr_coma -> ID addVarDir LBRACKET RBRACKET
+Rule 36    variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+Rule 37    addVarDir -> <empty>
+Rule 38    variable_end_loop -> variable_loop
+Rule 39    variable_end_loop -> <empty>
+Rule 40    asignacion -> ID asignacion_option
+Rule 41    asignacion_option -> ASSIGN expresion SEMICOLON
+Rule 42    asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
+Rule 43    asignacion_type -> INT
+Rule 44    asignacion_type -> FLOAT
+Rule 45    asignacion_type -> INT COMA asignacion_type
+Rule 46    asignacion_type -> FLOAT COMA asignacion_type
+Rule 47    exp -> termino exp_loop
+Rule 48    exp_loop -> exp_type_loop
+Rule 49    exp_loop -> <empty>
+Rule 50    exp_type_loop -> ADDITION exp
+Rule 51    exp_type_loop -> SUBTRACTION exp
+Rule 52    termino -> factor termino_loop
+Rule 53    termino_loop -> termino_type_loop
+Rule 54    termino_loop -> <empty>
+Rule 55    termino_type_loop -> MULTIPLICATION termino
+Rule 56    termino_type_loop -> DIVISION termino
+Rule 57    factor -> factor_var
+Rule 58    factor -> factor_exp
+Rule 59    factor_var -> varcte
+Rule 60    factor_exp -> LPARENTHESIS expresion RPARENTHESIS
+Rule 61    expresion -> nuevaexp expresion_option expresion_loop
+Rule 62    expresion_option -> AND nuevaexp
+Rule 63    expresion_option -> OR nuevaexp
+Rule 64    expresion_option -> <empty>
+Rule 65    expresion_loop -> expresion
+Rule 66    expresion_loop -> <empty>
+Rule 67    nuevaexp -> exp nuevaexp_type
+Rule 68    nuevaexp_type -> LESS exp
+Rule 69    nuevaexp_type -> GREATER exp
+Rule 70    nuevaexp_type -> LESSEQUAL exp
+Rule 71    nuevaexp_type -> GREATEREQUAL exp
+Rule 72    nuevaexp_type -> NOTEQUAL exp
+Rule 73    nuevaexp_type -> EQUAL exp
+Rule 74    nuevaexp_type -> <empty>
+Rule 75    varcte -> varcte_type
+Rule 76    varcte_type -> ID varcte_arr
+Rule 77    varcte_type -> INT
+Rule 78    varcte_type -> FLOAT
+Rule 79    varcte_type -> CHAR
+Rule 80    varcte_type -> STRING
+Rule 81    varcte_type -> BOOL
+Rule 82    varcte_arr -> LBRACKET RBRACKET
+Rule 83    varcte_arr -> <empty>
+Rule 84    condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option
+Rule 85    condicion_option -> ELSE bloque
+Rule 86    condicion_option -> <empty>
+Rule 87    escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
+Rule 88    escritura_type -> expresion
+Rule 89    escritura_type -> QUOTE CTESTRING QUOTE
+Rule 90    ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+Rule 91    funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+Rule 92    addProcDirFunc -> <empty>
+Rule 93    funcion_option -> argumentos
+Rule 94    funcion_option -> <empty>
+Rule 95    argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+Rule 96    argumentos_loop -> COMA argumentos
+Rule 97    argumentos_loop -> <empty>
+Rule 98    addVarDirFunc -> <empty>
+Rule 99    addTypeFunc -> <empty>
+
+Terminals, with rules where they appear
+
+ADDITION             : 50
+AND                  : 62
+ASSIGN               : 41 42
+BOOL                 : 81
+BOOLTYPE             : 15
+CHAR                 : 79
+CHARTYPE             : 14
+COLON                : 31 34 95
+COMA                 : 33 36 45 46 96
+CTESTRING            : 89
+DIVISION             : 56
+ELSE                 : 85
+END                  : 1
+EQUAL                : 73
+FLOAT                : 44 46 78
+FLOATTYPE            : 13 19
+FUNC                 : 91
+GREATER              : 69
+GREATEREQUAL         : 71
+ID                   : 1 32 33 35 36 40 76 91 95
+IF                   : 84
+INT                  : 42 43 45 77
+INTTYPE              : 12 18
+LBRACKET             : 35 36 42 42 82
+LCURLY               : 9
+LESS                 : 68
+LESSEQUAL            : 70
+LPARENTHESIS         : 1 60 84 87 90 91
+MAIN                 : 1
+MULTIPLICATION       : 55
+NOTEQUAL             : 72
+OR                   : 63
+PRINT                : 87
+PROGRAM              : 1
+QUOTE                : 89 89
+RBRACKET             : 35 36 42 42 82
+RCURLY               : 9
+RETURN               : 25
+RPARENTHESIS         : 1 60 84 87 90 91
+SEMICOLON            : 1 25 28 29 41 42 87
+STRING               : 80
+STRINGTYPE           : 16
+SUBTRACTION          : 51
+VAR                  : 26
+VOIDTYPE             : 17
+WHILE                : 90
+error                : 
+
+Nonterminals, with rules where they appear
+
+addMainProc          : 1
+addProcDir           : 1
+addProcDirFunc       : 91
+addType              : 31 34
+addTypeFunc          : 95
+addVarDir            : 32 33 35 36
+addVarDirFunc        : 95
+argumentos           : 93 96
+argumentos_loop      : 95
+asignacion           : 20
+asignacion_option    : 40
+asignacion_type      : 42 45 46
+bloque               : 1 84 85 90 91
+bloque_est_loop      : 9 10
+ciclo                : 24
+condicion            : 21
+condicion_option     : 84
+createProcDir        : 1
+createVarDir         : 26
+escritura            : 22
+escritura_type       : 87
+estatuto             : 10
+exp                  : 25 50 51 67 68 69 70 71 72 73
+exp_loop             : 47
+exp_type_loop        : 48
+expresion            : 41 60 65 84 88 90
+expresion_loop       : 61
+expresion_option     : 61
+factor               : 52
+factor_exp           : 58
+factor_var           : 57
+funcion              : 7
+funcion_option       : 91
+nuevaexp             : 61 62 63
+nuevaexp_type        : 67
+programa             : 0
+programa_func_loop   : 1 7
+programa_var_loop    : 1 5
+regreso              : 23
+subtipo              : 34
+termino              : 47 55 56
+termino_loop         : 52
+termino_type_loop    : 53
+tipo                 : 31 91 95
+varcte               : 59
+varcte_arr           : 76
+varcte_type          : 75
+variable             : 5
+variable_arr_coma    : 34 36
+variable_arr_loop    : 29
+variable_end_loop    : 28 29
+variable_id_loop     : 28
+variable_id_loop_coma : 31 33
+variable_loop        : 26 38
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+
+    PROGRAM         shift and go to state 1
+
+    programa                       shift and go to state 2
+
+state 1
+
+    (1) programa -> PROGRAM . createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (2) createProcDir -> .
+
+    ID              reduce using rule 2 (createProcDir -> .)
+
+    createProcDir                  shift and go to state 3
+
+state 2
+
+    (0) S' -> programa .
+
+
+
+state 3
+
+    (1) programa -> PROGRAM createProcDir . ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+
+    ID              shift and go to state 4
+
+
+state 4
+
+    (1) programa -> PROGRAM createProcDir ID . SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+
+    SEMICOLON       shift and go to state 5
+
+
+state 5
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON . programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (5) programa_var_loop -> . variable programa_var_loop
+    (6) programa_var_loop -> .
+    (26) variable -> . VAR createVarDir variable_loop
+
+    INTTYPE         reduce using rule 6 (programa_var_loop -> .)
+    FLOATTYPE       reduce using rule 6 (programa_var_loop -> .)
+    CHARTYPE        reduce using rule 6 (programa_var_loop -> .)
+    BOOLTYPE        reduce using rule 6 (programa_var_loop -> .)
+    STRINGTYPE      reduce using rule 6 (programa_var_loop -> .)
+    VOIDTYPE        reduce using rule 6 (programa_var_loop -> .)
+    MAIN            reduce using rule 6 (programa_var_loop -> .)
+    VAR             shift and go to state 6
+
+    programa_var_loop              shift and go to state 7
+    variable                       shift and go to state 8
+
+state 6
+
+    (26) variable -> VAR . createVarDir variable_loop
+    (27) createVarDir -> .
+
+    ID              reduce using rule 27 (createVarDir -> .)
+
+    createVarDir                   shift and go to state 9
+
+state 7
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop . programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (7) programa_func_loop -> . funcion programa_func_loop
+    (8) programa_func_loop -> .
+    (91) funcion -> . tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+    (12) tipo -> . INTTYPE
+    (13) tipo -> . FLOATTYPE
+    (14) tipo -> . CHARTYPE
+    (15) tipo -> . BOOLTYPE
+    (16) tipo -> . STRINGTYPE
+    (17) tipo -> . VOIDTYPE
+
+    MAIN            reduce using rule 8 (programa_func_loop -> .)
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
+
+    tipo                           shift and go to state 16
+    programa_func_loop             shift and go to state 14
+    funcion                        shift and go to state 11
+
+state 8
+
+    (5) programa_var_loop -> variable . programa_var_loop
+    (5) programa_var_loop -> . variable programa_var_loop
+    (6) programa_var_loop -> .
+    (26) variable -> . VAR createVarDir variable_loop
+
+    INTTYPE         reduce using rule 6 (programa_var_loop -> .)
+    FLOATTYPE       reduce using rule 6 (programa_var_loop -> .)
+    CHARTYPE        reduce using rule 6 (programa_var_loop -> .)
+    BOOLTYPE        reduce using rule 6 (programa_var_loop -> .)
+    STRINGTYPE      reduce using rule 6 (programa_var_loop -> .)
+    VOIDTYPE        reduce using rule 6 (programa_var_loop -> .)
+    MAIN            reduce using rule 6 (programa_var_loop -> .)
+    VAR             shift and go to state 6
+
+    variable                       shift and go to state 8
+    programa_var_loop              shift and go to state 19
+
+state 9
+
+    (26) variable -> VAR createVarDir . variable_loop
+    (28) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
+    (29) variable_loop -> . variable_arr_loop SEMICOLON variable_end_loop
+    (31) variable_id_loop -> . variable_id_loop_coma COLON tipo addType
+    (34) variable_arr_loop -> . variable_arr_coma COLON subtipo addType
+    (32) variable_id_loop_coma -> . ID addVarDir
+    (33) variable_id_loop_coma -> . ID addVarDir COMA variable_id_loop_coma
+    (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+
+    ID              shift and go to state 25
+
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 24
+
+state 10
+
+    (16) tipo -> STRINGTYPE .
+
+    FUNC            reduce using rule 16 (tipo -> STRINGTYPE .)
+    SEMICOLON       reduce using rule 16 (tipo -> STRINGTYPE .)
+    COMA            reduce using rule 16 (tipo -> STRINGTYPE .)
+    RPARENTHESIS    reduce using rule 16 (tipo -> STRINGTYPE .)
+
+
+state 11
+
+    (7) programa_func_loop -> funcion . programa_func_loop
+    (7) programa_func_loop -> . funcion programa_func_loop
+    (8) programa_func_loop -> .
+    (91) funcion -> . tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+    (12) tipo -> . INTTYPE
+    (13) tipo -> . FLOATTYPE
+    (14) tipo -> . CHARTYPE
+    (15) tipo -> . BOOLTYPE
+    (16) tipo -> . STRINGTYPE
+    (17) tipo -> . VOIDTYPE
+
+    MAIN            reduce using rule 8 (programa_func_loop -> .)
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
+
+    tipo                           shift and go to state 16
+    programa_func_loop             shift and go to state 26
+    funcion                        shift and go to state 11
+
+state 12
+
+    (15) tipo -> BOOLTYPE .
+
+    FUNC            reduce using rule 15 (tipo -> BOOLTYPE .)
+    SEMICOLON       reduce using rule 15 (tipo -> BOOLTYPE .)
+    COMA            reduce using rule 15 (tipo -> BOOLTYPE .)
+    RPARENTHESIS    reduce using rule 15 (tipo -> BOOLTYPE .)
+
+
+state 13
+
+    (13) tipo -> FLOATTYPE .
+
+    FUNC            reduce using rule 13 (tipo -> FLOATTYPE .)
+    SEMICOLON       reduce using rule 13 (tipo -> FLOATTYPE .)
+    COMA            reduce using rule 13 (tipo -> FLOATTYPE .)
+    RPARENTHESIS    reduce using rule 13 (tipo -> FLOATTYPE .)
+
+
+state 14
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop . addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (3) addProcDir -> .
+
+    MAIN            reduce using rule 3 (addProcDir -> .)
+
+    addProcDir                     shift and go to state 27
+
+state 15
+
+    (12) tipo -> INTTYPE .
+
+    FUNC            reduce using rule 12 (tipo -> INTTYPE .)
+    SEMICOLON       reduce using rule 12 (tipo -> INTTYPE .)
+    COMA            reduce using rule 12 (tipo -> INTTYPE .)
+    RPARENTHESIS    reduce using rule 12 (tipo -> INTTYPE .)
+
+
+state 16
+
+    (91) funcion -> tipo . FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+
+    FUNC            shift and go to state 28
+
+
+state 17
+
+    (17) tipo -> VOIDTYPE .
+
+    FUNC            reduce using rule 17 (tipo -> VOIDTYPE .)
+    SEMICOLON       reduce using rule 17 (tipo -> VOIDTYPE .)
+    COMA            reduce using rule 17 (tipo -> VOIDTYPE .)
+    RPARENTHESIS    reduce using rule 17 (tipo -> VOIDTYPE .)
+
+
+state 18
+
+    (14) tipo -> CHARTYPE .
+
+    FUNC            reduce using rule 14 (tipo -> CHARTYPE .)
+    SEMICOLON       reduce using rule 14 (tipo -> CHARTYPE .)
+    COMA            reduce using rule 14 (tipo -> CHARTYPE .)
+    RPARENTHESIS    reduce using rule 14 (tipo -> CHARTYPE .)
+
+
+state 19
+
+    (5) programa_var_loop -> variable programa_var_loop .
+
+    INTTYPE         reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    FLOATTYPE       reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    CHARTYPE        reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    BOOLTYPE        reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    STRINGTYPE      reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    VOIDTYPE        reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+    MAIN            reduce using rule 5 (programa_var_loop -> variable programa_var_loop .)
+
+
+state 20
+
+    (29) variable_loop -> variable_arr_loop . SEMICOLON variable_end_loop
+
+    SEMICOLON       shift and go to state 29
+
+
+state 21
+
+    (31) variable_id_loop -> variable_id_loop_coma . COLON tipo addType
+
+    COLON           shift and go to state 30
+
+
+state 22
+
+    (28) variable_loop -> variable_id_loop . SEMICOLON variable_end_loop
+
+    SEMICOLON       shift and go to state 31
+
+
+state 23
+
+    (34) variable_arr_loop -> variable_arr_coma . COLON subtipo addType
+
+    COLON           shift and go to state 32
+
+
+state 24
+
+    (26) variable -> VAR createVarDir variable_loop .
+
+    VAR             reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    INTTYPE         reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    FLOATTYPE       reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    CHARTYPE        reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    BOOLTYPE        reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    STRINGTYPE      reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    VOIDTYPE        reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+    MAIN            reduce using rule 26 (variable -> VAR createVarDir variable_loop .)
+
+
+state 25
+
+    (32) variable_id_loop_coma -> ID . addVarDir
+    (33) variable_id_loop_coma -> ID . addVarDir COMA variable_id_loop_coma
+    (35) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+    (37) addVarDir -> .
+
+    COMA            reduce using rule 37 (addVarDir -> .)
+    LBRACKET        reduce using rule 37 (addVarDir -> .)
+    COLON           reduce using rule 37 (addVarDir -> .)
+
+    addVarDir                      shift and go to state 33
+
+state 26
+
+    (7) programa_func_loop -> funcion programa_func_loop .
+
+    MAIN            reduce using rule 7 (programa_func_loop -> funcion programa_func_loop .)
+
+
+state 27
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir . MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END
+
+    MAIN            shift and go to state 34
+
+
+state 28
+
+    (91) funcion -> tipo FUNC . ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+
+    ID              shift and go to state 35
+
+
+state 29
+
+    (29) variable_loop -> variable_arr_loop SEMICOLON . variable_end_loop
+    (38) variable_end_loop -> . variable_loop
+    (39) variable_end_loop -> .
+    (28) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
+    (29) variable_loop -> . variable_arr_loop SEMICOLON variable_end_loop
+    (31) variable_id_loop -> . variable_id_loop_coma COLON tipo addType
+    (34) variable_arr_loop -> . variable_arr_coma COLON subtipo addType
+    (32) variable_id_loop_coma -> . ID addVarDir
+    (33) variable_id_loop_coma -> . ID addVarDir COMA variable_id_loop_coma
+    (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+
+    VAR             reduce using rule 39 (variable_end_loop -> .)
+    INTTYPE         reduce using rule 39 (variable_end_loop -> .)
+    FLOATTYPE       reduce using rule 39 (variable_end_loop -> .)
+    CHARTYPE        reduce using rule 39 (variable_end_loop -> .)
+    BOOLTYPE        reduce using rule 39 (variable_end_loop -> .)
+    STRINGTYPE      reduce using rule 39 (variable_end_loop -> .)
+    VOIDTYPE        reduce using rule 39 (variable_end_loop -> .)
+    MAIN            reduce using rule 39 (variable_end_loop -> .)
+    ID              shift and go to state 25
+
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_end_loop              shift and go to state 36
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 37
+
+state 30
+
+    (31) variable_id_loop -> variable_id_loop_coma COLON . tipo addType
+    (12) tipo -> . INTTYPE
+    (13) tipo -> . FLOATTYPE
+    (14) tipo -> . CHARTYPE
+    (15) tipo -> . BOOLTYPE
+    (16) tipo -> . STRINGTYPE
+    (17) tipo -> . VOIDTYPE
+
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
+
+    tipo                           shift and go to state 38
+
+state 31
+
+    (28) variable_loop -> variable_id_loop SEMICOLON . variable_end_loop
+    (38) variable_end_loop -> . variable_loop
+    (39) variable_end_loop -> .
+    (28) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
+    (29) variable_loop -> . variable_arr_loop SEMICOLON variable_end_loop
+    (31) variable_id_loop -> . variable_id_loop_coma COLON tipo addType
+    (34) variable_arr_loop -> . variable_arr_coma COLON subtipo addType
+    (32) variable_id_loop_coma -> . ID addVarDir
+    (33) variable_id_loop_coma -> . ID addVarDir COMA variable_id_loop_coma
+    (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+
+    VAR             reduce using rule 39 (variable_end_loop -> .)
+    INTTYPE         reduce using rule 39 (variable_end_loop -> .)
+    FLOATTYPE       reduce using rule 39 (variable_end_loop -> .)
+    CHARTYPE        reduce using rule 39 (variable_end_loop -> .)
+    BOOLTYPE        reduce using rule 39 (variable_end_loop -> .)
+    STRINGTYPE      reduce using rule 39 (variable_end_loop -> .)
+    VOIDTYPE        reduce using rule 39 (variable_end_loop -> .)
+    MAIN            reduce using rule 39 (variable_end_loop -> .)
+    ID              shift and go to state 25
+
+    variable_arr_loop              shift and go to state 20
+    variable_id_loop_coma          shift and go to state 21
+    variable_id_loop               shift and go to state 22
+    variable_end_loop              shift and go to state 39
+    variable_arr_coma              shift and go to state 23
+    variable_loop                  shift and go to state 37
+
+state 32
+
+    (34) variable_arr_loop -> variable_arr_coma COLON . subtipo addType
+    (18) subtipo -> . INTTYPE
+    (19) subtipo -> . FLOATTYPE
+
+    INTTYPE         shift and go to state 40
+    FLOATTYPE       shift and go to state 41
+
+    subtipo                        shift and go to state 42
+
+state 33
+
+    (32) variable_id_loop_coma -> ID addVarDir .
+    (33) variable_id_loop_coma -> ID addVarDir . COMA variable_id_loop_coma
+    (35) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET COMA variable_arr_coma
+
+    COLON           reduce using rule 32 (variable_id_loop_coma -> ID addVarDir .)
+    COMA            shift and go to state 44
+    LBRACKET        shift and go to state 43
+
+
+state 34
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN . addMainProc LPARENTHESIS RPARENTHESIS bloque END
+    (4) addMainProc -> .
+
+    LPARENTHESIS    reduce using rule 4 (addMainProc -> .)
+
+    addMainProc                    shift and go to state 45
+
+state 35
+
+    (91) funcion -> tipo FUNC ID . LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
+
+    LPARENTHESIS    shift and go to state 46
+
+
+state 36
+
+    (29) variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .
+
+    VAR             reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    INTTYPE         reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    FLOATTYPE       reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    CHARTYPE        reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    BOOLTYPE        reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    STRINGTYPE      reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    VOIDTYPE        reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+    MAIN            reduce using rule 29 (variable_loop -> variable_arr_loop SEMICOLON variable_end_loop .)
+
+
+state 37
+
+    (38) variable_end_loop -> variable_loop .
+
+    VAR             reduce using rule 38 (variable_end_loop -> variable_loop .)
+    INTTYPE         reduce using rule 38 (variable_end_loop -> variable_loop .)
+    FLOATTYPE       reduce using rule 38 (variable_end_loop -> variable_loop .)
+    CHARTYPE        reduce using rule 38 (variable_end_loop -> variable_loop .)
+    BOOLTYPE        reduce using rule 38 (variable_end_loop -> variable_loop .)
+    STRINGTYPE      reduce using rule 38 (variable_end_loop -> variable_loop .)
+    VOIDTYPE        reduce using rule 38 (variable_end_loop -> variable_loop .)
+    MAIN            reduce using rule 38 (variable_end_loop -> variable_loop .)
+
+
+state 38
+
+    (31) variable_id_loop -> variable_id_loop_coma COLON tipo . addType
+    (30) addType -> .
+
+    SEMICOLON       reduce using rule 30 (addType -> .)
+
+    addType                        shift and go to state 47
+
+state 39
+
+    (28) variable_loop -> variable_id_loop SEMICOLON variable_end_loop .
+
+    VAR             reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    INTTYPE         reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    FLOATTYPE       reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    CHARTYPE        reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    BOOLTYPE        reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    STRINGTYPE      reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    VOIDTYPE        reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+    MAIN            reduce using rule 28 (variable_loop -> variable_id_loop SEMICOLON variable_end_loop .)
+
+
+state 40
+
+    (18) subtipo -> INTTYPE .
+
+    SEMICOLON       reduce using rule 18 (subtipo -> INTTYPE .)
+
+
+state 41
+
+    (19) subtipo -> FLOATTYPE .
+
+    SEMICOLON       reduce using rule 19 (subtipo -> FLOATTYPE .)
+
+
+state 42
+
+    (34) variable_arr_loop -> variable_arr_coma COLON subtipo . addType
+    (30) addType -> .
+
+    SEMICOLON       reduce using rule 30 (addType -> .)
+
+    addType                        shift and go to state 48
+
+state 43
+
+    (35) variable_arr_coma -> ID addVarDir LBRACKET . RBRACKET
+    (36) variable_arr_coma -> ID addVarDir LBRACKET . RBRACKET COMA variable_arr_coma
+
+    RBRACKET        shift and go to state 49
+
+
+state 44
+
+    (33) variable_id_loop_coma -> ID addVarDir COMA . variable_id_loop_coma
+    (32) variable_id_loop_coma -> . ID addVarDir
+    (33) variable_id_loop_coma -> . ID addVarDir COMA variable_id_loop_coma
+
+    ID              shift and go to state 50
+
+    variable_id_loop_coma          shift and go to state 51
+
+state 45
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc . LPARENTHESIS RPARENTHESIS bloque END
+
+    LPARENTHESIS    shift and go to state 52
+
+
+state 46
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS . funcion_option RPARENTHESIS addProcDirFunc bloque
+    (93) funcion_option -> . argumentos
+    (94) funcion_option -> .
+    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+
+    RPARENTHESIS    reduce using rule 94 (funcion_option -> .)
+    ID              shift and go to state 55
+
+    funcion_option                 shift and go to state 53
+    argumentos                     shift and go to state 54
+
+state 47
+
+    (31) variable_id_loop -> variable_id_loop_coma COLON tipo addType .
+
+    SEMICOLON       reduce using rule 31 (variable_id_loop -> variable_id_loop_coma COLON tipo addType .)
+
+
+state 48
+
+    (34) variable_arr_loop -> variable_arr_coma COLON subtipo addType .
+
+    SEMICOLON       reduce using rule 34 (variable_arr_loop -> variable_arr_coma COLON subtipo addType .)
+
+
+state 49
+
+    (35) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET .
+    (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET . COMA variable_arr_coma
+
+    COLON           reduce using rule 35 (variable_arr_coma -> ID addVarDir LBRACKET RBRACKET .)
+    COMA            shift and go to state 56
+
+
+state 50
+
+    (32) variable_id_loop_coma -> ID . addVarDir
+    (33) variable_id_loop_coma -> ID . addVarDir COMA variable_id_loop_coma
+    (37) addVarDir -> .
+
+    COMA            reduce using rule 37 (addVarDir -> .)
+    COLON           reduce using rule 37 (addVarDir -> .)
+
+    addVarDir                      shift and go to state 57
+
+state 51
+
+    (33) variable_id_loop_coma -> ID addVarDir COMA variable_id_loop_coma .
+
+    COLON           reduce using rule 33 (variable_id_loop_coma -> ID addVarDir COMA variable_id_loop_coma .)
+
+
+state 52
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS . RPARENTHESIS bloque END
+
+    RPARENTHESIS    shift and go to state 58
+
+
+state 53
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option . RPARENTHESIS addProcDirFunc bloque
+
+    RPARENTHESIS    shift and go to state 59
+
+
+state 54
+
+    (93) funcion_option -> argumentos .
+
+    RPARENTHESIS    reduce using rule 93 (funcion_option -> argumentos .)
+
+
+state 55
+
+    (95) argumentos -> ID . addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+    (98) addVarDirFunc -> .
+
+    COLON           reduce using rule 98 (addVarDirFunc -> .)
+
+    addVarDirFunc                  shift and go to state 60
+
+state 56
+
+    (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA . variable_arr_coma
+    (35) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> . ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+
+    ID              shift and go to state 62
+
+    variable_arr_coma              shift and go to state 61
+
+state 57
+
+    (32) variable_id_loop_coma -> ID addVarDir .
+    (33) variable_id_loop_coma -> ID addVarDir . COMA variable_id_loop_coma
+
+    COLON           reduce using rule 32 (variable_id_loop_coma -> ID addVarDir .)
+    COMA            shift and go to state 44
+
+
+state 58
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS . bloque END
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 64
+
+state 59
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS . addProcDirFunc bloque
+    (92) addProcDirFunc -> .
+
+    LCURLY          reduce using rule 92 (addProcDirFunc -> .)
+
+    addProcDirFunc                 shift and go to state 65
+
+state 60
+
+    (95) argumentos -> ID addVarDirFunc . COLON tipo addTypeFunc argumentos_loop
+
+    COLON           shift and go to state 66
+
+
+state 61
+
+    (36) variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .
+
+    COLON           reduce using rule 36 (variable_arr_coma -> ID addVarDir LBRACKET RBRACKET COMA variable_arr_coma .)
+
+
+state 62
+
+    (35) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID . addVarDir LBRACKET RBRACKET COMA variable_arr_coma
+    (37) addVarDir -> .
+
+    LBRACKET        reduce using rule 37 (addVarDir -> .)
+
+    addVarDir                      shift and go to state 67
+
+state 63
+
+    (9) bloque -> LCURLY . bloque_est_loop RCURLY
+    (10) bloque_est_loop -> . estatuto bloque_est_loop
+    (11) bloque_est_loop -> .
+    (20) estatuto -> . asignacion
+    (21) estatuto -> . condicion
+    (22) estatuto -> . escritura
+    (23) estatuto -> . regreso
+    (24) estatuto -> . ciclo
+    (40) asignacion -> . ID asignacion_option
+    (84) condicion -> . IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option
+    (87) escritura -> . PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
+    (25) regreso -> . RETURN exp SEMICOLON
+    (90) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+
+    RCURLY          reduce using rule 11 (bloque_est_loop -> .)
+    ID              shift and go to state 74
+    IF              shift and go to state 75
+    PRINT           shift and go to state 70
+    RETURN          shift and go to state 68
+    WHILE           shift and go to state 69
+
+    regreso                        shift and go to state 76
+    ciclo                          shift and go to state 71
+    asignacion                     shift and go to state 77
+    estatuto                       shift and go to state 72
+    condicion                      shift and go to state 73
+    bloque_est_loop                shift and go to state 78
+    escritura                      shift and go to state 79
+
+state 64
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque . END
+
+    END             shift and go to state 80
+
+
+state 65
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc . bloque
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 81
+
+state 66
+
+    (95) argumentos -> ID addVarDirFunc COLON . tipo addTypeFunc argumentos_loop
+    (12) tipo -> . INTTYPE
+    (13) tipo -> . FLOATTYPE
+    (14) tipo -> . CHARTYPE
+    (15) tipo -> . BOOLTYPE
+    (16) tipo -> . STRINGTYPE
+    (17) tipo -> . VOIDTYPE
+
+    INTTYPE         shift and go to state 15
+    FLOATTYPE       shift and go to state 13
+    CHARTYPE        shift and go to state 18
+    BOOLTYPE        shift and go to state 12
+    STRINGTYPE      shift and go to state 10
+    VOIDTYPE        shift and go to state 17
+
+    tipo                           shift and go to state 82
+
+state 67
+
+    (35) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET
+    (36) variable_arr_coma -> ID addVarDir . LBRACKET RBRACKET COMA variable_arr_coma
+
+    LBRACKET        shift and go to state 43
+
+
+state 68
+
+    (25) regreso -> RETURN . exp SEMICOLON
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 93
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 69
+
+    (90) ciclo -> WHILE . LPARENTHESIS expresion RPARENTHESIS bloque
+
+    LPARENTHESIS    shift and go to state 97
+
+
+state 70
+
+    (87) escritura -> PRINT . LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
+
+    LPARENTHESIS    shift and go to state 98
+
+
+state 71
+
+    (24) estatuto -> ciclo .
+
+    ID              reduce using rule 24 (estatuto -> ciclo .)
+    IF              reduce using rule 24 (estatuto -> ciclo .)
+    PRINT           reduce using rule 24 (estatuto -> ciclo .)
+    RETURN          reduce using rule 24 (estatuto -> ciclo .)
+    WHILE           reduce using rule 24 (estatuto -> ciclo .)
+    RCURLY          reduce using rule 24 (estatuto -> ciclo .)
+
+
+state 72
+
+    (10) bloque_est_loop -> estatuto . bloque_est_loop
+    (10) bloque_est_loop -> . estatuto bloque_est_loop
+    (11) bloque_est_loop -> .
+    (20) estatuto -> . asignacion
+    (21) estatuto -> . condicion
+    (22) estatuto -> . escritura
+    (23) estatuto -> . regreso
+    (24) estatuto -> . ciclo
+    (40) asignacion -> . ID asignacion_option
+    (84) condicion -> . IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option
+    (87) escritura -> . PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
+    (25) regreso -> . RETURN exp SEMICOLON
+    (90) ciclo -> . WHILE LPARENTHESIS expresion RPARENTHESIS bloque
+
+    RCURLY          reduce using rule 11 (bloque_est_loop -> .)
+    ID              shift and go to state 74
+    IF              shift and go to state 75
+    PRINT           shift and go to state 70
+    RETURN          shift and go to state 68
+    WHILE           shift and go to state 69
+
+    regreso                        shift and go to state 76
+    ciclo                          shift and go to state 71
+    asignacion                     shift and go to state 77
+    estatuto                       shift and go to state 72
+    condicion                      shift and go to state 73
+    bloque_est_loop                shift and go to state 99
+    escritura                      shift and go to state 79
+
+state 73
+
+    (21) estatuto -> condicion .
+
+    ID              reduce using rule 21 (estatuto -> condicion .)
+    IF              reduce using rule 21 (estatuto -> condicion .)
+    PRINT           reduce using rule 21 (estatuto -> condicion .)
+    RETURN          reduce using rule 21 (estatuto -> condicion .)
+    WHILE           reduce using rule 21 (estatuto -> condicion .)
+    RCURLY          reduce using rule 21 (estatuto -> condicion .)
+
+
+state 74
+
+    (40) asignacion -> ID . asignacion_option
+    (41) asignacion_option -> . ASSIGN expresion SEMICOLON
+    (42) asignacion_option -> . LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
+
+    ASSIGN          shift and go to state 101
+    LBRACKET        shift and go to state 102
+
+    asignacion_option              shift and go to state 100
+
+state 75
+
+    (84) condicion -> IF . LPARENTHESIS expresion RPARENTHESIS bloque condicion_option
+
+    LPARENTHESIS    shift and go to state 103
+
+
+state 76
+
+    (23) estatuto -> regreso .
+
+    ID              reduce using rule 23 (estatuto -> regreso .)
+    IF              reduce using rule 23 (estatuto -> regreso .)
+    PRINT           reduce using rule 23 (estatuto -> regreso .)
+    RETURN          reduce using rule 23 (estatuto -> regreso .)
+    WHILE           reduce using rule 23 (estatuto -> regreso .)
+    RCURLY          reduce using rule 23 (estatuto -> regreso .)
+
+
+state 77
+
+    (20) estatuto -> asignacion .
+
+    ID              reduce using rule 20 (estatuto -> asignacion .)
+    IF              reduce using rule 20 (estatuto -> asignacion .)
+    PRINT           reduce using rule 20 (estatuto -> asignacion .)
+    RETURN          reduce using rule 20 (estatuto -> asignacion .)
+    WHILE           reduce using rule 20 (estatuto -> asignacion .)
+    RCURLY          reduce using rule 20 (estatuto -> asignacion .)
+
+
+state 78
+
+    (9) bloque -> LCURLY bloque_est_loop . RCURLY
+
+    RCURLY          shift and go to state 104
+
+
+state 79
+
+    (22) estatuto -> escritura .
+
+    ID              reduce using rule 22 (estatuto -> escritura .)
+    IF              reduce using rule 22 (estatuto -> escritura .)
+    PRINT           reduce using rule 22 (estatuto -> escritura .)
+    RETURN          reduce using rule 22 (estatuto -> escritura .)
+    WHILE           reduce using rule 22 (estatuto -> escritura .)
+    RCURLY          reduce using rule 22 (estatuto -> escritura .)
+
+
+state 80
+
+    (1) programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .
+
+    $end            reduce using rule 1 (programa -> PROGRAM createProcDir ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END .)
+
+
+state 81
+
+    (91) funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .
+
+    INTTYPE         reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    FLOATTYPE       reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    CHARTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    BOOLTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    STRINGTYPE      reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    VOIDTYPE        reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+    MAIN            reduce using rule 91 (funcion -> tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque .)
+
+
+state 82
+
+    (95) argumentos -> ID addVarDirFunc COLON tipo . addTypeFunc argumentos_loop
+    (99) addTypeFunc -> .
+
+    COMA            reduce using rule 99 (addTypeFunc -> .)
+    RPARENTHESIS    reduce using rule 99 (addTypeFunc -> .)
+
+    addTypeFunc                    shift and go to state 105
+
+state 83
+
+    (78) varcte_type -> FLOAT .
+
+    MULTIPLICATION  reduce using rule 78 (varcte_type -> FLOAT .)
+    DIVISION        reduce using rule 78 (varcte_type -> FLOAT .)
+    ADDITION        reduce using rule 78 (varcte_type -> FLOAT .)
+    SUBTRACTION     reduce using rule 78 (varcte_type -> FLOAT .)
+    SEMICOLON       reduce using rule 78 (varcte_type -> FLOAT .)
+    LESS            reduce using rule 78 (varcte_type -> FLOAT .)
+    GREATER         reduce using rule 78 (varcte_type -> FLOAT .)
+    LESSEQUAL       reduce using rule 78 (varcte_type -> FLOAT .)
+    GREATEREQUAL    reduce using rule 78 (varcte_type -> FLOAT .)
+    NOTEQUAL        reduce using rule 78 (varcte_type -> FLOAT .)
+    EQUAL           reduce using rule 78 (varcte_type -> FLOAT .)
+    AND             reduce using rule 78 (varcte_type -> FLOAT .)
+    OR              reduce using rule 78 (varcte_type -> FLOAT .)
+    LPARENTHESIS    reduce using rule 78 (varcte_type -> FLOAT .)
+    ID              reduce using rule 78 (varcte_type -> FLOAT .)
+    INT             reduce using rule 78 (varcte_type -> FLOAT .)
+    FLOAT           reduce using rule 78 (varcte_type -> FLOAT .)
+    CHAR            reduce using rule 78 (varcte_type -> FLOAT .)
+    STRING          reduce using rule 78 (varcte_type -> FLOAT .)
+    BOOL            reduce using rule 78 (varcte_type -> FLOAT .)
+    RPARENTHESIS    reduce using rule 78 (varcte_type -> FLOAT .)
+
+
+state 84
+
+    (59) factor_var -> varcte .
+
+    MULTIPLICATION  reduce using rule 59 (factor_var -> varcte .)
+    DIVISION        reduce using rule 59 (factor_var -> varcte .)
+    ADDITION        reduce using rule 59 (factor_var -> varcte .)
+    SUBTRACTION     reduce using rule 59 (factor_var -> varcte .)
+    SEMICOLON       reduce using rule 59 (factor_var -> varcte .)
+    LESS            reduce using rule 59 (factor_var -> varcte .)
+    GREATER         reduce using rule 59 (factor_var -> varcte .)
+    LESSEQUAL       reduce using rule 59 (factor_var -> varcte .)
+    GREATEREQUAL    reduce using rule 59 (factor_var -> varcte .)
+    NOTEQUAL        reduce using rule 59 (factor_var -> varcte .)
+    EQUAL           reduce using rule 59 (factor_var -> varcte .)
+    AND             reduce using rule 59 (factor_var -> varcte .)
+    OR              reduce using rule 59 (factor_var -> varcte .)
+    LPARENTHESIS    reduce using rule 59 (factor_var -> varcte .)
+    ID              reduce using rule 59 (factor_var -> varcte .)
+    INT             reduce using rule 59 (factor_var -> varcte .)
+    FLOAT           reduce using rule 59 (factor_var -> varcte .)
+    CHAR            reduce using rule 59 (factor_var -> varcte .)
+    STRING          reduce using rule 59 (factor_var -> varcte .)
+    BOOL            reduce using rule 59 (factor_var -> varcte .)
+    RPARENTHESIS    reduce using rule 59 (factor_var -> varcte .)
+
+
+state 85
+
+    (77) varcte_type -> INT .
+
+    MULTIPLICATION  reduce using rule 77 (varcte_type -> INT .)
+    DIVISION        reduce using rule 77 (varcte_type -> INT .)
+    ADDITION        reduce using rule 77 (varcte_type -> INT .)
+    SUBTRACTION     reduce using rule 77 (varcte_type -> INT .)
+    SEMICOLON       reduce using rule 77 (varcte_type -> INT .)
+    LESS            reduce using rule 77 (varcte_type -> INT .)
+    GREATER         reduce using rule 77 (varcte_type -> INT .)
+    LESSEQUAL       reduce using rule 77 (varcte_type -> INT .)
+    GREATEREQUAL    reduce using rule 77 (varcte_type -> INT .)
+    NOTEQUAL        reduce using rule 77 (varcte_type -> INT .)
+    EQUAL           reduce using rule 77 (varcte_type -> INT .)
+    AND             reduce using rule 77 (varcte_type -> INT .)
+    OR              reduce using rule 77 (varcte_type -> INT .)
+    LPARENTHESIS    reduce using rule 77 (varcte_type -> INT .)
+    ID              reduce using rule 77 (varcte_type -> INT .)
+    INT             reduce using rule 77 (varcte_type -> INT .)
+    FLOAT           reduce using rule 77 (varcte_type -> INT .)
+    CHAR            reduce using rule 77 (varcte_type -> INT .)
+    STRING          reduce using rule 77 (varcte_type -> INT .)
+    BOOL            reduce using rule 77 (varcte_type -> INT .)
+    RPARENTHESIS    reduce using rule 77 (varcte_type -> INT .)
+
+
+state 86
+
+    (58) factor -> factor_exp .
+
+    MULTIPLICATION  reduce using rule 58 (factor -> factor_exp .)
+    DIVISION        reduce using rule 58 (factor -> factor_exp .)
+    ADDITION        reduce using rule 58 (factor -> factor_exp .)
+    SUBTRACTION     reduce using rule 58 (factor -> factor_exp .)
+    LESS            reduce using rule 58 (factor -> factor_exp .)
+    GREATER         reduce using rule 58 (factor -> factor_exp .)
+    LESSEQUAL       reduce using rule 58 (factor -> factor_exp .)
+    GREATEREQUAL    reduce using rule 58 (factor -> factor_exp .)
+    NOTEQUAL        reduce using rule 58 (factor -> factor_exp .)
+    EQUAL           reduce using rule 58 (factor -> factor_exp .)
+    AND             reduce using rule 58 (factor -> factor_exp .)
+    OR              reduce using rule 58 (factor -> factor_exp .)
+    LPARENTHESIS    reduce using rule 58 (factor -> factor_exp .)
+    ID              reduce using rule 58 (factor -> factor_exp .)
+    INT             reduce using rule 58 (factor -> factor_exp .)
+    FLOAT           reduce using rule 58 (factor -> factor_exp .)
+    CHAR            reduce using rule 58 (factor -> factor_exp .)
+    STRING          reduce using rule 58 (factor -> factor_exp .)
+    BOOL            reduce using rule 58 (factor -> factor_exp .)
+    SEMICOLON       reduce using rule 58 (factor -> factor_exp .)
+    RPARENTHESIS    reduce using rule 58 (factor -> factor_exp .)
+
+
+state 87
+
+    (60) factor_exp -> LPARENTHESIS . expresion RPARENTHESIS
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 107
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 88
+
+    (75) varcte -> varcte_type .
+
+    MULTIPLICATION  reduce using rule 75 (varcte -> varcte_type .)
+    DIVISION        reduce using rule 75 (varcte -> varcte_type .)
+    ADDITION        reduce using rule 75 (varcte -> varcte_type .)
+    SUBTRACTION     reduce using rule 75 (varcte -> varcte_type .)
+    SEMICOLON       reduce using rule 75 (varcte -> varcte_type .)
+    LESS            reduce using rule 75 (varcte -> varcte_type .)
+    GREATER         reduce using rule 75 (varcte -> varcte_type .)
+    LESSEQUAL       reduce using rule 75 (varcte -> varcte_type .)
+    GREATEREQUAL    reduce using rule 75 (varcte -> varcte_type .)
+    NOTEQUAL        reduce using rule 75 (varcte -> varcte_type .)
+    EQUAL           reduce using rule 75 (varcte -> varcte_type .)
+    LPARENTHESIS    reduce using rule 75 (varcte -> varcte_type .)
+    ID              reduce using rule 75 (varcte -> varcte_type .)
+    INT             reduce using rule 75 (varcte -> varcte_type .)
+    FLOAT           reduce using rule 75 (varcte -> varcte_type .)
+    CHAR            reduce using rule 75 (varcte -> varcte_type .)
+    STRING          reduce using rule 75 (varcte -> varcte_type .)
+    BOOL            reduce using rule 75 (varcte -> varcte_type .)
+    RPARENTHESIS    reduce using rule 75 (varcte -> varcte_type .)
+    AND             reduce using rule 75 (varcte -> varcte_type .)
+    OR              reduce using rule 75 (varcte -> varcte_type .)
+
+
+state 89
+
+    (79) varcte_type -> CHAR .
+
+    MULTIPLICATION  reduce using rule 79 (varcte_type -> CHAR .)
+    DIVISION        reduce using rule 79 (varcte_type -> CHAR .)
+    ADDITION        reduce using rule 79 (varcte_type -> CHAR .)
+    SUBTRACTION     reduce using rule 79 (varcte_type -> CHAR .)
+    SEMICOLON       reduce using rule 79 (varcte_type -> CHAR .)
+    LESS            reduce using rule 79 (varcte_type -> CHAR .)
+    GREATER         reduce using rule 79 (varcte_type -> CHAR .)
+    LESSEQUAL       reduce using rule 79 (varcte_type -> CHAR .)
+    GREATEREQUAL    reduce using rule 79 (varcte_type -> CHAR .)
+    NOTEQUAL        reduce using rule 79 (varcte_type -> CHAR .)
+    EQUAL           reduce using rule 79 (varcte_type -> CHAR .)
+    AND             reduce using rule 79 (varcte_type -> CHAR .)
+    OR              reduce using rule 79 (varcte_type -> CHAR .)
+    LPARENTHESIS    reduce using rule 79 (varcte_type -> CHAR .)
+    ID              reduce using rule 79 (varcte_type -> CHAR .)
+    INT             reduce using rule 79 (varcte_type -> CHAR .)
+    FLOAT           reduce using rule 79 (varcte_type -> CHAR .)
+    CHAR            reduce using rule 79 (varcte_type -> CHAR .)
+    STRING          reduce using rule 79 (varcte_type -> CHAR .)
+    BOOL            reduce using rule 79 (varcte_type -> CHAR .)
+    RPARENTHESIS    reduce using rule 79 (varcte_type -> CHAR .)
+
+
+state 90
+
+    (80) varcte_type -> STRING .
+
+    MULTIPLICATION  reduce using rule 80 (varcte_type -> STRING .)
+    DIVISION        reduce using rule 80 (varcte_type -> STRING .)
+    ADDITION        reduce using rule 80 (varcte_type -> STRING .)
+    SUBTRACTION     reduce using rule 80 (varcte_type -> STRING .)
+    SEMICOLON       reduce using rule 80 (varcte_type -> STRING .)
+    LESS            reduce using rule 80 (varcte_type -> STRING .)
+    GREATER         reduce using rule 80 (varcte_type -> STRING .)
+    LESSEQUAL       reduce using rule 80 (varcte_type -> STRING .)
+    GREATEREQUAL    reduce using rule 80 (varcte_type -> STRING .)
+    NOTEQUAL        reduce using rule 80 (varcte_type -> STRING .)
+    EQUAL           reduce using rule 80 (varcte_type -> STRING .)
+    AND             reduce using rule 80 (varcte_type -> STRING .)
+    OR              reduce using rule 80 (varcte_type -> STRING .)
+    LPARENTHESIS    reduce using rule 80 (varcte_type -> STRING .)
+    ID              reduce using rule 80 (varcte_type -> STRING .)
+    INT             reduce using rule 80 (varcte_type -> STRING .)
+    FLOAT           reduce using rule 80 (varcte_type -> STRING .)
+    CHAR            reduce using rule 80 (varcte_type -> STRING .)
+    STRING          reduce using rule 80 (varcte_type -> STRING .)
+    BOOL            reduce using rule 80 (varcte_type -> STRING .)
+    RPARENTHESIS    reduce using rule 80 (varcte_type -> STRING .)
+
+
+state 91
+
+    (81) varcte_type -> BOOL .
+
+    MULTIPLICATION  reduce using rule 81 (varcte_type -> BOOL .)
+    DIVISION        reduce using rule 81 (varcte_type -> BOOL .)
+    ADDITION        reduce using rule 81 (varcte_type -> BOOL .)
+    SUBTRACTION     reduce using rule 81 (varcte_type -> BOOL .)
+    SEMICOLON       reduce using rule 81 (varcte_type -> BOOL .)
+    LESS            reduce using rule 81 (varcte_type -> BOOL .)
+    GREATER         reduce using rule 81 (varcte_type -> BOOL .)
+    LESSEQUAL       reduce using rule 81 (varcte_type -> BOOL .)
+    GREATEREQUAL    reduce using rule 81 (varcte_type -> BOOL .)
+    NOTEQUAL        reduce using rule 81 (varcte_type -> BOOL .)
+    EQUAL           reduce using rule 81 (varcte_type -> BOOL .)
+    AND             reduce using rule 81 (varcte_type -> BOOL .)
+    OR              reduce using rule 81 (varcte_type -> BOOL .)
+    LPARENTHESIS    reduce using rule 81 (varcte_type -> BOOL .)
+    ID              reduce using rule 81 (varcte_type -> BOOL .)
+    INT             reduce using rule 81 (varcte_type -> BOOL .)
+    FLOAT           reduce using rule 81 (varcte_type -> BOOL .)
+    CHAR            reduce using rule 81 (varcte_type -> BOOL .)
+    STRING          reduce using rule 81 (varcte_type -> BOOL .)
+    BOOL            reduce using rule 81 (varcte_type -> BOOL .)
+    RPARENTHESIS    reduce using rule 81 (varcte_type -> BOOL .)
+
+
+state 92
+
+    (47) exp -> termino . exp_loop
+    (48) exp_loop -> . exp_type_loop
+    (49) exp_loop -> .
+    (50) exp_type_loop -> . ADDITION exp
+    (51) exp_type_loop -> . SUBTRACTION exp
+
+    SEMICOLON       reduce using rule 49 (exp_loop -> .)
+    LESS            reduce using rule 49 (exp_loop -> .)
+    GREATER         reduce using rule 49 (exp_loop -> .)
+    LESSEQUAL       reduce using rule 49 (exp_loop -> .)
+    GREATEREQUAL    reduce using rule 49 (exp_loop -> .)
+    NOTEQUAL        reduce using rule 49 (exp_loop -> .)
+    EQUAL           reduce using rule 49 (exp_loop -> .)
+    AND             reduce using rule 49 (exp_loop -> .)
+    OR              reduce using rule 49 (exp_loop -> .)
+    LPARENTHESIS    reduce using rule 49 (exp_loop -> .)
+    ID              reduce using rule 49 (exp_loop -> .)
+    INT             reduce using rule 49 (exp_loop -> .)
+    FLOAT           reduce using rule 49 (exp_loop -> .)
+    CHAR            reduce using rule 49 (exp_loop -> .)
+    STRING          reduce using rule 49 (exp_loop -> .)
+    BOOL            reduce using rule 49 (exp_loop -> .)
+    RPARENTHESIS    reduce using rule 49 (exp_loop -> .)
+    ADDITION        shift and go to state 110
+    SUBTRACTION     shift and go to state 112
+
+    exp_loop                       shift and go to state 111
+    exp_type_loop                  shift and go to state 109
+
+state 93
+
+    (25) regreso -> RETURN exp . SEMICOLON
+
+    SEMICOLON       shift and go to state 113
+
+
+state 94
+
+    (52) termino -> factor . termino_loop
+    (53) termino_loop -> . termino_type_loop
+    (54) termino_loop -> .
+    (55) termino_type_loop -> . MULTIPLICATION termino
+    (56) termino_type_loop -> . DIVISION termino
+
+    ADDITION        reduce using rule 54 (termino_loop -> .)
+    SUBTRACTION     reduce using rule 54 (termino_loop -> .)
+    SEMICOLON       reduce using rule 54 (termino_loop -> .)
+    LESS            reduce using rule 54 (termino_loop -> .)
+    GREATER         reduce using rule 54 (termino_loop -> .)
+    LESSEQUAL       reduce using rule 54 (termino_loop -> .)
+    GREATEREQUAL    reduce using rule 54 (termino_loop -> .)
+    NOTEQUAL        reduce using rule 54 (termino_loop -> .)
+    EQUAL           reduce using rule 54 (termino_loop -> .)
+    AND             reduce using rule 54 (termino_loop -> .)
+    OR              reduce using rule 54 (termino_loop -> .)
+    LPARENTHESIS    reduce using rule 54 (termino_loop -> .)
+    ID              reduce using rule 54 (termino_loop -> .)
+    INT             reduce using rule 54 (termino_loop -> .)
+    FLOAT           reduce using rule 54 (termino_loop -> .)
+    CHAR            reduce using rule 54 (termino_loop -> .)
+    STRING          reduce using rule 54 (termino_loop -> .)
+    BOOL            reduce using rule 54 (termino_loop -> .)
+    RPARENTHESIS    reduce using rule 54 (termino_loop -> .)
+    MULTIPLICATION  shift and go to state 116
+    DIVISION        shift and go to state 114
+
+    termino_type_loop              shift and go to state 115
+    termino_loop                   shift and go to state 117
+
+state 95
+
+    (76) varcte_type -> ID . varcte_arr
+    (82) varcte_arr -> . LBRACKET RBRACKET
+    (83) varcte_arr -> .
+
+    LBRACKET        shift and go to state 118
+    MULTIPLICATION  reduce using rule 83 (varcte_arr -> .)
+    DIVISION        reduce using rule 83 (varcte_arr -> .)
+    ADDITION        reduce using rule 83 (varcte_arr -> .)
+    SUBTRACTION     reduce using rule 83 (varcte_arr -> .)
+    SEMICOLON       reduce using rule 83 (varcte_arr -> .)
+    LESS            reduce using rule 83 (varcte_arr -> .)
+    GREATER         reduce using rule 83 (varcte_arr -> .)
+    LESSEQUAL       reduce using rule 83 (varcte_arr -> .)
+    GREATEREQUAL    reduce using rule 83 (varcte_arr -> .)
+    NOTEQUAL        reduce using rule 83 (varcte_arr -> .)
+    EQUAL           reduce using rule 83 (varcte_arr -> .)
+    AND             reduce using rule 83 (varcte_arr -> .)
+    OR              reduce using rule 83 (varcte_arr -> .)
+    LPARENTHESIS    reduce using rule 83 (varcte_arr -> .)
+    ID              reduce using rule 83 (varcte_arr -> .)
+    INT             reduce using rule 83 (varcte_arr -> .)
+    FLOAT           reduce using rule 83 (varcte_arr -> .)
+    CHAR            reduce using rule 83 (varcte_arr -> .)
+    STRING          reduce using rule 83 (varcte_arr -> .)
+    BOOL            reduce using rule 83 (varcte_arr -> .)
+    RPARENTHESIS    reduce using rule 83 (varcte_arr -> .)
+
+    varcte_arr                     shift and go to state 119
+
+state 96
+
+    (57) factor -> factor_var .
+
+    MULTIPLICATION  reduce using rule 57 (factor -> factor_var .)
+    DIVISION        reduce using rule 57 (factor -> factor_var .)
+    ADDITION        reduce using rule 57 (factor -> factor_var .)
+    SUBTRACTION     reduce using rule 57 (factor -> factor_var .)
+    LESS            reduce using rule 57 (factor -> factor_var .)
+    GREATER         reduce using rule 57 (factor -> factor_var .)
+    LESSEQUAL       reduce using rule 57 (factor -> factor_var .)
+    GREATEREQUAL    reduce using rule 57 (factor -> factor_var .)
+    NOTEQUAL        reduce using rule 57 (factor -> factor_var .)
+    EQUAL           reduce using rule 57 (factor -> factor_var .)
+    AND             reduce using rule 57 (factor -> factor_var .)
+    OR              reduce using rule 57 (factor -> factor_var .)
+    LPARENTHESIS    reduce using rule 57 (factor -> factor_var .)
+    ID              reduce using rule 57 (factor -> factor_var .)
+    INT             reduce using rule 57 (factor -> factor_var .)
+    FLOAT           reduce using rule 57 (factor -> factor_var .)
+    CHAR            reduce using rule 57 (factor -> factor_var .)
+    STRING          reduce using rule 57 (factor -> factor_var .)
+    BOOL            reduce using rule 57 (factor -> factor_var .)
+    SEMICOLON       reduce using rule 57 (factor -> factor_var .)
+    RPARENTHESIS    reduce using rule 57 (factor -> factor_var .)
+
+
+state 97
+
+    (90) ciclo -> WHILE LPARENTHESIS . expresion RPARENTHESIS bloque
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 120
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 98
+
+    (87) escritura -> PRINT LPARENTHESIS . escritura_type RPARENTHESIS SEMICOLON
+    (88) escritura_type -> . expresion
+    (89) escritura_type -> . QUOTE CTESTRING QUOTE
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    QUOTE           shift and go to state 121
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 123
+    factor_exp                     shift and go to state 86
+    varcte                         shift and go to state 84
+    escritura_type                 shift and go to state 122
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 99
+
+    (10) bloque_est_loop -> estatuto bloque_est_loop .
+
+    RCURLY          reduce using rule 10 (bloque_est_loop -> estatuto bloque_est_loop .)
+
+
+state 100
+
+    (40) asignacion -> ID asignacion_option .
+
+    ID              reduce using rule 40 (asignacion -> ID asignacion_option .)
+    IF              reduce using rule 40 (asignacion -> ID asignacion_option .)
+    PRINT           reduce using rule 40 (asignacion -> ID asignacion_option .)
+    RETURN          reduce using rule 40 (asignacion -> ID asignacion_option .)
+    WHILE           reduce using rule 40 (asignacion -> ID asignacion_option .)
+    RCURLY          reduce using rule 40 (asignacion -> ID asignacion_option .)
+
+
+state 101
+
+    (41) asignacion_option -> ASSIGN . expresion SEMICOLON
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 124
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 102
+
+    (42) asignacion_option -> LBRACKET . INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
+
+    INT             shift and go to state 125
+
+
+state 103
+
+    (84) condicion -> IF LPARENTHESIS . expresion RPARENTHESIS bloque condicion_option
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 126
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 104
+
+    (9) bloque -> LCURLY bloque_est_loop RCURLY .
+
+    ELSE            reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    ID              reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    IF              reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    PRINT           reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    RETURN          reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    WHILE           reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    RCURLY          reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    END             reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    INTTYPE         reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    FLOATTYPE       reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    CHARTYPE        reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    BOOLTYPE        reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    STRINGTYPE      reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    VOIDTYPE        reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+    MAIN            reduce using rule 9 (bloque -> LCURLY bloque_est_loop RCURLY .)
+
+
+state 105
+
+    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc . argumentos_loop
+    (96) argumentos_loop -> . COMA argumentos
+    (97) argumentos_loop -> .
+
+    COMA            shift and go to state 128
+    RPARENTHESIS    reduce using rule 97 (argumentos_loop -> .)
+
+    argumentos_loop                shift and go to state 127
+
+state 106
+
+    (61) expresion -> nuevaexp . expresion_option expresion_loop
+    (62) expresion_option -> . AND nuevaexp
+    (63) expresion_option -> . OR nuevaexp
+    (64) expresion_option -> .
+
+    AND             shift and go to state 129
+    OR              shift and go to state 130
+    LPARENTHESIS    reduce using rule 64 (expresion_option -> .)
+    ID              reduce using rule 64 (expresion_option -> .)
+    INT             reduce using rule 64 (expresion_option -> .)
+    FLOAT           reduce using rule 64 (expresion_option -> .)
+    CHAR            reduce using rule 64 (expresion_option -> .)
+    STRING          reduce using rule 64 (expresion_option -> .)
+    BOOL            reduce using rule 64 (expresion_option -> .)
+    RPARENTHESIS    reduce using rule 64 (expresion_option -> .)
+    SEMICOLON       reduce using rule 64 (expresion_option -> .)
+
+    expresion_option               shift and go to state 131
+
+state 107
+
+    (60) factor_exp -> LPARENTHESIS expresion . RPARENTHESIS
+
+    RPARENTHESIS    shift and go to state 132
+
+
+state 108
+
+    (67) nuevaexp -> exp . nuevaexp_type
+    (68) nuevaexp_type -> . LESS exp
+    (69) nuevaexp_type -> . GREATER exp
+    (70) nuevaexp_type -> . LESSEQUAL exp
+    (71) nuevaexp_type -> . GREATEREQUAL exp
+    (72) nuevaexp_type -> . NOTEQUAL exp
+    (73) nuevaexp_type -> . EQUAL exp
+    (74) nuevaexp_type -> .
+
+    LESS            shift and go to state 136
+    GREATER         shift and go to state 135
+    LESSEQUAL       shift and go to state 139
+    GREATEREQUAL    shift and go to state 134
+    NOTEQUAL        shift and go to state 133
+    EQUAL           shift and go to state 137
+    AND             reduce using rule 74 (nuevaexp_type -> .)
+    OR              reduce using rule 74 (nuevaexp_type -> .)
+    LPARENTHESIS    reduce using rule 74 (nuevaexp_type -> .)
+    ID              reduce using rule 74 (nuevaexp_type -> .)
+    INT             reduce using rule 74 (nuevaexp_type -> .)
+    FLOAT           reduce using rule 74 (nuevaexp_type -> .)
+    CHAR            reduce using rule 74 (nuevaexp_type -> .)
+    STRING          reduce using rule 74 (nuevaexp_type -> .)
+    BOOL            reduce using rule 74 (nuevaexp_type -> .)
+    RPARENTHESIS    reduce using rule 74 (nuevaexp_type -> .)
+    SEMICOLON       reduce using rule 74 (nuevaexp_type -> .)
+
+    nuevaexp_type                  shift and go to state 138
+
+state 109
+
+    (48) exp_loop -> exp_type_loop .
+
+    SEMICOLON       reduce using rule 48 (exp_loop -> exp_type_loop .)
+    LESS            reduce using rule 48 (exp_loop -> exp_type_loop .)
+    GREATER         reduce using rule 48 (exp_loop -> exp_type_loop .)
+    LESSEQUAL       reduce using rule 48 (exp_loop -> exp_type_loop .)
+    GREATEREQUAL    reduce using rule 48 (exp_loop -> exp_type_loop .)
+    NOTEQUAL        reduce using rule 48 (exp_loop -> exp_type_loop .)
+    EQUAL           reduce using rule 48 (exp_loop -> exp_type_loop .)
+    AND             reduce using rule 48 (exp_loop -> exp_type_loop .)
+    OR              reduce using rule 48 (exp_loop -> exp_type_loop .)
+    LPARENTHESIS    reduce using rule 48 (exp_loop -> exp_type_loop .)
+    ID              reduce using rule 48 (exp_loop -> exp_type_loop .)
+    INT             reduce using rule 48 (exp_loop -> exp_type_loop .)
+    FLOAT           reduce using rule 48 (exp_loop -> exp_type_loop .)
+    CHAR            reduce using rule 48 (exp_loop -> exp_type_loop .)
+    STRING          reduce using rule 48 (exp_loop -> exp_type_loop .)
+    BOOL            reduce using rule 48 (exp_loop -> exp_type_loop .)
+    RPARENTHESIS    reduce using rule 48 (exp_loop -> exp_type_loop .)
+
+
+state 110
+
+    (50) exp_type_loop -> ADDITION . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 140
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 111
+
+    (47) exp -> termino exp_loop .
+
+    LESS            reduce using rule 47 (exp -> termino exp_loop .)
+    GREATER         reduce using rule 47 (exp -> termino exp_loop .)
+    LESSEQUAL       reduce using rule 47 (exp -> termino exp_loop .)
+    GREATEREQUAL    reduce using rule 47 (exp -> termino exp_loop .)
+    NOTEQUAL        reduce using rule 47 (exp -> termino exp_loop .)
+    EQUAL           reduce using rule 47 (exp -> termino exp_loop .)
+    AND             reduce using rule 47 (exp -> termino exp_loop .)
+    OR              reduce using rule 47 (exp -> termino exp_loop .)
+    LPARENTHESIS    reduce using rule 47 (exp -> termino exp_loop .)
+    ID              reduce using rule 47 (exp -> termino exp_loop .)
+    INT             reduce using rule 47 (exp -> termino exp_loop .)
+    FLOAT           reduce using rule 47 (exp -> termino exp_loop .)
+    CHAR            reduce using rule 47 (exp -> termino exp_loop .)
+    STRING          reduce using rule 47 (exp -> termino exp_loop .)
+    BOOL            reduce using rule 47 (exp -> termino exp_loop .)
+    RPARENTHESIS    reduce using rule 47 (exp -> termino exp_loop .)
+    SEMICOLON       reduce using rule 47 (exp -> termino exp_loop .)
+
+
+state 112
+
+    (51) exp_type_loop -> SUBTRACTION . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 141
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 113
+
+    (25) regreso -> RETURN exp SEMICOLON .
+
+    ID              reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+    IF              reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+    PRINT           reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+    RETURN          reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+    WHILE           reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+    RCURLY          reduce using rule 25 (regreso -> RETURN exp SEMICOLON .)
+
+
+state 114
+
+    (56) termino_type_loop -> DIVISION . termino
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 142
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 115
+
+    (53) termino_loop -> termino_type_loop .
+
+    ADDITION        reduce using rule 53 (termino_loop -> termino_type_loop .)
+    SUBTRACTION     reduce using rule 53 (termino_loop -> termino_type_loop .)
+    SEMICOLON       reduce using rule 53 (termino_loop -> termino_type_loop .)
+    LESS            reduce using rule 53 (termino_loop -> termino_type_loop .)
+    GREATER         reduce using rule 53 (termino_loop -> termino_type_loop .)
+    LESSEQUAL       reduce using rule 53 (termino_loop -> termino_type_loop .)
+    GREATEREQUAL    reduce using rule 53 (termino_loop -> termino_type_loop .)
+    NOTEQUAL        reduce using rule 53 (termino_loop -> termino_type_loop .)
+    EQUAL           reduce using rule 53 (termino_loop -> termino_type_loop .)
+    AND             reduce using rule 53 (termino_loop -> termino_type_loop .)
+    OR              reduce using rule 53 (termino_loop -> termino_type_loop .)
+    LPARENTHESIS    reduce using rule 53 (termino_loop -> termino_type_loop .)
+    ID              reduce using rule 53 (termino_loop -> termino_type_loop .)
+    INT             reduce using rule 53 (termino_loop -> termino_type_loop .)
+    FLOAT           reduce using rule 53 (termino_loop -> termino_type_loop .)
+    CHAR            reduce using rule 53 (termino_loop -> termino_type_loop .)
+    STRING          reduce using rule 53 (termino_loop -> termino_type_loop .)
+    BOOL            reduce using rule 53 (termino_loop -> termino_type_loop .)
+    RPARENTHESIS    reduce using rule 53 (termino_loop -> termino_type_loop .)
+
+
+state 116
+
+    (55) termino_type_loop -> MULTIPLICATION . termino
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 143
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 117
+
+    (52) termino -> factor termino_loop .
+
+    ADDITION        reduce using rule 52 (termino -> factor termino_loop .)
+    SUBTRACTION     reduce using rule 52 (termino -> factor termino_loop .)
+    LESS            reduce using rule 52 (termino -> factor termino_loop .)
+    GREATER         reduce using rule 52 (termino -> factor termino_loop .)
+    LESSEQUAL       reduce using rule 52 (termino -> factor termino_loop .)
+    GREATEREQUAL    reduce using rule 52 (termino -> factor termino_loop .)
+    NOTEQUAL        reduce using rule 52 (termino -> factor termino_loop .)
+    EQUAL           reduce using rule 52 (termino -> factor termino_loop .)
+    AND             reduce using rule 52 (termino -> factor termino_loop .)
+    OR              reduce using rule 52 (termino -> factor termino_loop .)
+    LPARENTHESIS    reduce using rule 52 (termino -> factor termino_loop .)
+    ID              reduce using rule 52 (termino -> factor termino_loop .)
+    INT             reduce using rule 52 (termino -> factor termino_loop .)
+    FLOAT           reduce using rule 52 (termino -> factor termino_loop .)
+    CHAR            reduce using rule 52 (termino -> factor termino_loop .)
+    STRING          reduce using rule 52 (termino -> factor termino_loop .)
+    BOOL            reduce using rule 52 (termino -> factor termino_loop .)
+    SEMICOLON       reduce using rule 52 (termino -> factor termino_loop .)
+    RPARENTHESIS    reduce using rule 52 (termino -> factor termino_loop .)
+
+
+state 118
+
+    (82) varcte_arr -> LBRACKET . RBRACKET
+
+    RBRACKET        shift and go to state 144
+
+
+state 119
+
+    (76) varcte_type -> ID varcte_arr .
+
+    MULTIPLICATION  reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    DIVISION        reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    ADDITION        reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    SUBTRACTION     reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    SEMICOLON       reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    LESS            reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    GREATER         reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    LESSEQUAL       reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    GREATEREQUAL    reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    NOTEQUAL        reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    EQUAL           reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    AND             reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    OR              reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    LPARENTHESIS    reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    ID              reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    INT             reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    FLOAT           reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    CHAR            reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    STRING          reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    BOOL            reduce using rule 76 (varcte_type -> ID varcte_arr .)
+    RPARENTHESIS    reduce using rule 76 (varcte_type -> ID varcte_arr .)
+
+
+state 120
+
+    (90) ciclo -> WHILE LPARENTHESIS expresion . RPARENTHESIS bloque
+
+    RPARENTHESIS    shift and go to state 145
+
+
+state 121
+
+    (89) escritura_type -> QUOTE . CTESTRING QUOTE
+
+    CTESTRING       shift and go to state 146
+
+
+state 122
+
+    (87) escritura -> PRINT LPARENTHESIS escritura_type . RPARENTHESIS SEMICOLON
+
+    RPARENTHESIS    shift and go to state 147
+
+
+state 123
+
+    (88) escritura_type -> expresion .
+
+    RPARENTHESIS    reduce using rule 88 (escritura_type -> expresion .)
+
+
+state 124
+
+    (41) asignacion_option -> ASSIGN expresion . SEMICOLON
+
+    SEMICOLON       shift and go to state 148
+
+
+state 125
+
+    (42) asignacion_option -> LBRACKET INT . RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
+
+    RBRACKET        shift and go to state 149
+
+
+state 126
+
+    (84) condicion -> IF LPARENTHESIS expresion . RPARENTHESIS bloque condicion_option
+
+    RPARENTHESIS    shift and go to state 150
+
+
+state 127
+
+    (95) argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .
+
+    RPARENTHESIS    reduce using rule 95 (argumentos -> ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop .)
+
+
+state 128
+
+    (96) argumentos_loop -> COMA . argumentos
+    (95) argumentos -> . ID addVarDirFunc COLON tipo addTypeFunc argumentos_loop
+
+    ID              shift and go to state 55
+
+    argumentos                     shift and go to state 151
+
+state 129
+
+    (62) expresion_option -> AND . nuevaexp
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 152
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 130
+
+    (63) expresion_option -> OR . nuevaexp
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 153
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 131
+
+    (61) expresion -> nuevaexp expresion_option . expresion_loop
+    (65) expresion_loop -> . expresion
+    (66) expresion_loop -> .
+    (61) expresion -> . nuevaexp expresion_option expresion_loop
+    (67) nuevaexp -> . exp nuevaexp_type
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    RPARENTHESIS    reduce using rule 66 (expresion_loop -> .)
+    SEMICOLON       reduce using rule 66 (expresion_loop -> .)
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    expresion                      shift and go to state 155
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    nuevaexp                       shift and go to state 106
+    termino                        shift and go to state 92
+    exp                            shift and go to state 108
+    factor                         shift and go to state 94
+    expresion_loop                 shift and go to state 154
+    factor_var                     shift and go to state 96
+
+state 132
+
+    (60) factor_exp -> LPARENTHESIS expresion RPARENTHESIS .
+
+    MULTIPLICATION  reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    DIVISION        reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    ADDITION        reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    SUBTRACTION     reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    AND             reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    OR              reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    LPARENTHESIS    reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    ID              reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    INT             reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    FLOAT           reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    CHAR            reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    STRING          reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    BOOL            reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    RPARENTHESIS    reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    SEMICOLON       reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    LESS            reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    GREATER         reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    LESSEQUAL       reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    GREATEREQUAL    reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    NOTEQUAL        reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+    EQUAL           reduce using rule 60 (factor_exp -> LPARENTHESIS expresion RPARENTHESIS .)
+
+
+state 133
+
+    (72) nuevaexp_type -> NOTEQUAL . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 156
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 134
+
+    (71) nuevaexp_type -> GREATEREQUAL . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 157
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 135
+
+    (69) nuevaexp_type -> GREATER . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 158
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 136
+
+    (68) nuevaexp_type -> LESS . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 159
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 137
+
+    (73) nuevaexp_type -> EQUAL . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 160
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 138
+
+    (67) nuevaexp -> exp nuevaexp_type .
+
+    AND             reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    OR              reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    LPARENTHESIS    reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    ID              reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    INT             reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    FLOAT           reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    CHAR            reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    STRING          reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    BOOL            reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    SEMICOLON       reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+    RPARENTHESIS    reduce using rule 67 (nuevaexp -> exp nuevaexp_type .)
+
+
+state 139
+
+    (70) nuevaexp_type -> LESSEQUAL . exp
+    (47) exp -> . termino exp_loop
+    (52) termino -> . factor termino_loop
+    (57) factor -> . factor_var
+    (58) factor -> . factor_exp
+    (59) factor_var -> . varcte
+    (60) factor_exp -> . LPARENTHESIS expresion RPARENTHESIS
+    (75) varcte -> . varcte_type
+    (76) varcte_type -> . ID varcte_arr
+    (77) varcte_type -> . INT
+    (78) varcte_type -> . FLOAT
+    (79) varcte_type -> . CHAR
+    (80) varcte_type -> . STRING
+    (81) varcte_type -> . BOOL
+
+    LPARENTHESIS    shift and go to state 87
+    ID              shift and go to state 95
+    INT             shift and go to state 85
+    FLOAT           shift and go to state 83
+    CHAR            shift and go to state 89
+    STRING          shift and go to state 90
+    BOOL            shift and go to state 91
+
+    varcte                         shift and go to state 84
+    factor_exp                     shift and go to state 86
+    varcte_type                    shift and go to state 88
+    termino                        shift and go to state 92
+    exp                            shift and go to state 161
+    factor                         shift and go to state 94
+    factor_var                     shift and go to state 96
+
+state 140
+
+    (50) exp_type_loop -> ADDITION exp .
+
+    SEMICOLON       reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    LESS            reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    GREATER         reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    LESSEQUAL       reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    GREATEREQUAL    reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    NOTEQUAL        reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    EQUAL           reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    AND             reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    OR              reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    LPARENTHESIS    reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    ID              reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    INT             reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    FLOAT           reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    CHAR            reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    STRING          reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    BOOL            reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+    RPARENTHESIS    reduce using rule 50 (exp_type_loop -> ADDITION exp .)
+
+
+state 141
+
+    (51) exp_type_loop -> SUBTRACTION exp .
+
+    SEMICOLON       reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    LESS            reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    GREATER         reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    LESSEQUAL       reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    GREATEREQUAL    reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    NOTEQUAL        reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    EQUAL           reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    AND             reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    OR              reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    LPARENTHESIS    reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    ID              reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    INT             reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    FLOAT           reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    CHAR            reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    STRING          reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    BOOL            reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+    RPARENTHESIS    reduce using rule 51 (exp_type_loop -> SUBTRACTION exp .)
+
+
+state 142
+
+    (56) termino_type_loop -> DIVISION termino .
+
+    ADDITION        reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    SUBTRACTION     reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    SEMICOLON       reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    LESS            reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    GREATER         reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    LESSEQUAL       reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    GREATEREQUAL    reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    NOTEQUAL        reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    EQUAL           reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    AND             reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    OR              reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    LPARENTHESIS    reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    ID              reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    INT             reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    FLOAT           reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    CHAR            reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    STRING          reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    BOOL            reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+    RPARENTHESIS    reduce using rule 56 (termino_type_loop -> DIVISION termino .)
+
+
+state 143
+
+    (55) termino_type_loop -> MULTIPLICATION termino .
+
+    ADDITION        reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    SUBTRACTION     reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    SEMICOLON       reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    LESS            reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    GREATER         reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    LESSEQUAL       reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    GREATEREQUAL    reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    NOTEQUAL        reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    EQUAL           reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    AND             reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    OR              reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    LPARENTHESIS    reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    ID              reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    INT             reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    FLOAT           reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    CHAR            reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    STRING          reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    BOOL            reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+    RPARENTHESIS    reduce using rule 55 (termino_type_loop -> MULTIPLICATION termino .)
+
+
+state 144
+
+    (82) varcte_arr -> LBRACKET RBRACKET .
+
+    MULTIPLICATION  reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    DIVISION        reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    ADDITION        reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    SUBTRACTION     reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    SEMICOLON       reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    LESS            reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    GREATER         reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    LESSEQUAL       reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    GREATEREQUAL    reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    NOTEQUAL        reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    EQUAL           reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    AND             reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    OR              reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    LPARENTHESIS    reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    ID              reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    INT             reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    FLOAT           reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    CHAR            reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    STRING          reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    BOOL            reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+    RPARENTHESIS    reduce using rule 82 (varcte_arr -> LBRACKET RBRACKET .)
+
+
+state 145
+
+    (90) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS . bloque
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 162
+
+state 146
+
+    (89) escritura_type -> QUOTE CTESTRING . QUOTE
+
+    QUOTE           shift and go to state 163
+
+
+state 147
+
+    (87) escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS . SEMICOLON
+
+    SEMICOLON       shift and go to state 164
+
+
+state 148
+
+    (41) asignacion_option -> ASSIGN expresion SEMICOLON .
+
+    ID              reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+    IF              reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+    PRINT           reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+    RETURN          reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+    WHILE           reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+    RCURLY          reduce using rule 41 (asignacion_option -> ASSIGN expresion SEMICOLON .)
+
+
+state 149
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET . ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON
+
+    ASSIGN          shift and go to state 165
+
+
+state 150
+
+    (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS . bloque condicion_option
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 166
+
+state 151
+
+    (96) argumentos_loop -> COMA argumentos .
+
+    RPARENTHESIS    reduce using rule 96 (argumentos_loop -> COMA argumentos .)
+
+
+state 152
+
+    (62) expresion_option -> AND nuevaexp .
+
+    LPARENTHESIS    reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    ID              reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    INT             reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    FLOAT           reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    CHAR            reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    STRING          reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    BOOL            reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    RPARENTHESIS    reduce using rule 62 (expresion_option -> AND nuevaexp .)
+    SEMICOLON       reduce using rule 62 (expresion_option -> AND nuevaexp .)
+
+
+state 153
+
+    (63) expresion_option -> OR nuevaexp .
+
+    LPARENTHESIS    reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    ID              reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    INT             reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    FLOAT           reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    CHAR            reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    STRING          reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    BOOL            reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    RPARENTHESIS    reduce using rule 63 (expresion_option -> OR nuevaexp .)
+    SEMICOLON       reduce using rule 63 (expresion_option -> OR nuevaexp .)
+
+
+state 154
+
+    (61) expresion -> nuevaexp expresion_option expresion_loop .
+
+    RPARENTHESIS    reduce using rule 61 (expresion -> nuevaexp expresion_option expresion_loop .)
+    SEMICOLON       reduce using rule 61 (expresion -> nuevaexp expresion_option expresion_loop .)
+
+
+state 155
+
+    (65) expresion_loop -> expresion .
+
+    RPARENTHESIS    reduce using rule 65 (expresion_loop -> expresion .)
+    SEMICOLON       reduce using rule 65 (expresion_loop -> expresion .)
+
+
+state 156
+
+    (72) nuevaexp_type -> NOTEQUAL exp .
+
+    AND             reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    OR              reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    LPARENTHESIS    reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    ID              reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    INT             reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    FLOAT           reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    CHAR            reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    STRING          reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    BOOL            reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    RPARENTHESIS    reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+    SEMICOLON       reduce using rule 72 (nuevaexp_type -> NOTEQUAL exp .)
+
+
+state 157
+
+    (71) nuevaexp_type -> GREATEREQUAL exp .
+
+    AND             reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    OR              reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    LPARENTHESIS    reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    ID              reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    INT             reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    FLOAT           reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    CHAR            reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    STRING          reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    BOOL            reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    RPARENTHESIS    reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+    SEMICOLON       reduce using rule 71 (nuevaexp_type -> GREATEREQUAL exp .)
+
+
+state 158
+
+    (69) nuevaexp_type -> GREATER exp .
+
+    AND             reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    OR              reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    LPARENTHESIS    reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    ID              reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    INT             reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    FLOAT           reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    CHAR            reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    STRING          reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    BOOL            reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    RPARENTHESIS    reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+    SEMICOLON       reduce using rule 69 (nuevaexp_type -> GREATER exp .)
+
+
+state 159
+
+    (68) nuevaexp_type -> LESS exp .
+
+    AND             reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    OR              reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    LPARENTHESIS    reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    ID              reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    INT             reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    FLOAT           reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    CHAR            reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    STRING          reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    BOOL            reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    RPARENTHESIS    reduce using rule 68 (nuevaexp_type -> LESS exp .)
+    SEMICOLON       reduce using rule 68 (nuevaexp_type -> LESS exp .)
+
+
+state 160
+
+    (73) nuevaexp_type -> EQUAL exp .
+
+    AND             reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    OR              reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    LPARENTHESIS    reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    ID              reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    INT             reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    FLOAT           reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    CHAR            reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    STRING          reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    BOOL            reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    RPARENTHESIS    reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+    SEMICOLON       reduce using rule 73 (nuevaexp_type -> EQUAL exp .)
+
+
+state 161
+
+    (70) nuevaexp_type -> LESSEQUAL exp .
+
+    AND             reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    OR              reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    LPARENTHESIS    reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    ID              reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    INT             reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    FLOAT           reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    CHAR            reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    STRING          reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    BOOL            reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    RPARENTHESIS    reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+    SEMICOLON       reduce using rule 70 (nuevaexp_type -> LESSEQUAL exp .)
+
+
+state 162
+
+    (90) ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .
+
+    ID              reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    IF              reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    PRINT           reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    RETURN          reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    WHILE           reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+    RCURLY          reduce using rule 90 (ciclo -> WHILE LPARENTHESIS expresion RPARENTHESIS bloque .)
+
+
+state 163
+
+    (89) escritura_type -> QUOTE CTESTRING QUOTE .
+
+    RPARENTHESIS    reduce using rule 89 (escritura_type -> QUOTE CTESTRING QUOTE .)
+
+
+state 164
+
+    (87) escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .
+
+    ID              reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+    IF              reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+    PRINT           reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+    RETURN          reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+    WHILE           reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+    RCURLY          reduce using rule 87 (escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON .)
+
+
+state 165
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN . LBRACKET asignacion_type RBRACKET SEMICOLON
+
+    LBRACKET        shift and go to state 167
+
+
+state 166
+
+    (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque . condicion_option
+    (85) condicion_option -> . ELSE bloque
+    (86) condicion_option -> .
+
+    ELSE            shift and go to state 168
+    ID              reduce using rule 86 (condicion_option -> .)
+    IF              reduce using rule 86 (condicion_option -> .)
+    PRINT           reduce using rule 86 (condicion_option -> .)
+    RETURN          reduce using rule 86 (condicion_option -> .)
+    WHILE           reduce using rule 86 (condicion_option -> .)
+    RCURLY          reduce using rule 86 (condicion_option -> .)
+
+    condicion_option               shift and go to state 169
+
+state 167
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET . asignacion_type RBRACKET SEMICOLON
+    (43) asignacion_type -> . INT
+    (44) asignacion_type -> . FLOAT
+    (45) asignacion_type -> . INT COMA asignacion_type
+    (46) asignacion_type -> . FLOAT COMA asignacion_type
+
+    INT             shift and go to state 170
+    FLOAT           shift and go to state 171
+
+    asignacion_type                shift and go to state 172
+
+state 168
+
+    (85) condicion_option -> ELSE . bloque
+    (9) bloque -> . LCURLY bloque_est_loop RCURLY
+
+    LCURLY          shift and go to state 63
+
+    bloque                         shift and go to state 173
+
+state 169
+
+    (84) condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .
+
+    ID              reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+    IF              reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+    PRINT           reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+    RETURN          reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+    WHILE           reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+    RCURLY          reduce using rule 84 (condicion -> IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option .)
+
+
+state 170
+
+    (43) asignacion_type -> INT .
+    (45) asignacion_type -> INT . COMA asignacion_type
+
+    RBRACKET        reduce using rule 43 (asignacion_type -> INT .)
+    COMA            shift and go to state 174
+
+
+state 171
+
+    (44) asignacion_type -> FLOAT .
+    (46) asignacion_type -> FLOAT . COMA asignacion_type
+
+    RBRACKET        reduce using rule 44 (asignacion_type -> FLOAT .)
+    COMA            shift and go to state 175
+
+
+state 172
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type . RBRACKET SEMICOLON
+
+    RBRACKET        shift and go to state 176
+
+
+state 173
+
+    (85) condicion_option -> ELSE bloque .
+
+    ID              reduce using rule 85 (condicion_option -> ELSE bloque .)
+    IF              reduce using rule 85 (condicion_option -> ELSE bloque .)
+    PRINT           reduce using rule 85 (condicion_option -> ELSE bloque .)
+    RETURN          reduce using rule 85 (condicion_option -> ELSE bloque .)
+    WHILE           reduce using rule 85 (condicion_option -> ELSE bloque .)
+    RCURLY          reduce using rule 85 (condicion_option -> ELSE bloque .)
+
+
+state 174
+
+    (45) asignacion_type -> INT COMA . asignacion_type
+    (43) asignacion_type -> . INT
+    (44) asignacion_type -> . FLOAT
+    (45) asignacion_type -> . INT COMA asignacion_type
+    (46) asignacion_type -> . FLOAT COMA asignacion_type
+
+    INT             shift and go to state 170
+    FLOAT           shift and go to state 171
+
+    asignacion_type                shift and go to state 177
+
+state 175
+
+    (46) asignacion_type -> FLOAT COMA . asignacion_type
+    (43) asignacion_type -> . INT
+    (44) asignacion_type -> . FLOAT
+    (45) asignacion_type -> . INT COMA asignacion_type
+    (46) asignacion_type -> . FLOAT COMA asignacion_type
+
+    INT             shift and go to state 170
+    FLOAT           shift and go to state 171
+
+    asignacion_type                shift and go to state 178
+
+state 176
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET . SEMICOLON
+
+    SEMICOLON       shift and go to state 179
+
+
+state 177
+
+    (45) asignacion_type -> INT COMA asignacion_type .
+
+    RBRACKET        reduce using rule 45 (asignacion_type -> INT COMA asignacion_type .)
+
+
+state 178
+
+    (46) asignacion_type -> FLOAT COMA asignacion_type .
+
+    RBRACKET        reduce using rule 46 (asignacion_type -> FLOAT COMA asignacion_type .)
+
+
+state 179
+
+    (42) asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .
+
+    ID              reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+    IF              reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+    PRINT           reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+    RETURN          reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+    WHILE           reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+    RCURLY          reduce using rule 42 (asignacion_option -> LBRACKET INT RBRACKET ASSIGN LBRACKET asignacion_type RBRACKET SEMICOLON .)
+

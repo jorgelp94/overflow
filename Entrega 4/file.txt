@@ -1,0 +1,6 @@
+program overflow;
+var numero:float;
+{
+numero=5.0+8.9;
+}
+end

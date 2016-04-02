@@ -1,0 +1,8 @@
+program id;
+var name : int;
+int func regresaNombre() {
+  if (false) {
+  }
+}main() {
+}
+end
