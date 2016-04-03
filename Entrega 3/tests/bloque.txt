@@ -21,6 +21,8 @@ float func brinca(nose: float, vida: float, status: string) {
 main () {
   numero = 4;
 
+  x = 123*45 - (23/34*8);
+
   if (4 > 3 or 8 < 10) {
     numero = 1;
   } else {
