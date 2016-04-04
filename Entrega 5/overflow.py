@@ -14,7 +14,7 @@ reserved = {
   'else' : 'ELSE', 'var' : 'VAR', 'int' : 'INTTYPE', 'float' : 'FLOATTYPE',
   'char' : 'CHARTYPE', 'bool' : 'BOOLTYPE', 'void' : 'VOIDTYPE',
   'while' : 'WHILE', 'func' : 'FUNC', 'and' : 'AND', 'or'  : 'OR',
-  'main' : 'MAIN', 'return' : 'RETURN'
+  'main' : 'MAIN', 'return' : 'RETURN', 'true' : 'TRUE', 'false' : 'FALSE'
 }
 
 ###########################
@@ -24,7 +24,7 @@ tokens = ['COMA', 'SEMICOLON', 'COLON', 'MULTIPLICATION', 'ADDITION',
           'SUBTRACTION', 'DIVISION', 'EQUAL', 'ASSIGN', 'LESS', 'GREATER',
           'NOTEQUAL', 'LESSEQUAL', 'GREATEREQUAL', 'LCURLY', 'RCURLY',
           'LBRACKET', 'RBRACKET', 'LPARENTHESIS', 'RPARENTHESIS', 'ID',
-          'QUOTE', 'CTEINT', 'CTEFLOAT', 'CTECHAR', 'CTEBOOL'
+          'QUOTE', 'CTEINT', 'CTEFLOAT', 'CTECHAR', 'TRUE', 'FALSE', 'AND', 'OR'
           ] + list(reserved.values())
 
 ###########################
@@ -70,11 +70,6 @@ def t_CTEINT(t):
 
 def t_CTECHAR(t):
     r'\"[^\n"]\"'
-    return t
-
-def t_CTEBOOL(t):
-    r'true| false'
-    t.value = bool(t.value)
     return t
 
 # Cuena el numero de lineas
@@ -145,7 +140,9 @@ RESTA = 2
 MULT = 3
 DIV = 4
 ASIG = 5
-ERR = 6
+OR = 6
+AND = 7
+ERR = 8
 
 ###########################
 ## Cubo Semantico        ##
@@ -283,6 +280,42 @@ cuboSemantico[CHAR][BOOL][ASIG] = ERR
 cuboSemantico[BOOL][CHAR][ASIG] = ERR
 cuboSemantico[BOOL][BOOL][ASIG] = BOOL
 
+# Operador and
+cuboSemantico[INT][INT][AND] = ERR
+cuboSemantico[INT][FLOAT][AND] = ERR
+cuboSemantico[FLOAT][INT][AND] = ERR
+cuboSemantico[FLOAT][FLOAT][AND] = ERR
+cuboSemantico[CHAR][INT][AND] = ERR
+cuboSemantico[INT][CHAR][AND] = ERR
+cuboSemantico[CHAR][FLOAT][AND] = ERR
+cuboSemantico[FLOAT][CHAR][AND] = ERR
+cuboSemantico[CHAR][CHAR][AND] = ERR
+cuboSemantico[INT][BOOL][AND] = ERR
+cuboSemantico[BOOL][INT][AND] = ERR
+cuboSemantico[FLOAT][BOOL][AND] = ERR
+cuboSemantico[BOOL][FLOAT][AND] = ERR
+cuboSemantico[CHAR][BOOL][AND] = ERR
+cuboSemantico[BOOL][CHAR][AND] = ERR
+cuboSemantico[BOOL][BOOL][AND] = BOOL
+
+# Operador or
+cuboSemantico[INT][INT][OR] = ERR
+cuboSemantico[INT][FLOAT][OR] = ERR
+cuboSemantico[FLOAT][INT][OR] = ERR
+cuboSemantico[FLOAT][FLOAT][OR] = ERR
+cuboSemantico[CHAR][INT][OR] = ERR
+cuboSemantico[INT][CHAR][OR] = ERR
+cuboSemantico[CHAR][FLOAT][OR] = ERR
+cuboSemantico[FLOAT][CHAR][OR] = ERR
+cuboSemantico[CHAR][CHAR][OR] = ERR
+cuboSemantico[INT][BOOL][OR] = ERR
+cuboSemantico[BOOL][INT][OR] = ERR
+cuboSemantico[FLOAT][BOOL][OR] = ERR
+cuboSemantico[BOOL][FLOAT][OR] = ERR
+cuboSemantico[CHAR][BOOL][OR] = ERR
+cuboSemantico[BOOL][CHAR][OR] = ERR
+cuboSemantico[BOOL][BOOL][OR] = BOOL
+
 #############################################################################################
 # Gramatica
 #############################################################################################
@@ -404,21 +437,6 @@ def p_variable_end_loop(p):
       |'''
     print("pasa por variable_end_loop")
 
-def p_expresion(p):
-    '''expresion : nuevaexp expresion_option expresion_loop'''
-    print("pasa por expresion")
-
-def p_expresion_option(p):
-    '''expresion_option : AND nuevaexp
-        | OR nuevaexp
-        |'''
-    print("pasa por expresion_option")
-
-def p_expresion_loop(p):
-    '''expresion_loop : expresion
-        |'''
-    print("pasa por expresion_loop")
-
 def p_nuevaexp(p):
     '''nuevaexp : exp nuevaexp_type'''
     print("pasa por nuevaexp")
@@ -432,15 +450,6 @@ def p_nuevaexp_type(p):
       | EQUAL exp
       |'''
     print("pasa por nuevaexp_type")
-
-def p_condicion(p):
-    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option'''
-    print("pasa por condicion")
-
-def p_condicion_option(p):
-    '''condicion_option : ELSE bloque
-      |'''
-    print("pasa por condicion_option")
 
 def p_escritura(p):
     '''escritura : PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON'''
@@ -501,6 +510,73 @@ def p_addTypeFunc(p):
     print("..........................")
 
 #############################
+## Condicion               ##
+#############################
+def p_condicion(p):
+    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option'''
+    print("pasa por condicion")
+
+def p_condicion_option(p):
+    '''condicion_option : ELSE bloque
+      |'''
+    print("pasa por condicion_option")
+
+#############################
+## Expresion               ##
+#############################
+def p_expresion(p):
+    '''expresion : nuevaexp expresion_option nodo9 expresion_loop'''
+    print("pasa por expresion")
+
+def p_expresion_option(p):
+    '''expresion_option : AND nodo10_and nuevaexp
+        | OR nodo10_or nuevaexp
+        |'''
+    print("pasa por expresion_option")
+
+def p_expresion_loop(p):
+    '''expresion_loop : expresion
+        |'''
+    print("pasa por expresion_loop")
+
+#############################
+## Nodo9                   ##
+#############################
+def p_nodo9(p):
+    '''nodo9 : '''
+    global contTemporales
+    global contCuadruplos
+    if pOperadores:
+        if pOperadores[-1] == AND or pOperadores[-1] == OR:
+            op = pOperadores.pop()
+            opdoDer = pOperandos.pop()
+            tipoDer = pTipos.pop()
+            opdoIzq = pOperandos.pop()
+            tipoIzq = pTipos.pop()
+            if cuboSemantico[tipoDer][tipoIzq][op] != ERR :
+                tipoRes = cuboSemantico[tipoDer][tipoIzq][op]
+                cuadruplos[contCuadruplos] = [op, opdoIzq, opdoDer, contTemporales]
+                pOperandos.append(contTemporales)
+                pTipos.append(tipoRes)
+                contTemporales+=1
+                contCuadruplos+=1
+                print(cuadruplos)
+            else:
+                print("Error de condicion - valor no booleano")
+                exit()
+
+#############################
+## Nodo10                  ##
+#############################
+def p_nodo10_and(p):
+    '''nodo10_and : '''
+    pOperadores.append(AND)
+
+def p_nodo10_or(p):
+    '''nodo10_or : '''
+    pOperadores.append(OR)
+
+#############################
 ## Asignacion              ##
 #############################
 def p_asignacion(p):
@@ -538,10 +614,10 @@ def p_nodo8(p):
         elif dirProc['overflow']['Variables'][p[-3]]['Tipo'] == 'BOOL' :
             pTipos.append(BOOL)
         else:
-            print("Error en tipo de asignacion")
+            print("Error de asignacion - tipo no valido")
         pOperadores.append(ASIG)
     else:
-        print "Variable invalida"
+        print("Error de asignacion - variable no declarada")
         exit()
 
     if pOperadores :
@@ -553,11 +629,11 @@ def p_nodo8(p):
             tipoIzq = pTipos.pop()
             if cuboSemantico[tipoDer][tipoIzq][op] != ERR :
                 tipoRes = cuboSemantico[tipoDer][tipoIzq][op]
-                cuadruplos[contCuadruplos] = [op, opdoIzq, opdoDer, opdoDer]
+                cuadruplos[contCuadruplos] = [op, opdoIzq, "", opdoDer]
                 contCuadruplos+=1
                 print(cuadruplos)
             else:
-                print("Error de tipos asignados")
+                print("Error de asignacion - tipo de variable no es compatible con asignacion")
                 exit()
 
 #############################
@@ -612,7 +688,7 @@ def p_nodo5(p):
                 contCuadruplos+=1
                 print(cuadruplos)
             else:
-                print("Error de Semantica")
+                print("Error arimetico - tipos no validos")
                 exit()
 
 #############################
@@ -667,7 +743,7 @@ def p_nodo4(p):
                 contCuadruplos+=1
                 print(cuadruplos)
             else:
-                print("Error de Semantica")
+                print("Error arimetico - tipos no validos")
                 exit()
 
 #############################
@@ -723,7 +799,7 @@ def p_varcte(p):
     p[0] = p[1]
     print("..........................")
     print(pTipos)
-    print("..........................")
+    print("..........................*")
     print(p[0])
     print("..........................")
 
@@ -732,13 +808,17 @@ def p_varcte_arr(p):
       |'''
     print("pasa por varcte_arr")
 
+def p_CTEBOOL(p):
+    '''CTEBOOL : TRUE
+        | FALSE'''
+    p[0] = p[1]
+
 #############################
 ## Nodo cteE               ##
 #############################
 def p_nodoCteE(p):
     '''nodoCteE : '''
     pTipos.append(INT)
-
 
 #############################
 ## Nodo cteF               ##
@@ -753,7 +833,6 @@ def p_nodoCteF(p):
 def p_nodoCteB(p):
     '''nodoCteB : '''
     pTipos.append(BOOL)
-    print("@@@@@@@@@@@@@@@@@@@@@@@@")
 
 #############################
 ## Nodo cteC               ##
