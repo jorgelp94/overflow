@@ -2,9 +2,9 @@ from collections import defaultdict
 cuboSemantico = defaultdict(lambda :defaultdict(lambda :defaultdict(int)))
 
 # Indices del arreglo de 3 dimensiones cuboSemantico[x][y][z] donde:
-# x = operando 1
-# y = operando 2
-# z = operador
+# x = opdoDer
+# y = opdoIzq
+# z = op
 
 # Identificadores de los tipos de datos
 # Int:    1
@@ -13,13 +13,13 @@ cuboSemantico = defaultdict(lambda :defaultdict(lambda :defaultdict(int)))
 # String: 4
 
 # Identificadores de los operadores
-#	+,-:   1
-#	*,/:   2
-#	and,or:   3
-#	<,>:   4
-#	<=,>=: 5
-#	==,!=: 6
-#   =:     7
+#	+,-      1
+#	*,/      2
+#	and,or   3
+#	<,>    	 4
+#	<=,>=    5
+#	==,!=    6
+#   =        7
 
 # El error se representara con = -1
 # Resultado cuboSemantico[x][y][z] = tipo
@@ -153,5 +153,5 @@ cuboSemantico[4][4][7] = 1
 # Funcion de consulta del cubo para definir el resultado de una operacion
 # Recibe como argumento los operandos y el operador
 # Regresa la consulta al cubo
-def getResultType(operando1, operando2, operador):
-	return cuboSemantico[operando1][operando2][operador]
+def getResultType(opdoDer, opdoIzq, op):
+	return cuboSemantico[opdoDer][opdoIzq][op]

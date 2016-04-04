@@ -1,6 +1,10 @@
 program overflow;
-var numero:float;
-{
-numero=5.0+8.9;
+
+var a : int;
+var b : float;
+var c : char;
+var d : bool;
+main () {
+  a = 3 + 3;
 }
 end
