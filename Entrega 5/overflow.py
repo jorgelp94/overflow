@@ -565,10 +565,6 @@ def p_escritura_type(p):
       | QUOTE CTECHAR QUOTE'''
     print("pasa por escritura_type")
 
-def p_ciclo(p):
-    '''ciclo : WHILE LPARENTHESIS expresion RPARENTHESIS bloque'''
-    print("pasa por ciclo")
-
 def p_funcion(p):
     '''funcion : tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque'''
     print("pasa por funcion")
@@ -615,6 +611,35 @@ def p_addTypeFunc(p):
     print("..........................")
 
 #############################
+## Ciclo              ##
+#############################
+def p_ciclo(p):
+    '''ciclo : WHILE LPARENTHESIS nodo16 expresion RPARENTHESIS nodo13 bloque nodo17'''
+    print("pasa por ciclo")
+
+#############################
+## Nodo16                  ##
+#############################
+def p_nodo16(p):
+    '''nodo16 : '''
+    global contCuadruplos
+    pSaltos.append(contCuadruplos)
+
+#############################
+## Nodo17                  ##
+#############################
+def p_nodo17(p):
+    '''nodo17 : '''
+    global contCuadruplos
+    op = GOTO
+    saltoEnFalso = pSaltos.pop()
+    dirCuadruplo = pSaltos.pop()
+    cuadruplos[contCuadruplos] = [op, "", "", dirCuadruplo]
+    contCuadruplos+=1
+    cuadruplos[saltoEnFalso][3] = contCuadruplos
+    print(cuadruplos)
+
+#############################
 ## Condicion               ##
 #############################
 def p_condicion(p):
@@ -634,6 +659,7 @@ def p_nodo15(p):
     global contCuadruplos
     saltoEnFalso = pSaltos.pop()
     cuadruplos[saltoEnFalso][3] = contCuadruplos
+    print(cuadruplos)
 
 #############################
 ## Nodo14                  ##
@@ -643,22 +669,24 @@ def p_nodo14(p):
     global contCuadruplos
     op = GOTO
     saltoEnFalso = pSaltos.pop()
-    cuadruplos[contCuadruplos] = [op,"","",""]
+    cuadruplos[contCuadruplos] = [op, "", "", ""]
     pSaltos.append(contCuadruplos)
     contCuadruplos+=1
     cuadruplos[saltoEnFalso][3] = contCuadruplos
+    print(cuadruplos)
 
 #############################
 ## Nodo13                  ##
 #############################
 def p_nodo13(p):
     '''nodo13 : '''
+    print("@@@@@@@@@@@@@@@@@@@")
     global contCuadruplos
     if pTipos[-1] == BOOL:
         op = GOTOF
         opdoIzq = pOperandos.pop()
         pTipos.pop()
-        cuadruplos[contCuadruplos] = [op,opdoIzq,"",""]
+        cuadruplos[contCuadruplos] = [op, opdoIzq, "", ""]
         pSaltos.append(contCuadruplos)
         contCuadruplos+=1
         print(cuadruplos)
