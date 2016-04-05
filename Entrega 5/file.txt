@@ -5,6 +5,14 @@ var b : float;
 var c : char;
 var d : bool;
 main () {
-  d = (3 > 4) and (true or false);
+  if(3 > 4)
+  {
+    a = 4;
+  }
+  else
+  {
+    a = 5;
+  }
+  b = 3.5;
 }
 end

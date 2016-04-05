@@ -1,6 +1,7 @@
 import sys
 import ply.lex as lex
 import ply.yacc as yacc
+from collections import deque
 
 #############################################################################################
 # Definicion del lexico del lenguaje
@@ -110,6 +111,7 @@ cuadruplos = {}
 pOperadores = []
 pOperandos = []
 pTipos = []
+pSaltos = deque([])
 
 ###########################
 ## Contadores            ##
@@ -149,7 +151,10 @@ MAYORIG = 10
 MENORIG = 11
 IGUAL = 12
 DIF = 13
-ERR = 14
+GOTO = 14
+GOTOF = 15
+GOTOV = 16
+ERR = 17
 
 ###########################
 ## Cubo Semantico        ##
@@ -179,7 +184,6 @@ cuboSemantico[FLOAT] = {}
 cuboSemantico[BOOL] = {}
 
 #diccionarios vacios para cubo Semantico
-
 cuboSemantico[INT][INT] = {}
 cuboSemantico[INT][FLOAT] = {}
 cuboSemantico[FLOAT][INT] = {}
@@ -614,13 +618,53 @@ def p_addTypeFunc(p):
 ## Condicion               ##
 #############################
 def p_condicion(p):
-    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS bloque condicion_option'''
+    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS nodo13 bloque condicion_option nodo15'''
     print("pasa por condicion")
 
 def p_condicion_option(p):
-    '''condicion_option : ELSE bloque
+    '''condicion_option : ELSE nodo14 bloque
       |'''
     print("pasa por condicion_option")
+
+#############################
+## Nodo15                  ##
+#############################
+def p_nodo15(p):
+    '''nodo15 : '''
+    global contCuadruplos
+    saltoEnFalso = pSaltos.pop()
+    cuadruplos[saltoEnFalso][3] = contCuadruplos
+
+#############################
+## Nodo14                  ##
+#############################
+def p_nodo14(p):
+    '''nodo14 : '''
+    global contCuadruplos
+    op = GOTO
+    saltoEnFalso = pSaltos.pop()
+    cuadruplos[contCuadruplos] = [op,"","",""]
+    pSaltos.append(contCuadruplos)
+    contCuadruplos+=1
+    cuadruplos[saltoEnFalso][3] = contCuadruplos
+
+#############################
+## Nodo13                  ##
+#############################
+def p_nodo13(p):
+    '''nodo13 : '''
+    global contCuadruplos
+    if pTipos[-1] == BOOL:
+        op = GOTOF
+        opdoIzq = pOperandos.pop()
+        pTipos.pop()
+        cuadruplos[contCuadruplos] = [op,opdoIzq,"",""]
+        pSaltos.append(contCuadruplos)
+        contCuadruplos+=1
+        print(cuadruplos)
+    else:
+        print ("Expresion no booleana")
+        exit()
 
 #############################
 ## Expresion               ##
