@@ -611,7 +611,7 @@ def p_addTypeFunc(p):
     print("..........................")
 
 #############################
-## Ciclo              ##
+## Ciclo                   ##
 #############################
 def p_ciclo(p):
     '''ciclo : WHILE LPARENTHESIS nodo16 expresion RPARENTHESIS nodo13 bloque nodo17'''
@@ -679,8 +679,7 @@ def p_nodo14(p):
 ## Nodo13                  ##
 #############################
 def p_nodo13(p):
-    '''nodo13 : '''
-    print("@@@@@@@@@@@@@@@@@@@")
+    '''nodo13 : '''    
     global contCuadruplos
     if pTipos[-1] == BOOL:
         op = GOTOF
