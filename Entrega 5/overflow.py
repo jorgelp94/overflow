@@ -24,7 +24,8 @@ tokens = ['COMA', 'SEMICOLON', 'COLON', 'MULTIPLICATION', 'ADDITION',
           'SUBTRACTION', 'DIVISION', 'EQUAL', 'ASSIGN', 'LESS', 'GREATER',
           'NOTEQUAL', 'LESSEQUAL', 'GREATEREQUAL', 'LCURLY', 'RCURLY',
           'LBRACKET', 'RBRACKET', 'LPARENTHESIS', 'RPARENTHESIS', 'ID',
-          'QUOTE', 'CTEINT', 'CTEFLOAT', 'CTECHAR', 'TRUE', 'FALSE', 'AND', 'OR'
+          'QUOTE', 'CTEINT', 'CTEFLOAT', 'CTECHAR', 'TRUE', 'FALSE', 'AND',
+          'OR'
           ] + list(reserved.values())
 
 ###########################
@@ -39,7 +40,7 @@ t_SUBTRACTION     = r'-'
 t_DIVISION        = r'/'
 t_EQUAL           = r'=='
 t_ASSIGN          = r'='
-t_NOTEQUAL        = r'<>'
+t_NOTEQUAL        = r'!='
 t_LESS            = r'<'
 t_GREATER         = r'>'
 t_LESSEQUAL       = r'<='
@@ -142,7 +143,13 @@ DIV = 4
 ASIG = 5
 OR = 6
 AND = 7
-ERR = 8
+MAYOR = 8
+MENOR = 9
+MAYORIG = 10
+MENORIG = 11
+IGUAL = 12
+DIF = 13
+ERR = 14
 
 ###########################
 ## Cubo Semantico        ##
@@ -316,6 +323,114 @@ cuboSemantico[CHAR][BOOL][OR] = ERR
 cuboSemantico[BOOL][CHAR][OR] = ERR
 cuboSemantico[BOOL][BOOL][OR] = BOOL
 
+# Operadores >
+cuboSemantico[INT][INT][MAYOR] = BOOL
+cuboSemantico[INT][FLOAT][MAYOR] = BOOL
+cuboSemantico[FLOAT][INT][MAYOR] = BOOL
+cuboSemantico[FLOAT][FLOAT][MAYOR] = BOOL
+cuboSemantico[CHAR][INT][MAYOR] = ERR
+cuboSemantico[INT][CHAR][MAYOR] = ERR
+cuboSemantico[CHAR][FLOAT][MAYOR] = ERR
+cuboSemantico[FLOAT][CHAR][MAYOR] = ERR
+cuboSemantico[CHAR][CHAR][MAYOR] = ERR
+cuboSemantico[INT][BOOL][MAYOR] = ERR
+cuboSemantico[BOOL][INT][MAYOR] = ERR
+cuboSemantico[FLOAT][BOOL][MAYOR] = ERR
+cuboSemantico[BOOL][FLOAT][MAYOR] = ERR
+cuboSemantico[CHAR][BOOL][MAYOR] = ERR
+cuboSemantico[BOOL][CHAR][MAYOR] = ERR
+cuboSemantico[BOOL][BOOL][MAYOR] = ERR
+
+# Operadores <
+cuboSemantico[INT][INT][MENOR] = BOOL
+cuboSemantico[INT][FLOAT][MENOR] = BOOL
+cuboSemantico[FLOAT][INT][MENOR] = BOOL
+cuboSemantico[FLOAT][FLOAT][MENOR] = BOOL
+cuboSemantico[CHAR][INT][MENOR] = ERR
+cuboSemantico[INT][CHAR][MENOR] = ERR
+cuboSemantico[CHAR][FLOAT][MENOR] = ERR
+cuboSemantico[FLOAT][CHAR][MENOR] = ERR
+cuboSemantico[CHAR][CHAR][MENOR] = ERR
+cuboSemantico[INT][BOOL][MENOR] = ERR
+cuboSemantico[BOOL][INT][MENOR] = ERR
+cuboSemantico[FLOAT][BOOL][MENOR] = ERR
+cuboSemantico[BOOL][FLOAT][MENOR] = ERR
+cuboSemantico[CHAR][BOOL][MENOR] = ERR
+cuboSemantico[BOOL][CHAR][MENOR] = ERR
+cuboSemantico[BOOL][BOOL][MENOR] = ERR
+
+# Operadores >=
+cuboSemantico[INT][INT][MAYORIG] = BOOL
+cuboSemantico[INT][FLOAT][MAYORIG] = BOOL
+cuboSemantico[FLOAT][INT][MAYORIG] = BOOL
+cuboSemantico[FLOAT][FLOAT][MAYORIG] = BOOL
+cuboSemantico[CHAR][INT][MAYORIG] = ERR
+cuboSemantico[INT][CHAR][MAYORIG] = ERR
+cuboSemantico[CHAR][FLOAT][MAYORIG] = ERR
+cuboSemantico[FLOAT][CHAR][MAYORIG] = ERR
+cuboSemantico[CHAR][CHAR][MAYORIG] = ERR
+cuboSemantico[INT][BOOL][MAYORIG] = ERR
+cuboSemantico[BOOL][INT][MAYORIG] = ERR
+cuboSemantico[FLOAT][BOOL][MAYORIG] = ERR
+cuboSemantico[BOOL][FLOAT][MAYORIG] = ERR
+cuboSemantico[CHAR][BOOL][MAYORIG] = ERR
+cuboSemantico[BOOL][CHAR][MAYORIG] = ERR
+cuboSemantico[BOOL][BOOL][MAYORIG] = ERR
+
+# Operadores <=
+cuboSemantico[INT][INT][MENORIG] = BOOL
+cuboSemantico[INT][FLOAT][MENORIG] = BOOL
+cuboSemantico[FLOAT][INT][MENORIG] = BOOL
+cuboSemantico[FLOAT][FLOAT][MENORIG] = BOOL
+cuboSemantico[CHAR][INT][MENORIG] = ERR
+cuboSemantico[INT][CHAR][MENORIG] = ERR
+cuboSemantico[CHAR][FLOAT][MENORIG] = ERR
+cuboSemantico[FLOAT][CHAR][MENORIG] = ERR
+cuboSemantico[CHAR][CHAR][MENORIG] = ERR
+cuboSemantico[INT][BOOL][MENORIG] = ERR
+cuboSemantico[BOOL][INT][MENORIG] = ERR
+cuboSemantico[FLOAT][BOOL][MENORIG] = ERR
+cuboSemantico[BOOL][FLOAT][MENORIG] = ERR
+cuboSemantico[CHAR][BOOL][MENORIG] = ERR
+cuboSemantico[BOOL][CHAR][MENORIG] = ERR
+cuboSemantico[BOOL][BOOL][MENORIG] = ERR
+
+# Operadores ==
+cuboSemantico[INT][INT][IGUAL] = BOOL
+cuboSemantico[INT][FLOAT][IGUAL] = BOOL
+cuboSemantico[FLOAT][INT][IGUAL] = BOOL
+cuboSemantico[FLOAT][FLOAT][IGUAL] = BOOL
+cuboSemantico[CHAR][INT][IGUAL] = ERR
+cuboSemantico[INT][CHAR][IGUAL] = ERR
+cuboSemantico[CHAR][FLOAT][IGUAL] = ERR
+cuboSemantico[FLOAT][CHAR][IGUAL] = ERR
+cuboSemantico[CHAR][CHAR][IGUAL] = BOOL
+cuboSemantico[INT][BOOL][IGUAL] = ERR
+cuboSemantico[BOOL][INT][IGUAL] = ERR
+cuboSemantico[FLOAT][BOOL][IGUAL] = ERR
+cuboSemantico[BOOL][FLOAT][IGUAL] = ERR
+cuboSemantico[CHAR][BOOL][IGUAL] = ERR
+cuboSemantico[BOOL][CHAR][IGUAL] = ERR
+cuboSemantico[BOOL][BOOL][IGUAL] = BOOL
+
+# Operadores !=
+cuboSemantico[INT][INT][DIF] = BOOL
+cuboSemantico[INT][FLOAT][DIF] = BOOL
+cuboSemantico[FLOAT][INT][DIF] = BOOL
+cuboSemantico[FLOAT][FLOAT][DIF] = BOOL
+cuboSemantico[CHAR][INT][DIF] = ERR
+cuboSemantico[INT][CHAR][DIF] = ERR
+cuboSemantico[CHAR][FLOAT][DIF] = ERR
+cuboSemantico[FLOAT][CHAR][DIF] = ERR
+cuboSemantico[CHAR][CHAR][DIF] = BOOL
+cuboSemantico[INT][BOOL][DIF] = ERR
+cuboSemantico[BOOL][INT][DIF] = ERR
+cuboSemantico[FLOAT][BOOL][DIF] = ERR
+cuboSemantico[BOOL][FLOAT][DIF] = ERR
+cuboSemantico[CHAR][BOOL][DIF] = ERR
+cuboSemantico[BOOL][CHAR][DIF] = ERR
+cuboSemantico[BOOL][BOOL][DIF] = BOOL
+
 #############################################################################################
 # Gramatica
 #############################################################################################
@@ -437,20 +552,6 @@ def p_variable_end_loop(p):
       |'''
     print("pasa por variable_end_loop")
 
-def p_nuevaexp(p):
-    '''nuevaexp : exp nuevaexp_type'''
-    print("pasa por nuevaexp")
-
-def p_nuevaexp_type(p):
-    '''nuevaexp_type : LESS exp
-      | GREATER exp
-      | LESSEQUAL exp
-      | GREATEREQUAL exp
-      | NOTEQUAL exp
-      | EQUAL exp
-      |'''
-    print("pasa por nuevaexp_type")
-
 def p_escritura(p):
     '''escritura : PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON'''
     print("pasa por escritura")
@@ -525,12 +626,12 @@ def p_condicion_option(p):
 ## Expresion               ##
 #############################
 def p_expresion(p):
-    '''expresion : nuevaexp expresion_option nodo9 expresion_loop'''
+    '''expresion : nuevaexp expresion_option nodo11 expresion_loop'''
     print("pasa por expresion")
 
 def p_expresion_option(p):
-    '''expresion_option : AND nodo10_and nuevaexp
-        | OR nodo10_or nuevaexp
+    '''expresion_option : AND nodo12_and nuevaexp
+        | OR nodo12_or nuevaexp
         |'''
     print("pasa por expresion_option")
 
@@ -540,10 +641,21 @@ def p_expresion_loop(p):
     print("pasa por expresion_loop")
 
 #############################
-## Nodo9                   ##
+## Nodo12                  ##
 #############################
-def p_nodo9(p):
-    '''nodo9 : '''
+def p_nodo12_and(p):
+    '''nodo12_and : '''
+    pOperadores.append(AND)
+
+def p_nodo12_or(p):
+    '''nodo12_or : '''
+    pOperadores.append(OR)
+
+#############################
+## Nodo11                  ##
+#############################
+def p_nodo11(p):
+    '''nodo11 : '''
     global contTemporales
     global contCuadruplos
     if pOperadores:
@@ -566,15 +678,75 @@ def p_nodo9(p):
                 exit()
 
 #############################
+## NuevaExp                ##
+#############################
+def p_nuevaexp(p):
+    '''nuevaexp : exp nuevaexp_type nodo10'''
+    print("pasa por nuevaexp")
+
+def p_nuevaexp_type(p):
+    '''nuevaexp_type : LESS nodo9_menor exp
+      | GREATER nodo9_mayor exp
+      | LESSEQUAL nodo9_menorig exp
+      | GREATEREQUAL nodo9_mayorig exp
+      | NOTEQUAL nodo9_dif exp
+      | EQUAL nodo9_igual exp
+      |'''
+    print("pasa por nuevaexp_type")
+
+#############################
 ## Nodo10                  ##
 #############################
-def p_nodo10_and(p):
-    '''nodo10_and : '''
-    pOperadores.append(AND)
+def p_nodo10(p):
+    '''nodo10 : '''
+    global contTemporales
+    global contCuadruplos
+    if pOperadores:
+        print(pOperadores)
+        if pOperadores[-1] == MENOR or pOperadores[-1] == MAYOR or pOperadores[-1] == MENORIG or pOperadores[-1] == MAYORIG or pOperadores[-1] == IGUAL or pOperadores[-1] == DIF:
+            op = pOperadores.pop()
+            opdoDer = pOperandos.pop()
+            tipoDer = pTipos.pop()
+            opdoIzq = pOperandos.pop()
+            tipoIzq = pTipos.pop()
+            if cuboSemantico[tipoDer][tipoIzq][op] != ERR :
+                tipoRes = cuboSemantico[tipoDer][tipoIzq][op]
+                cuadruplos[contCuadruplos] = [op, opdoIzq, opdoDer, contTemporales]
+                pOperandos.append(contTemporales)
+                pTipos.append(tipoRes)
+                contCuadruplos+=1
+                contTemporales+=1
+                print(cuadruplos)
+            else:
+                print("Error de comparacion - Los valores comparados no son validos")
+                exit()
 
-def p_nodo10_or(p):
-    '''nodo10_or : '''
-    pOperadores.append(OR)
+#############################
+## Nodo9                   ##
+#############################
+def p_nodo9_menor(p):
+    '''nodo9_menor : '''
+    pOperadores.append(MENOR)
+
+def p_nodo9_mayor(p):
+    '''nodo9_mayor : '''
+    pOperadores.append(MAYOR)
+
+def p_nodo9_menorig(p):
+    '''nodo9_menorig : '''
+    pOperadores.append(MENORIG)
+
+def p_nodo9_mayorig(p):
+    '''nodo9_mayorig : '''
+    pOperadores.append(MAYORIG)
+
+def p_nodo9_dif(p):
+    '''nodo9_dif : '''
+    pOperadores.append(DIF)
+
+def p_nodo9_igual(p):
+    '''nodo9_igual : '''
+    pOperadores.append(IGUAL)
 
 #############################
 ## Asignacion              ##
