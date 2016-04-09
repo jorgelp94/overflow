@@ -2,14 +2,26 @@ program overflow;
 
 var a : int;
 var b : float;
-var c : char;
+var c : int;
 var d : bool;
+var z : int;
+
+void func suma(uno: int, dos: int) {
+	
+}
+
 main () {
-  while(3 > 4)
-  {
+  
+    a = 25;
     b = 3.5;
     d = true;
-  }
+    c = 15 + 20;
+  
   b = 3.5;
+
+  while(5 < 1 and 10 > 2) {
+  	a = 5;
+  	z = 125;
+  }
 }
 end

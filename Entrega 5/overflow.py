@@ -105,6 +105,14 @@ scope = []
 # Cuadruplos
 cuadruplos = {}
 
+# Contador de tipos de parametros
+cantidadInt = 0
+cantidadFloat = 0
+cantidadChar = 0
+cantidadBool = 0
+
+cantidadDic = {'INT' : cantidadInt, 'FLOAT' : cantidadFloat, 'CHAR' : cantidadChar, 'BOOL' : cantidadBool}
+
 ###########################
 ## Pilas                 ##
 ###########################
@@ -552,7 +560,7 @@ def p_addDirVarGlobales(p):
     print("..........................")
 
 def p_variable_end_loop(p):
-    '''variable_end_loop : variable_loop
+    '''variable_end_loop : variable
       |'''
     print("pasa por variable_end_loop")
 
@@ -571,7 +579,9 @@ def p_funcion(p):
 
 def p_addProcDirFunc(p):
     '''addProcDirFunc :'''
-    dirProc[p[-4]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6]}
+    global cantidadDic
+
+    dirProc[p[-4]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6].upper(), 'Tam' :  cantidadDic}
     dirVarLocal.clear()
     print("pasa por addProcDirFunc")
     print("..........................")
@@ -602,9 +612,33 @@ def p_addDirVarGlobalesFunc(p):
 
 def p_addTypeFunc(p):
     '''addTypeFunc :'''
+    global cantidadInt
+    global cantidadFloat
+    global cantidadChar
+    global cantidadBool
+    global cantidadDic
+
     scope.append('Local')
     while (len(varLocales) > 0):
-        dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1], 'Scope' : scope[-1]}
+        dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1]}
+
+    if p[-1].upper() == 'INT':
+        cantidadInt = cantidadInt + 1
+    elif p[-1].upper() == 'FLOAT':
+        cantidadFloat = cantidadFloat + 1
+    elif p[-1].upper() == 'CHAR':
+        cantidadChar = cantidadChar + 1
+    elif p[-1].upper() == 'BOOL':
+        cantidadBool = cantidadBool + 1
+
+    cantidadDic['INT'] = cantidadInt
+    cantidadDic['FLOAT'] = cantidadFloat
+    cantidadDic['CHAR'] = cantidadChar
+    cantidadDic['BOOL'] = cantidadBool
+    
+    print("----------------------------")
+    print("Cantidad dic:")
+    print(cantidadDic)
     print("pasa por addTypeFunc")
     print("..........................")
     print(dirVarLocal)

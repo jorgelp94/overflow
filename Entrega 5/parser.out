@@ -37,7 +37,7 @@ Rule 31    variable_arr_loop -> variable_arr_coma COLON subtipo addType
 Rule 32    variable_arr_coma -> ID addDirVarGlobales LBRACKET RBRACKET
 Rule 33    variable_arr_coma -> ID addDirVarGlobales LBRACKET RBRACKET COMA variable_arr_coma
 Rule 34    addDirVarGlobales -> <empty>
-Rule 35    variable_end_loop -> variable_loop
+Rule 35    variable_end_loop -> variable
 Rule 36    variable_end_loop -> <empty>
 Rule 37    escritura -> PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON
 Rule 38    escritura_type -> expresion
@@ -253,13 +253,13 @@ termino_type_loop    : 99
 tipo                 : 28 40 44
 varcte               : 108
 varcte_arr           : 113
-variable             : 4
+variable             : 4 35
 variable_arr_coma    : 31 33
 variable_arr_loop    : 26
 variable_end_loop    : 25 26
 variable_id_loop     : 25
 variable_id_loop_coma : 28 30
-variable_loop        : 24 35
+variable_loop        : 24
 
 Parsing method: LALR
 
@@ -530,32 +530,23 @@ state 22
 state 23
 
     (26) variable_loop -> variable_arr_loop SEMICOLON . variable_end_loop
-    (35) variable_end_loop -> . variable_loop
+    (35) variable_end_loop -> . variable
     (36) variable_end_loop -> .
-    (25) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
-    (26) variable_loop -> . variable_arr_loop SEMICOLON variable_end_loop
-    (28) variable_id_loop -> . variable_id_loop_coma COLON tipo addType
-    (31) variable_arr_loop -> . variable_arr_coma COLON subtipo addType
-    (29) variable_id_loop_coma -> . ID addDirVarGlobales
-    (30) variable_id_loop_coma -> . ID addDirVarGlobales COMA variable_id_loop_coma
-    (32) variable_arr_coma -> . ID addDirVarGlobales LBRACKET RBRACKET
-    (33) variable_arr_coma -> . ID addDirVarGlobales LBRACKET RBRACKET COMA variable_arr_coma
+    (24) variable -> . VAR variable_loop
 
-    VAR             reduce using rule 36 (variable_end_loop -> .)
+  ! shift/reduce conflict for VAR resolved as shift
     INTTYPE         reduce using rule 36 (variable_end_loop -> .)
     FLOATTYPE       reduce using rule 36 (variable_end_loop -> .)
     CHARTYPE        reduce using rule 36 (variable_end_loop -> .)
     BOOLTYPE        reduce using rule 36 (variable_end_loop -> .)
     VOIDTYPE        reduce using rule 36 (variable_end_loop -> .)
     MAIN            reduce using rule 36 (variable_end_loop -> .)
-    ID              shift and go to state 13
+    VAR             shift and go to state 5
 
-    variable_arr_loop              shift and go to state 8
-    variable_id_loop_coma          shift and go to state 9
-    variable_id_loop               shift and go to state 10
+  ! VAR             [ reduce using rule 36 (variable_end_loop -> .) ]
+
+    variable                       shift and go to state 32
     variable_end_loop              shift and go to state 31
-    variable_arr_coma              shift and go to state 11
-    variable_loop                  shift and go to state 32
 
 state 24
 
@@ -577,32 +568,23 @@ state 24
 state 25
 
     (25) variable_loop -> variable_id_loop SEMICOLON . variable_end_loop
-    (35) variable_end_loop -> . variable_loop
+    (35) variable_end_loop -> . variable
     (36) variable_end_loop -> .
-    (25) variable_loop -> . variable_id_loop SEMICOLON variable_end_loop
-    (26) variable_loop -> . variable_arr_loop SEMICOLON variable_end_loop
-    (28) variable_id_loop -> . variable_id_loop_coma COLON tipo addType
-    (31) variable_arr_loop -> . variable_arr_coma COLON subtipo addType
-    (29) variable_id_loop_coma -> . ID addDirVarGlobales
-    (30) variable_id_loop_coma -> . ID addDirVarGlobales COMA variable_id_loop_coma
-    (32) variable_arr_coma -> . ID addDirVarGlobales LBRACKET RBRACKET
-    (33) variable_arr_coma -> . ID addDirVarGlobales LBRACKET RBRACKET COMA variable_arr_coma
+    (24) variable -> . VAR variable_loop
 
-    VAR             reduce using rule 36 (variable_end_loop -> .)
+  ! shift/reduce conflict for VAR resolved as shift
     INTTYPE         reduce using rule 36 (variable_end_loop -> .)
     FLOATTYPE       reduce using rule 36 (variable_end_loop -> .)
     CHARTYPE        reduce using rule 36 (variable_end_loop -> .)
     BOOLTYPE        reduce using rule 36 (variable_end_loop -> .)
     VOIDTYPE        reduce using rule 36 (variable_end_loop -> .)
     MAIN            reduce using rule 36 (variable_end_loop -> .)
-    ID              shift and go to state 13
+    VAR             shift and go to state 5
 
-    variable_arr_loop              shift and go to state 8
-    variable_id_loop_coma          shift and go to state 9
-    variable_id_loop               shift and go to state 10
+  ! VAR             [ reduce using rule 36 (variable_end_loop -> .) ]
+
+    variable                       shift and go to state 32
     variable_end_loop              shift and go to state 34
-    variable_arr_coma              shift and go to state 11
-    variable_loop                  shift and go to state 32
 
 state 26
 
@@ -663,15 +645,15 @@ state 31
 
 state 32
 
-    (35) variable_end_loop -> variable_loop .
+    (35) variable_end_loop -> variable .
 
-    VAR             reduce using rule 35 (variable_end_loop -> variable_loop .)
-    INTTYPE         reduce using rule 35 (variable_end_loop -> variable_loop .)
-    FLOATTYPE       reduce using rule 35 (variable_end_loop -> variable_loop .)
-    CHARTYPE        reduce using rule 35 (variable_end_loop -> variable_loop .)
-    BOOLTYPE        reduce using rule 35 (variable_end_loop -> variable_loop .)
-    VOIDTYPE        reduce using rule 35 (variable_end_loop -> variable_loop .)
-    MAIN            reduce using rule 35 (variable_end_loop -> variable_loop .)
+    VAR             reduce using rule 35 (variable_end_loop -> variable .)
+    INTTYPE         reduce using rule 35 (variable_end_loop -> variable .)
+    FLOATTYPE       reduce using rule 35 (variable_end_loop -> variable .)
+    CHARTYPE        reduce using rule 35 (variable_end_loop -> variable .)
+    BOOLTYPE        reduce using rule 35 (variable_end_loop -> variable .)
+    VOIDTYPE        reduce using rule 35 (variable_end_loop -> variable .)
+    MAIN            reduce using rule 35 (variable_end_loop -> variable .)
 
 
 state 33
@@ -3569,3 +3551,8 @@ state 207
     WHILE           reduce using rule 84 (asignacion_option -> LBRACKET CTEINT RBRACKET ASSIGN nodo8 LBRACKET asignacion_type RBRACKET SEMICOLON .)
     RCURLY          reduce using rule 84 (asignacion_option -> LBRACKET CTEINT RBRACKET ASSIGN nodo8 LBRACKET asignacion_type RBRACKET SEMICOLON .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for VAR in state 23 resolved as shift
+WARNING: shift/reduce conflict for VAR in state 25 resolved as shift
