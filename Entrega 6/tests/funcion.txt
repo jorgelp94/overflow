@@ -1,0 +1,25 @@
+program overflow;
+
+char func vacia() {
+
+}
+
+int func asigna (numero1 int) {
+  numero = numero1;
+}
+
+int func compara (numero1 int, numero2 int) {
+  numero = numero1 > numero2;
+}
+
+int func suma (numero1 int, numero2 int) {
+  numero = numero1 + numero2;
+}
+
+int func arr () {
+  arreglo [] = [1,2,3];
+}
+
+{}
+
+end

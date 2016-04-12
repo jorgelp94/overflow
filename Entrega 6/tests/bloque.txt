@@ -1,0 +1,39 @@
+program overflow;
+
+var edad, cantidad, peso: int;
+var saludos, hola: string;
+var arr[]: int;
+
+void func cuadrado(age: int, ht: int)
+{
+    age = age * age;
+    return age;
+}
+
+int func numero(edad: int)
+{
+
+}
+
+float func brinca(nose: float, vida: float, status: string) {
+
+}
+main () {
+  numero = 4;
+
+  if (4 > 3 or 8 < 10) {
+    numero = 1;
+  } else {
+    numero = 2;
+  }
+
+  x = edad + 1;
+
+  print("Hola");
+
+  while(numero > 10) {
+    numero = numero - 1;
+  }
+}
+
+end

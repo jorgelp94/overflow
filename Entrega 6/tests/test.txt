@@ -1,0 +1,15 @@
+program overflow;
+
+var
+  numero1,a,b,c : int;
+  x,y,z : float;
+  arreglo[] : bool;
+  int func testing (j int, g int)
+  {
+
+  }
+{
+
+}
+
+end
