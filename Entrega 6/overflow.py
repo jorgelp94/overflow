@@ -477,8 +477,9 @@ def p_addProcDir(p):
 
 def p_addMainProc(p):
     '''addMainProc :'''
+    global dirVarGlobales
     dirProc[p[-1]] = {'Variables' : dirVarGlobales, 'Tipo' : 'VOID'}
-    print("Pasa por addMainProcDir")
+    print("Pasa por addMainProc")
     print("..........................")
     print(dirProc)
     print("..........................")
@@ -1158,6 +1159,20 @@ def p_varcte(p):
     print("..........................*")
     print(p[0])
     print("..........................")
+
+def p_llamada(p):
+    '''llamada : ID LPARENTHESIS llamada_params RPARENTHESIS SEMICOLON'''
+    print("llamada...")
+
+def p_llamada_params(p):
+    '''llamada_params : params
+      |'''
+    print("llamada params....")
+
+def p_params(p):
+    '''params : varcte
+      | varcte COMA params'''
+    print("params...")
 
 def p_varcte_arr(p):
     '''varcte_arr : LBRACKET RBRACKET

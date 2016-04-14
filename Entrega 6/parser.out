@@ -132,14 +132,19 @@ Rule 126   varcte -> CTEINT nodoCteE
 Rule 127   varcte -> CTEFLOAT nodoCteF
 Rule 128   varcte -> CTEBOOL nodoCteB
 Rule 129   varcte -> CTECHAR nodoCteC
-Rule 130   varcte_arr -> LBRACKET RBRACKET
-Rule 131   varcte_arr -> <empty>
-Rule 132   CTEBOOL -> TRUE
-Rule 133   CTEBOOL -> FALSE
-Rule 134   nodoCteE -> <empty>
-Rule 135   nodoCteF -> <empty>
-Rule 136   nodoCteB -> <empty>
-Rule 137   nodoCteC -> <empty>
+Rule 130   llamada -> ID LPARENTHESIS llamada_params RPARENTHESIS SEMICOLON
+Rule 131   llamada_params -> params
+Rule 132   llamada_params -> <empty>
+Rule 133   params -> varcte
+Rule 134   params -> varcte COMA params
+Rule 135   varcte_arr -> LBRACKET RBRACKET
+Rule 136   varcte_arr -> <empty>
+Rule 137   CTEBOOL -> TRUE
+Rule 138   CTEBOOL -> FALSE
+Rule 139   nodoCteE -> <empty>
+Rule 140   nodoCteF -> <empty>
+Rule 141   nodoCteB -> <empty>
+Rule 142   nodoCteC -> <empty>
 
 Terminals, with rules where they appear
 
@@ -149,7 +154,7 @@ ASSIGN               : 95 96
 BOOLTYPE             : 14
 CHARTYPE             : 13
 COLON                : 28 31 45 48 56
-COMA                 : 30 33 50 52 57 99 100
+COMA                 : 30 33 50 52 57 99 100 134
 CTECHAR              : 39 129
 CTEFLOAT             : 98 100 127
 CTEINT               : 96 97 99 126
@@ -157,19 +162,19 @@ DIVISION             : 114
 ELSE                 : 65
 END                  : 1
 EQUAL                : 85
-FALSE                : 133
+FALSE                : 138
 FLOATTYPE            : 12 17
 FUNC                 : 40 41
 GREATER              : 81
 GREATEREQUAL         : 83
-ID                   : 1 29 30 32 33 40 41 49 50 51 52 56 94 125
+ID                   : 1 29 30 32 33 40 41 49 50 51 52 56 94 125 130
 IF                   : 64
 INTTYPE              : 11 16
-LBRACKET             : 32 33 51 52 96 96 130
+LBRACKET             : 32 33 51 52 96 96 135
 LCURLY               : 8
 LESS                 : 80
 LESSEQUAL            : 82
-LPARENTHESIS         : 1 37 40 41 61 64 121
+LPARENTHESIS         : 1 37 40 41 61 64 121 130
 MAIN                 : 1
 MULTIPLICATION       : 113
 NOTEQUAL             : 84
@@ -177,13 +182,13 @@ OR                   : 72
 PRINT                : 37
 PROGRAM              : 1
 QUOTE                : 39 39
-RBRACKET             : 32 33 51 52 96 96 130
+RBRACKET             : 32 33 51 52 96 96 135
 RCURLY               : 8
 RETURN               : 23
-RPARENTHESIS         : 1 37 40 41 61 64 121
-SEMICOLON            : 1 23 25 26 37 43 44 95 96
+RPARENTHESIS         : 1 37 40 41 61 64 121 130
+SEMICOLON            : 1 23 25 26 37 43 44 95 96 130
 SUBTRACTION          : 106
-TRUE                 : 132
+TRUE                 : 137
 VAR                  : 24 42
 VOIDTYPE             : 15
 WHILE                : 61
@@ -223,6 +228,8 @@ factor_exp           : 119
 factor_var           : 118
 funcion              : 6
 funcion_option       : 40 41
+llamada              : 
+llamada_params       : 130
 nodo1                : 120
 nodo10               : 79
 nodo11               : 70
@@ -254,6 +261,7 @@ nodoCteE             : 126
 nodoCteF             : 127
 nuevaexp             : 70 71 72
 nuevaexp_type        : 79
+params               : 131 134
 programa             : 0
 programa_func_loop   : 1 6
 programa_var_loop    : 1 4
@@ -263,7 +271,7 @@ termino              : 102 113 114
 termino_loop         : 110
 termino_type_loop    : 111
 tipo                 : 28 40 41 45 56
-varcte               : 120
+varcte               : 120 133 134
 varcte_arr           : 125
 variable             : 4 35
 variable_arr_coma    : 31 33
@@ -1112,8 +1120,8 @@ state 76
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -1360,57 +1368,57 @@ state 95
 state 96
 
     (129) varcte -> CTECHAR . nodoCteC
-    (137) nodoCteC -> .
+    (142) nodoCteC -> .
 
-    MULTIPLICATION  reduce using rule 137 (nodoCteC -> .)
-    DIVISION        reduce using rule 137 (nodoCteC -> .)
-    ADDITION        reduce using rule 137 (nodoCteC -> .)
-    SUBTRACTION     reduce using rule 137 (nodoCteC -> .)
-    SEMICOLON       reduce using rule 137 (nodoCteC -> .)
-    LESS            reduce using rule 137 (nodoCteC -> .)
-    GREATER         reduce using rule 137 (nodoCteC -> .)
-    LESSEQUAL       reduce using rule 137 (nodoCteC -> .)
-    GREATEREQUAL    reduce using rule 137 (nodoCteC -> .)
-    NOTEQUAL        reduce using rule 137 (nodoCteC -> .)
-    EQUAL           reduce using rule 137 (nodoCteC -> .)
-    AND             reduce using rule 137 (nodoCteC -> .)
-    OR              reduce using rule 137 (nodoCteC -> .)
-    LPARENTHESIS    reduce using rule 137 (nodoCteC -> .)
-    ID              reduce using rule 137 (nodoCteC -> .)
-    CTEINT          reduce using rule 137 (nodoCteC -> .)
-    CTEFLOAT        reduce using rule 137 (nodoCteC -> .)
-    CTECHAR         reduce using rule 137 (nodoCteC -> .)
-    TRUE            reduce using rule 137 (nodoCteC -> .)
-    FALSE           reduce using rule 137 (nodoCteC -> .)
-    RPARENTHESIS    reduce using rule 137 (nodoCteC -> .)
+    MULTIPLICATION  reduce using rule 142 (nodoCteC -> .)
+    DIVISION        reduce using rule 142 (nodoCteC -> .)
+    ADDITION        reduce using rule 142 (nodoCteC -> .)
+    SUBTRACTION     reduce using rule 142 (nodoCteC -> .)
+    SEMICOLON       reduce using rule 142 (nodoCteC -> .)
+    LESS            reduce using rule 142 (nodoCteC -> .)
+    GREATER         reduce using rule 142 (nodoCteC -> .)
+    LESSEQUAL       reduce using rule 142 (nodoCteC -> .)
+    GREATEREQUAL    reduce using rule 142 (nodoCteC -> .)
+    NOTEQUAL        reduce using rule 142 (nodoCteC -> .)
+    EQUAL           reduce using rule 142 (nodoCteC -> .)
+    AND             reduce using rule 142 (nodoCteC -> .)
+    OR              reduce using rule 142 (nodoCteC -> .)
+    LPARENTHESIS    reduce using rule 142 (nodoCteC -> .)
+    ID              reduce using rule 142 (nodoCteC -> .)
+    CTEINT          reduce using rule 142 (nodoCteC -> .)
+    CTEFLOAT        reduce using rule 142 (nodoCteC -> .)
+    CTECHAR         reduce using rule 142 (nodoCteC -> .)
+    TRUE            reduce using rule 142 (nodoCteC -> .)
+    FALSE           reduce using rule 142 (nodoCteC -> .)
+    RPARENTHESIS    reduce using rule 142 (nodoCteC -> .)
 
     nodoCteC                       shift and go to state 127
 
 state 97
 
-    (132) CTEBOOL -> TRUE .
+    (137) CTEBOOL -> TRUE .
 
-    MULTIPLICATION  reduce using rule 132 (CTEBOOL -> TRUE .)
-    DIVISION        reduce using rule 132 (CTEBOOL -> TRUE .)
-    ADDITION        reduce using rule 132 (CTEBOOL -> TRUE .)
-    SUBTRACTION     reduce using rule 132 (CTEBOOL -> TRUE .)
-    SEMICOLON       reduce using rule 132 (CTEBOOL -> TRUE .)
-    LESS            reduce using rule 132 (CTEBOOL -> TRUE .)
-    GREATER         reduce using rule 132 (CTEBOOL -> TRUE .)
-    LESSEQUAL       reduce using rule 132 (CTEBOOL -> TRUE .)
-    GREATEREQUAL    reduce using rule 132 (CTEBOOL -> TRUE .)
-    NOTEQUAL        reduce using rule 132 (CTEBOOL -> TRUE .)
-    EQUAL           reduce using rule 132 (CTEBOOL -> TRUE .)
-    AND             reduce using rule 132 (CTEBOOL -> TRUE .)
-    OR              reduce using rule 132 (CTEBOOL -> TRUE .)
-    LPARENTHESIS    reduce using rule 132 (CTEBOOL -> TRUE .)
-    ID              reduce using rule 132 (CTEBOOL -> TRUE .)
-    CTEINT          reduce using rule 132 (CTEBOOL -> TRUE .)
-    CTEFLOAT        reduce using rule 132 (CTEBOOL -> TRUE .)
-    CTECHAR         reduce using rule 132 (CTEBOOL -> TRUE .)
-    TRUE            reduce using rule 132 (CTEBOOL -> TRUE .)
-    FALSE           reduce using rule 132 (CTEBOOL -> TRUE .)
-    RPARENTHESIS    reduce using rule 132 (CTEBOOL -> TRUE .)
+    MULTIPLICATION  reduce using rule 137 (CTEBOOL -> TRUE .)
+    DIVISION        reduce using rule 137 (CTEBOOL -> TRUE .)
+    ADDITION        reduce using rule 137 (CTEBOOL -> TRUE .)
+    SUBTRACTION     reduce using rule 137 (CTEBOOL -> TRUE .)
+    SEMICOLON       reduce using rule 137 (CTEBOOL -> TRUE .)
+    LESS            reduce using rule 137 (CTEBOOL -> TRUE .)
+    GREATER         reduce using rule 137 (CTEBOOL -> TRUE .)
+    LESSEQUAL       reduce using rule 137 (CTEBOOL -> TRUE .)
+    GREATEREQUAL    reduce using rule 137 (CTEBOOL -> TRUE .)
+    NOTEQUAL        reduce using rule 137 (CTEBOOL -> TRUE .)
+    EQUAL           reduce using rule 137 (CTEBOOL -> TRUE .)
+    AND             reduce using rule 137 (CTEBOOL -> TRUE .)
+    OR              reduce using rule 137 (CTEBOOL -> TRUE .)
+    LPARENTHESIS    reduce using rule 137 (CTEBOOL -> TRUE .)
+    ID              reduce using rule 137 (CTEBOOL -> TRUE .)
+    CTEINT          reduce using rule 137 (CTEBOOL -> TRUE .)
+    CTEFLOAT        reduce using rule 137 (CTEBOOL -> TRUE .)
+    CTECHAR         reduce using rule 137 (CTEBOOL -> TRUE .)
+    TRUE            reduce using rule 137 (CTEBOOL -> TRUE .)
+    FALSE           reduce using rule 137 (CTEBOOL -> TRUE .)
+    RPARENTHESIS    reduce using rule 137 (CTEBOOL -> TRUE .)
 
 
 state 98
@@ -1445,29 +1453,29 @@ state 98
 state 99
 
     (127) varcte -> CTEFLOAT . nodoCteF
-    (135) nodoCteF -> .
+    (140) nodoCteF -> .
 
-    MULTIPLICATION  reduce using rule 135 (nodoCteF -> .)
-    DIVISION        reduce using rule 135 (nodoCteF -> .)
-    ADDITION        reduce using rule 135 (nodoCteF -> .)
-    SUBTRACTION     reduce using rule 135 (nodoCteF -> .)
-    SEMICOLON       reduce using rule 135 (nodoCteF -> .)
-    LESS            reduce using rule 135 (nodoCteF -> .)
-    GREATER         reduce using rule 135 (nodoCteF -> .)
-    LESSEQUAL       reduce using rule 135 (nodoCteF -> .)
-    GREATEREQUAL    reduce using rule 135 (nodoCteF -> .)
-    NOTEQUAL        reduce using rule 135 (nodoCteF -> .)
-    EQUAL           reduce using rule 135 (nodoCteF -> .)
-    AND             reduce using rule 135 (nodoCteF -> .)
-    OR              reduce using rule 135 (nodoCteF -> .)
-    LPARENTHESIS    reduce using rule 135 (nodoCteF -> .)
-    ID              reduce using rule 135 (nodoCteF -> .)
-    CTEINT          reduce using rule 135 (nodoCteF -> .)
-    CTEFLOAT        reduce using rule 135 (nodoCteF -> .)
-    CTECHAR         reduce using rule 135 (nodoCteF -> .)
-    TRUE            reduce using rule 135 (nodoCteF -> .)
-    FALSE           reduce using rule 135 (nodoCteF -> .)
-    RPARENTHESIS    reduce using rule 135 (nodoCteF -> .)
+    MULTIPLICATION  reduce using rule 140 (nodoCteF -> .)
+    DIVISION        reduce using rule 140 (nodoCteF -> .)
+    ADDITION        reduce using rule 140 (nodoCteF -> .)
+    SUBTRACTION     reduce using rule 140 (nodoCteF -> .)
+    SEMICOLON       reduce using rule 140 (nodoCteF -> .)
+    LESS            reduce using rule 140 (nodoCteF -> .)
+    GREATER         reduce using rule 140 (nodoCteF -> .)
+    LESSEQUAL       reduce using rule 140 (nodoCteF -> .)
+    GREATEREQUAL    reduce using rule 140 (nodoCteF -> .)
+    NOTEQUAL        reduce using rule 140 (nodoCteF -> .)
+    EQUAL           reduce using rule 140 (nodoCteF -> .)
+    AND             reduce using rule 140 (nodoCteF -> .)
+    OR              reduce using rule 140 (nodoCteF -> .)
+    LPARENTHESIS    reduce using rule 140 (nodoCteF -> .)
+    ID              reduce using rule 140 (nodoCteF -> .)
+    CTEINT          reduce using rule 140 (nodoCteF -> .)
+    CTEFLOAT        reduce using rule 140 (nodoCteF -> .)
+    CTECHAR         reduce using rule 140 (nodoCteF -> .)
+    TRUE            reduce using rule 140 (nodoCteF -> .)
+    FALSE           reduce using rule 140 (nodoCteF -> .)
+    RPARENTHESIS    reduce using rule 140 (nodoCteF -> .)
 
     nodoCteF                       shift and go to state 129
 
@@ -1530,29 +1538,29 @@ state 101
 state 102
 
     (126) varcte -> CTEINT . nodoCteE
-    (134) nodoCteE -> .
+    (139) nodoCteE -> .
 
-    MULTIPLICATION  reduce using rule 134 (nodoCteE -> .)
-    DIVISION        reduce using rule 134 (nodoCteE -> .)
-    ADDITION        reduce using rule 134 (nodoCteE -> .)
-    SUBTRACTION     reduce using rule 134 (nodoCteE -> .)
-    SEMICOLON       reduce using rule 134 (nodoCteE -> .)
-    LESS            reduce using rule 134 (nodoCteE -> .)
-    GREATER         reduce using rule 134 (nodoCteE -> .)
-    LESSEQUAL       reduce using rule 134 (nodoCteE -> .)
-    GREATEREQUAL    reduce using rule 134 (nodoCteE -> .)
-    NOTEQUAL        reduce using rule 134 (nodoCteE -> .)
-    EQUAL           reduce using rule 134 (nodoCteE -> .)
-    AND             reduce using rule 134 (nodoCteE -> .)
-    OR              reduce using rule 134 (nodoCteE -> .)
-    LPARENTHESIS    reduce using rule 134 (nodoCteE -> .)
-    ID              reduce using rule 134 (nodoCteE -> .)
-    CTEINT          reduce using rule 134 (nodoCteE -> .)
-    CTEFLOAT        reduce using rule 134 (nodoCteE -> .)
-    CTECHAR         reduce using rule 134 (nodoCteE -> .)
-    TRUE            reduce using rule 134 (nodoCteE -> .)
-    FALSE           reduce using rule 134 (nodoCteE -> .)
-    RPARENTHESIS    reduce using rule 134 (nodoCteE -> .)
+    MULTIPLICATION  reduce using rule 139 (nodoCteE -> .)
+    DIVISION        reduce using rule 139 (nodoCteE -> .)
+    ADDITION        reduce using rule 139 (nodoCteE -> .)
+    SUBTRACTION     reduce using rule 139 (nodoCteE -> .)
+    SEMICOLON       reduce using rule 139 (nodoCteE -> .)
+    LESS            reduce using rule 139 (nodoCteE -> .)
+    GREATER         reduce using rule 139 (nodoCteE -> .)
+    LESSEQUAL       reduce using rule 139 (nodoCteE -> .)
+    GREATEREQUAL    reduce using rule 139 (nodoCteE -> .)
+    NOTEQUAL        reduce using rule 139 (nodoCteE -> .)
+    EQUAL           reduce using rule 139 (nodoCteE -> .)
+    AND             reduce using rule 139 (nodoCteE -> .)
+    OR              reduce using rule 139 (nodoCteE -> .)
+    LPARENTHESIS    reduce using rule 139 (nodoCteE -> .)
+    ID              reduce using rule 139 (nodoCteE -> .)
+    CTEINT          reduce using rule 139 (nodoCteE -> .)
+    CTEFLOAT        reduce using rule 139 (nodoCteE -> .)
+    CTECHAR         reduce using rule 139 (nodoCteE -> .)
+    TRUE            reduce using rule 139 (nodoCteE -> .)
+    FALSE           reduce using rule 139 (nodoCteE -> .)
+    RPARENTHESIS    reduce using rule 139 (nodoCteE -> .)
 
     nodoCteE                       shift and go to state 131
 
@@ -1574,87 +1582,87 @@ state 103
 state 104
 
     (125) varcte -> ID . varcte_arr
-    (130) varcte_arr -> . LBRACKET RBRACKET
-    (131) varcte_arr -> .
+    (135) varcte_arr -> . LBRACKET RBRACKET
+    (136) varcte_arr -> .
 
     LBRACKET        shift and go to state 133
-    MULTIPLICATION  reduce using rule 131 (varcte_arr -> .)
-    DIVISION        reduce using rule 131 (varcte_arr -> .)
-    ADDITION        reduce using rule 131 (varcte_arr -> .)
-    SUBTRACTION     reduce using rule 131 (varcte_arr -> .)
-    SEMICOLON       reduce using rule 131 (varcte_arr -> .)
-    LESS            reduce using rule 131 (varcte_arr -> .)
-    GREATER         reduce using rule 131 (varcte_arr -> .)
-    LESSEQUAL       reduce using rule 131 (varcte_arr -> .)
-    GREATEREQUAL    reduce using rule 131 (varcte_arr -> .)
-    NOTEQUAL        reduce using rule 131 (varcte_arr -> .)
-    EQUAL           reduce using rule 131 (varcte_arr -> .)
-    AND             reduce using rule 131 (varcte_arr -> .)
-    OR              reduce using rule 131 (varcte_arr -> .)
-    LPARENTHESIS    reduce using rule 131 (varcte_arr -> .)
-    ID              reduce using rule 131 (varcte_arr -> .)
-    CTEINT          reduce using rule 131 (varcte_arr -> .)
-    CTEFLOAT        reduce using rule 131 (varcte_arr -> .)
-    CTECHAR         reduce using rule 131 (varcte_arr -> .)
-    TRUE            reduce using rule 131 (varcte_arr -> .)
-    FALSE           reduce using rule 131 (varcte_arr -> .)
-    RPARENTHESIS    reduce using rule 131 (varcte_arr -> .)
+    MULTIPLICATION  reduce using rule 136 (varcte_arr -> .)
+    DIVISION        reduce using rule 136 (varcte_arr -> .)
+    ADDITION        reduce using rule 136 (varcte_arr -> .)
+    SUBTRACTION     reduce using rule 136 (varcte_arr -> .)
+    SEMICOLON       reduce using rule 136 (varcte_arr -> .)
+    LESS            reduce using rule 136 (varcte_arr -> .)
+    GREATER         reduce using rule 136 (varcte_arr -> .)
+    LESSEQUAL       reduce using rule 136 (varcte_arr -> .)
+    GREATEREQUAL    reduce using rule 136 (varcte_arr -> .)
+    NOTEQUAL        reduce using rule 136 (varcte_arr -> .)
+    EQUAL           reduce using rule 136 (varcte_arr -> .)
+    AND             reduce using rule 136 (varcte_arr -> .)
+    OR              reduce using rule 136 (varcte_arr -> .)
+    LPARENTHESIS    reduce using rule 136 (varcte_arr -> .)
+    ID              reduce using rule 136 (varcte_arr -> .)
+    CTEINT          reduce using rule 136 (varcte_arr -> .)
+    CTEFLOAT        reduce using rule 136 (varcte_arr -> .)
+    CTECHAR         reduce using rule 136 (varcte_arr -> .)
+    TRUE            reduce using rule 136 (varcte_arr -> .)
+    FALSE           reduce using rule 136 (varcte_arr -> .)
+    RPARENTHESIS    reduce using rule 136 (varcte_arr -> .)
 
     varcte_arr                     shift and go to state 134
 
 state 105
 
-    (133) CTEBOOL -> FALSE .
+    (138) CTEBOOL -> FALSE .
 
-    MULTIPLICATION  reduce using rule 133 (CTEBOOL -> FALSE .)
-    DIVISION        reduce using rule 133 (CTEBOOL -> FALSE .)
-    ADDITION        reduce using rule 133 (CTEBOOL -> FALSE .)
-    SUBTRACTION     reduce using rule 133 (CTEBOOL -> FALSE .)
-    SEMICOLON       reduce using rule 133 (CTEBOOL -> FALSE .)
-    LESS            reduce using rule 133 (CTEBOOL -> FALSE .)
-    GREATER         reduce using rule 133 (CTEBOOL -> FALSE .)
-    LESSEQUAL       reduce using rule 133 (CTEBOOL -> FALSE .)
-    GREATEREQUAL    reduce using rule 133 (CTEBOOL -> FALSE .)
-    NOTEQUAL        reduce using rule 133 (CTEBOOL -> FALSE .)
-    EQUAL           reduce using rule 133 (CTEBOOL -> FALSE .)
-    AND             reduce using rule 133 (CTEBOOL -> FALSE .)
-    OR              reduce using rule 133 (CTEBOOL -> FALSE .)
-    LPARENTHESIS    reduce using rule 133 (CTEBOOL -> FALSE .)
-    ID              reduce using rule 133 (CTEBOOL -> FALSE .)
-    CTEINT          reduce using rule 133 (CTEBOOL -> FALSE .)
-    CTEFLOAT        reduce using rule 133 (CTEBOOL -> FALSE .)
-    CTECHAR         reduce using rule 133 (CTEBOOL -> FALSE .)
-    TRUE            reduce using rule 133 (CTEBOOL -> FALSE .)
-    FALSE           reduce using rule 133 (CTEBOOL -> FALSE .)
-    RPARENTHESIS    reduce using rule 133 (CTEBOOL -> FALSE .)
+    MULTIPLICATION  reduce using rule 138 (CTEBOOL -> FALSE .)
+    DIVISION        reduce using rule 138 (CTEBOOL -> FALSE .)
+    ADDITION        reduce using rule 138 (CTEBOOL -> FALSE .)
+    SUBTRACTION     reduce using rule 138 (CTEBOOL -> FALSE .)
+    SEMICOLON       reduce using rule 138 (CTEBOOL -> FALSE .)
+    LESS            reduce using rule 138 (CTEBOOL -> FALSE .)
+    GREATER         reduce using rule 138 (CTEBOOL -> FALSE .)
+    LESSEQUAL       reduce using rule 138 (CTEBOOL -> FALSE .)
+    GREATEREQUAL    reduce using rule 138 (CTEBOOL -> FALSE .)
+    NOTEQUAL        reduce using rule 138 (CTEBOOL -> FALSE .)
+    EQUAL           reduce using rule 138 (CTEBOOL -> FALSE .)
+    AND             reduce using rule 138 (CTEBOOL -> FALSE .)
+    OR              reduce using rule 138 (CTEBOOL -> FALSE .)
+    LPARENTHESIS    reduce using rule 138 (CTEBOOL -> FALSE .)
+    ID              reduce using rule 138 (CTEBOOL -> FALSE .)
+    CTEINT          reduce using rule 138 (CTEBOOL -> FALSE .)
+    CTEFLOAT        reduce using rule 138 (CTEBOOL -> FALSE .)
+    CTECHAR         reduce using rule 138 (CTEBOOL -> FALSE .)
+    TRUE            reduce using rule 138 (CTEBOOL -> FALSE .)
+    FALSE           reduce using rule 138 (CTEBOOL -> FALSE .)
+    RPARENTHESIS    reduce using rule 138 (CTEBOOL -> FALSE .)
 
 
 state 106
 
     (128) varcte -> CTEBOOL . nodoCteB
-    (136) nodoCteB -> .
+    (141) nodoCteB -> .
 
-    MULTIPLICATION  reduce using rule 136 (nodoCteB -> .)
-    DIVISION        reduce using rule 136 (nodoCteB -> .)
-    ADDITION        reduce using rule 136 (nodoCteB -> .)
-    SUBTRACTION     reduce using rule 136 (nodoCteB -> .)
-    SEMICOLON       reduce using rule 136 (nodoCteB -> .)
-    LESS            reduce using rule 136 (nodoCteB -> .)
-    GREATER         reduce using rule 136 (nodoCteB -> .)
-    LESSEQUAL       reduce using rule 136 (nodoCteB -> .)
-    GREATEREQUAL    reduce using rule 136 (nodoCteB -> .)
-    NOTEQUAL        reduce using rule 136 (nodoCteB -> .)
-    EQUAL           reduce using rule 136 (nodoCteB -> .)
-    AND             reduce using rule 136 (nodoCteB -> .)
-    OR              reduce using rule 136 (nodoCteB -> .)
-    LPARENTHESIS    reduce using rule 136 (nodoCteB -> .)
-    ID              reduce using rule 136 (nodoCteB -> .)
-    CTEINT          reduce using rule 136 (nodoCteB -> .)
-    CTEFLOAT        reduce using rule 136 (nodoCteB -> .)
-    CTECHAR         reduce using rule 136 (nodoCteB -> .)
-    TRUE            reduce using rule 136 (nodoCteB -> .)
-    FALSE           reduce using rule 136 (nodoCteB -> .)
-    RPARENTHESIS    reduce using rule 136 (nodoCteB -> .)
+    MULTIPLICATION  reduce using rule 141 (nodoCteB -> .)
+    DIVISION        reduce using rule 141 (nodoCteB -> .)
+    ADDITION        reduce using rule 141 (nodoCteB -> .)
+    SUBTRACTION     reduce using rule 141 (nodoCteB -> .)
+    SEMICOLON       reduce using rule 141 (nodoCteB -> .)
+    LESS            reduce using rule 141 (nodoCteB -> .)
+    GREATER         reduce using rule 141 (nodoCteB -> .)
+    LESSEQUAL       reduce using rule 141 (nodoCteB -> .)
+    GREATEREQUAL    reduce using rule 141 (nodoCteB -> .)
+    NOTEQUAL        reduce using rule 141 (nodoCteB -> .)
+    EQUAL           reduce using rule 141 (nodoCteB -> .)
+    AND             reduce using rule 141 (nodoCteB -> .)
+    OR              reduce using rule 141 (nodoCteB -> .)
+    LPARENTHESIS    reduce using rule 141 (nodoCteB -> .)
+    ID              reduce using rule 141 (nodoCteB -> .)
+    CTEINT          reduce using rule 141 (nodoCteB -> .)
+    CTEFLOAT        reduce using rule 141 (nodoCteB -> .)
+    CTECHAR         reduce using rule 141 (nodoCteB -> .)
+    TRUE            reduce using rule 141 (nodoCteB -> .)
+    FALSE           reduce using rule 141 (nodoCteB -> .)
+    RPARENTHESIS    reduce using rule 141 (nodoCteB -> .)
 
     nodoCteB                       shift and go to state 135
 
@@ -1752,8 +1760,8 @@ state 111
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     QUOTE           shift and go to state 139
     LPARENTHESIS    shift and go to state 103
@@ -1810,8 +1818,8 @@ state 114
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -1854,8 +1862,8 @@ state 116
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2125,8 +2133,8 @@ state 132
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2148,7 +2156,7 @@ state 132
 
 state 133
 
-    (130) varcte_arr -> LBRACKET . RBRACKET
+    (135) varcte_arr -> LBRACKET . RBRACKET
 
     RBRACKET        shift and go to state 158
 
@@ -2266,8 +2274,8 @@ state 138
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2520,29 +2528,29 @@ state 157
 
 state 158
 
-    (130) varcte_arr -> LBRACKET RBRACKET .
+    (135) varcte_arr -> LBRACKET RBRACKET .
 
-    MULTIPLICATION  reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    DIVISION        reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    ADDITION        reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    SUBTRACTION     reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    SEMICOLON       reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    LESS            reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    GREATER         reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    LESSEQUAL       reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    GREATEREQUAL    reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    NOTEQUAL        reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    EQUAL           reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    AND             reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    OR              reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    LPARENTHESIS    reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    ID              reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    CTEINT          reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    CTEFLOAT        reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    CTECHAR         reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    TRUE            reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    FALSE           reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
-    RPARENTHESIS    reduce using rule 130 (varcte_arr -> LBRACKET RBRACKET .)
+    MULTIPLICATION  reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    DIVISION        reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    ADDITION        reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    SUBTRACTION     reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    SEMICOLON       reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    LESS            reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    GREATER         reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    LESSEQUAL       reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    GREATEREQUAL    reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    NOTEQUAL        reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    EQUAL           reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    AND             reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    OR              reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    LPARENTHESIS    reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    ID              reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    CTEINT          reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    CTEFLOAT        reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    CTECHAR         reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    TRUE            reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    FALSE           reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
+    RPARENTHESIS    reduce using rule 135 (varcte_arr -> LBRACKET RBRACKET .)
 
 
 state 159
@@ -2853,8 +2861,8 @@ state 181
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2884,8 +2892,8 @@ state 182
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2945,8 +2953,8 @@ state 184
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -2978,8 +2986,8 @@ state 185
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3040,8 +3048,8 @@ state 189
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3078,8 +3086,8 @@ state 190
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     RPARENTHESIS    reduce using rule 75 (expresion_loop -> .)
     SEMICOLON       reduce using rule 75 (expresion_loop -> .)
@@ -3117,8 +3125,8 @@ state 191
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3151,8 +3159,8 @@ state 192
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3184,8 +3192,8 @@ state 193
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3217,8 +3225,8 @@ state 194
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3250,8 +3258,8 @@ state 195
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3283,8 +3291,8 @@ state 196
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
@@ -3333,8 +3341,8 @@ state 198
     (127) varcte -> . CTEFLOAT nodoCteF
     (128) varcte -> . CTEBOOL nodoCteB
     (129) varcte -> . CTECHAR nodoCteC
-    (132) CTEBOOL -> . TRUE
-    (133) CTEBOOL -> . FALSE
+    (137) CTEBOOL -> . TRUE
+    (138) CTEBOOL -> . FALSE
 
     LPARENTHESIS    shift and go to state 103
     ID              shift and go to state 104
