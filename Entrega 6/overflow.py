@@ -647,7 +647,7 @@ def p_addProcDirFunc(p):
     '''addProcDirFunc :'''
     global cantidadDic
 
-    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6].upper(), 'Tam' :  cantidadDic}
+    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-7].upper(), 'Tam' :  cantidadDic}
     dirVarLocal.clear()
     print("pasa por addProcDirFunc")
     print("..........................")
