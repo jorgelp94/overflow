@@ -14,6 +14,13 @@ var food : char;
   return uno;
 }
 
+void func saludo() {
+  
+}
+
+void func resta(sal : int) {
+}
+
 main () {
   
     a = 0;

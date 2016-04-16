@@ -124,7 +124,7 @@ pSaltos = deque([])
 ###########################
 ## Contadores            ##
 ###########################
-contCuadruplos = 0
+contCuadruplos = 1
 contTemporales = 40001
 
 ###########################
@@ -462,14 +462,30 @@ cuboSemantico[BOOL][BOOL][DIF] = BOOL
 # Gramatica
 #############################################################################################
 def p_programa(p):
-    '''programa : PROGRAM ID SEMICOLON programa_var_loop programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END'''
+    '''programa : PROGRAM ID SEMICOLON programa_var_loop nodo18 programa_func_loop addProcDir MAIN addMainProc LPARENTHESIS RPARENTHESIS bloque END'''
     p[0] = "OK"
     print("Pasa por programa")
 
+def p_nodo18(p):
+    '''nodo18 :'''
+
+    global contCuadruplos
+    global op
+
+    op = GOTO
+    cuadruplos[contCuadruplos] = [op, "", "", ""]
+    contCuadruplos+=1
+    print(cuadruplos)
+
+
 def p_addProcDir(p):
     '''addProcDir :'''
-    dirProc[p[-4]] = {'Variables' : dirVarGlobales.copy(), 'Tipo' : p[-5]}
+    print("directorio de procedimientos antes de agregar")
+    print(dirProc)
+    global cantidadDic
+    dirProc[p[-5]] = {'Variables' : dirVarGlobales.copy(), 'Tipo' : p[-6].upper(), 'Tam' : cantidadDic.copy()}
     dirVarGlobales.clear()
+    cantidadDic.clear()
     print("Pasa por addProcDir")
     print("..........................")
     print(dirProc)
@@ -546,6 +562,11 @@ def p_addType(p):
     global floatDirGlobal
     global charDirGlobal
     global boolDirGlobal
+    global cantidadInt
+    global cantidadFloat
+    global cantidadChar
+    global cantidadBool
+    global cantidadDic
 
     scope.append('Global')
     while (len(varGlobales) > 0):
@@ -557,17 +578,26 @@ def p_addType(p):
             if p[-1].upper() == 'INT':
                 dirVarGlobales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : intDirGlobal}
                 intDirGlobal = intDirGlobal + 1
+                #cantidadInt+=1
             elif p[-1].upper() == 'FLOAT':
                 dirVarGlobales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : floatDirGlobal}
                 floatDirGlobal = floatDirGlobal + 1
+                #cantidadFloat+=1
             elif p[-1].upper() == 'CHAR':
                 dirVarGlobales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : charDirGlobal}
                 charDirGlobal = charDirGlobal + 1
-            else:
+                #cantidadChar+=1
+            elif p[-1].upper() =='BOOL':
                 dirVarGlobales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : floatDirGlobal}
                 floatDirGlobal = floatDirGlobal + 1
-            
-        
+                #cantidadBool+=1
+     
+
+    # cantidadDic['INT'] = cantidadInt
+    # cantidadDic['FLOAT'] = cantidadFloat
+    # cantidadDic['CHAR'] = cantidadChar
+    # cantidadDic['BOOL'] = cantidadBool
+
     print("pasa por addType")
     print("..........................")
     print(dirVarGlobales)
@@ -614,8 +644,8 @@ def p_escritura_type(p):
     print("pasa por escritura_type")
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque
-      | tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS variable_func addProcDirFunc bloque'''
+    '''funcion : tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS addProcDirFunc bloque clearFunc
+      | tipo FUNC ID LPARENTHESIS funcion_option RPARENTHESIS variable_func addProcDirFuncVars bloque clearFunc'''
     print("pasa por funcion")
 
 def p_variable_func(p):
@@ -636,19 +666,65 @@ def p_variable_arr_loop_func(p):
     '''variable_arr_loop_func : variable_arr_coma_func COLON subtipo addTypeFunc''' ## cambia el addType
 
 def p_variable_id_loop_coma_func(p):
-    '''variable_id_loop_coma_func : ID addDirVarGlobalesFunc 
-        | ID addDirVarGlobalesFunc COMA variable_id_loop_coma_func''' ## cambia addDirVArGlobales
+    '''variable_id_loop_coma_func : ID addDirVarLocalesFunc 
+        | ID addDirVarLocalesFunc COMA variable_id_loop_coma_func''' ## cambia addDirVArGlobales
 
 def p_variable_arr_coma_func(p):
-    '''variable_arr_coma_func : ID addDirVarGlobalesFunc LBRACKET RBRACKET
-        | ID addDirVarGlobalesFunc LBRACKET RBRACKET COMA variable_arr_coma_func''' ## cambia addDirVArGlobales
+    '''variable_arr_coma_func : ID addDirVarLocalesFunc LBRACKET RBRACKET
+        | ID addDirVarLocalesFunc LBRACKET RBRACKET COMA variable_arr_coma_func''' ## cambia addDirVArGlobales
 
 def p_addProcDirFunc(p):
     '''addProcDirFunc :'''
     global cantidadDic
+    global contCuadruplos
 
-    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-7].upper(), 'Tam' :  cantidadDic}
+    if p[-4] in dirProc:
+      print("Ya existe una funcion con ese mismo ID")
+      exit()
+    else:
+      dirProc[p[-4]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' : contCuadruplos}
+    
+    print("pasa por addProcDirFunc")
+    print("..........................")
+    print(dirProc)
+    print("..........................")
+    
+
+
+def p_clearFunc(p):
+    '''clearFunc :'''
+
+    global cantidadDic
+    global cantidadInt
+    global cantidadFloat
+    global cantidadChar
+    global cantidadBool
+    global intDirLocal
+    global floatDirLocal
+    global charDirLocal
+    global boolDirLocal
+    global contCuadruplos
+
+    # clear de cantidadDic, dirVarLocal
     dirVarLocal.clear()
+    cantidadDic.clear()
+
+    cantidadBool = 0
+    cantidadInt = 0
+    cantidadFloat = 0
+    cantidadChar = 0
+
+    intDirLocal = 10000
+    floatDirLocal = 11000
+    charDirLocal = 12000
+    boolDirLocal = 13000
+
+def p_addProcDirFuncVars(p):
+    '''addProcDirFuncVars :'''
+    global cantidadDic
+    global contCuadruplos
+
+    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-7].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' :contCuadruplos}
     print("pasa por addProcDirFunc")
     print("..........................")
     print(dirProc)
@@ -660,7 +736,7 @@ def p_funcion_option(p):
     print("pasa por funcion_option")
 
 def p_argumentos(p):
-    '''argumentos : ID addDirVarGlobalesFunc COLON tipo addTypeFunc argumentos_loop'''
+    '''argumentos : ID addDirVarLocalesFunc COLON tipo addTypeFunc argumentos_loop'''
     print("pasa por argumentos")
 
 def p_argumentos_loop(p):
@@ -668,10 +744,10 @@ def p_argumentos_loop(p):
       |'''
     print("pasa por argumentos_loop")
 
-def p_addDirVarGlobalesFunc(p):
-    '''addDirVarGlobalesFunc :  '''
+def p_addDirVarLocalesFunc(p):
+    '''addDirVarLocalesFunc :  '''
     varLocales.append(p[-1])
-    print("pasa por addDirVarGlobalesFunc")
+    print("pasa por addDirVarLocalesFunc")
     print("..........................")
     print(varLocales)
     print("..........................")
@@ -738,6 +814,9 @@ def p_nodo16(p):
     '''nodo16 : '''
     global contCuadruplos
     pSaltos.append(contCuadruplos)
+    print("pila saltos nodo16 while")
+    print(pSaltos)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 #############################
 ## Nodo17                  ##
@@ -752,6 +831,9 @@ def p_nodo17(p):
     contCuadruplos+=1
     cuadruplos[saltoEnFalso][3] = contCuadruplos
     print(cuadruplos)
+    print("pila saltos nodo17 terminando while")
+    print(pSaltos)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 #############################
 ## Condicion               ##
@@ -774,6 +856,9 @@ def p_nodo15(p):
     saltoEnFalso = pSaltos.pop()
     cuadruplos[saltoEnFalso][3] = contCuadruplos
     print(cuadruplos)
+    print("pila saltos nodo15 condicion")
+    print(pSaltos)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 #############################
 ## Nodo14                  ##
@@ -788,6 +873,9 @@ def p_nodo14(p):
     contCuadruplos+=1
     cuadruplos[saltoEnFalso][3] = contCuadruplos
     print(cuadruplos)
+    print("pila saltos nodo14 condicion_option")
+    print(pSaltos)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 #############################
 ## Nodo13                  ##
@@ -806,6 +894,10 @@ def p_nodo13(p):
     else:
         print ("Expresion no booleana")
         exit()
+
+    print("pila saltos nodo13 ciclo ()")
+    print(pSaltos)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 #############################
 ## Expresion               ##
