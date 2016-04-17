@@ -105,7 +105,15 @@ scope = []
 # Cuadruplos
 cuadruplos = {}
 
-# Contador de tipos de parametros
+# Contador de parametros
+paramInt = 0
+paramFloat = 0
+paramChar = 0
+paramBool = 0
+
+cantidadParam = {'INT' : paramInt, 'FLOAT' : paramFloat, 'CHAR' : paramChar, 'BOOL' : paramBool}
+
+# Contador de variables locales/globales
 cantidadInt = 0
 cantidadFloat = 0
 cantidadChar = 0
@@ -539,7 +547,8 @@ def p_estatuto(p):
       | condicion
       | escritura
       | regreso
-      | ciclo'''
+      | ciclo
+      | llamada'''
     print("pasa por estatuto")
 
 def p_regreso(p):
@@ -677,12 +686,13 @@ def p_addProcDirFunc(p):
     '''addProcDirFunc :'''
     global cantidadDic
     global contCuadruplos
+    global cantidadParam
 
     if p[-4] in dirProc:
       print("Ya existe una funcion con ese mismo ID")
       exit()
     else:
-      dirProc[p[-4]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' : contCuadruplos}
+      dirProc[p[-4]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-6].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' : contCuadruplos, 'Param' : cantidadParam.copy()}
     
     print("pasa por addProcDirFunc")
     print("..........................")
@@ -704,15 +714,26 @@ def p_clearFunc(p):
     global charDirLocal
     global boolDirLocal
     global contCuadruplos
+    global cantidadParam
+    global paramInt
+    global paramFloat
+    global paramChar
+    global paramBool
 
     # clear de cantidadDic, dirVarLocal
     dirVarLocal.clear()
     cantidadDic.clear()
+    cantidadParam.clear()
 
     cantidadBool = 0
     cantidadInt = 0
     cantidadFloat = 0
     cantidadChar = 0
+
+    paramInt = 0
+    paramFloat = 0
+    paramChar = 0
+    paramBool = 0
 
     intDirLocal = 10000
     floatDirLocal = 11000
@@ -724,7 +745,7 @@ def p_addProcDirFuncVars(p):
     global cantidadDic
     global contCuadruplos
 
-    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-7].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' :contCuadruplos}
+    dirProc[p[-5]] = {'Variables' : dirVarLocal.copy(), 'Tipo' : p[-7].upper(), 'Tam' :  cantidadDic.copy(), 'Cuad' :contCuadruplos, 'Param' : cantidadParam.copy()}
     print("pasa por addProcDirFunc")
     print("..........................")
     print(dirProc)
@@ -736,7 +757,7 @@ def p_funcion_option(p):
     print("pasa por funcion_option")
 
 def p_argumentos(p):
-    '''argumentos : ID addDirVarLocalesFunc COLON tipo addTypeFunc argumentos_loop'''
+    '''argumentos : ID addDirVarLocalesFunc COLON tipo addParamFunc argumentos_loop'''
     print("pasa por argumentos")
 
 def p_argumentos_loop(p):
@@ -751,6 +772,55 @@ def p_addDirVarLocalesFunc(p):
     print("..........................")
     print(varLocales)
     print("..........................")
+
+
+def p_addParamFunc(p):
+    '''addParamFunc :'''
+    global paramInt
+    global paramFloat
+    global paramChar
+    global paramBool
+    global cantidadParam
+
+    global intDirLocal
+    global floatDirLocal
+    global charDirLocal
+    global boolDirLocal
+
+    scope.append('Local')
+    while (len(varLocales) > 0):
+        if p[-1].upper() == 'INT':
+            dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : intDirLocal}
+            intDirLocal = intDirLocal + 1
+
+            paramInt = paramInt + 1
+        elif p[-1].upper() == 'FLOAT':
+            dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : floatDirLocal}
+            floatDirLocal = floatDirLocal + 1
+
+            paramFloat = paramFloat + 1
+        elif p[-1].upper() == 'CHAR':
+            dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : charDirLocal}
+            charDirLocal = charDirLocal + 1
+
+            paramChar = paramChar + 1
+        else:
+            dirVarLocal[varLocales.pop()] = {'Tipo' : p[-1].upper(), 'Scope' : scope[-1], 'Dir' : boolDirLocal}
+            boolDirLocal = boolDirLocal + 1
+            paramBool = paramBool + 1
+
+    cantidadParam['INT'] = paramInt
+    cantidadParam['FLOAT'] = paramFloat
+    cantidadParam['CHAR'] = paramChar
+    cantidadParam['BOOL'] = paramBool
+    
+    print("----------------------------")
+    print("Cantidad param:")
+    print(cantidadParam)
+    print("pasa por addTypeFunc")
+    print("..........................")
+    print(dirVarLocal)
+    print("..........................")    
 
 def p_addTypeFunc(p):
     '''addTypeFunc :'''
@@ -1253,8 +1323,18 @@ def p_varcte(p):
     print("..........................")
 
 def p_llamada(p):
-    '''llamada : ID LPARENTHESIS llamada_params RPARENTHESIS SEMICOLON'''
+    '''llamada : ID checkCall LPARENTHESIS llamada_params RPARENTHESIS SEMICOLON'''
     print("llamada...")
+
+def p_checkCall(p):
+    '''checkCall :'''
+    if p[-1] in dirProc:
+      # something to do here
+      print("hi")
+    else:
+      print("Funcion " + p[-1] + " no existe")
+      exit()
+      
 
 def p_llamada_params(p):
     '''llamada_params : params
