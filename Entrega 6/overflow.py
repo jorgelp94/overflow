@@ -186,6 +186,7 @@ GOTO = 14
 GOTOF = 15
 GOTOV = 16
 ERR = 17
+GOSUB = 18
 
 ###########################
 ## Cubo Semantico        ##
@@ -484,6 +485,8 @@ def p_nodo18(p):
     cuadruplos[contCuadruplos] = [op, "", "", ""]
     contCuadruplos+=1
     print(cuadruplos)
+    # hacer push a pila saltos
+    # cuando encuentre el main, sacar de la pila de saltos y guardar el numero de cuadruplo
 
 
 def p_addProcDir(p):
