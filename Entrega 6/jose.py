@@ -181,7 +181,7 @@ DIF = 13
 GOTO = 14
 GOTOF = 15
 GOTOV = 16
-ERR = 17
+ERR = -1
 
 ###########################
 ## Cubo Semantico        ##
@@ -713,11 +713,11 @@ def p_nodo17(p):
     '''nodo17 : '''
     global contCuadruplos
     operador = GOTO
-    saltoEnFalso = pSaltos.pop()
+    salto_en_falso = pSaltos.pop()
     dirCuadruplo = pSaltos.pop()
     dir_cuadruplos[contCuadruplos] = [operador, "", "", dirCuadruplo]
     contCuadruplos+=1
-    dir_cuadruplos[saltoEnFalso][3] = contCuadruplos
+    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
 
 #############################
 ## Condicion               ##
@@ -735,8 +735,9 @@ def p_condicion_option(p):
 def p_nodo15(p):
     '''nodo15 : '''
     global contCuadruplos
-    saltoEnFalso = pSaltos.pop()
-    dir_cuadruplos[saltoEnFalso][3] = contCuadruplos
+    
+    salto_en_falso = pSaltos.pop()
+    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
 
 #############################
 ## Nodo14                  ##
@@ -744,12 +745,12 @@ def p_nodo15(p):
 def p_nodo14(p):
     '''nodo14 : '''
     global contCuadruplos
-    operador = GOTO
-    saltoEnFalso = pSaltos.pop()
-    dir_cuadruplos[contCuadruplos] = [operador, "", "", ""]
+
+    salto_en_falso = pSaltos.pop()
+    dir_cuadruplos[contCuadruplos] = ['GOTO', "", "", ""]
     pSaltos.append(contCuadruplos)
-    contCuadruplos+=1
-    dir_cuadruplos[saltoEnFalso][3] = contCuadruplos
+    contCuadruplos += 1
+    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
 
 #############################
 ## Nodo13                  ##
@@ -757,13 +758,14 @@ def p_nodo14(p):
 def p_nodo13(p):
     '''nodo13 : '''
     global contCuadruplos
+
+    #Checa si el ultimo valor en la pila es booleano
     if pTipos[-1] == BOOL:
-        operador = GOTOF
         opdo_izq = pOperandos.pop()
         pTipos.pop()
-        dir_cuadruplos[contCuadruplos] = [operador, opdo_izq, "", ""]
+        dir_cuadruplos[contCuadruplos] = ['GOTOF', opdo_izq, "", ""]
         pSaltos.append(contCuadruplos)
-        contCuadruplos+=1
+        contCuadruplos += 1
     else:
         print ("Expresion no booleana")
         exit()
@@ -799,9 +801,13 @@ def p_nodo12_or(p):
 #############################
 def p_nodo11(p):
     '''nodo11 : '''
-    global contTemporales
     global contCuadruplos
+    global bool_dir_temporales
+    global cantidad_bool
+
+    # Checa si hay algun operador relacional en la pila
     if pOperadores:
+        # Checa si es operador es un AND o un OR
         if pOperadores[-1] == AND or pOperadores[-1] == OR:
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
@@ -810,11 +816,87 @@ def p_nodo11(p):
             tipo_izq = pTipos.pop()
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
-                dir_cuadruplos[contCuadruplos] = [operador, opdo_izq, opdo_der, contTemporales]
-                pOperandos.append(contTemporales)
+
+                # Se inicializan en cero
+                opdo_der_dir = 0
+                opdo_izq_dir = 0
+
+                # Checa si es operando derecho es una variable
+                if opdo_der in dir_var_locales.keys() :
+                    opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
+                elif opdo_der in dir_var_globales.keys() :
+                    opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
+
+                # Checa si el operando izquierdo es una variable
+                if opdo_izq in dir_var_locales.keys() :
+                    opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
+                elif opdo_izq in dir_var_globales.keys() :
+                    opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+
+                # En caso de que ambos sean variables
+                if opdo_izq_dir != 0 and opdo_der_dir != 0 :
+                    pOperandos.append(bool_dir_temporales)
+
+                    if operador == 6 :
+                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                    elif operador == 7 :
+                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                    else :
+                        print("Error en el operador de asignaciones - Expresion")
+                        exit()
+
+                    bool_dir_temporales += 1
+                    cantidad_bool += 1
+
+                # En caso que el opdo der sea variable
+                elif opdo_izq_dir == 0 and opdo_der_dir != 0 :
+                    pOperandos.append(bool_dir_temporales)
+
+                    if operador == 6 :
+                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                    elif operador == 7 :
+                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                    else :
+                        print("Error en el operador de asignaciones - Expresion")
+                        exit()
+
+                    bool_dir_temporales += 1
+                    cantidad_bool += 1
+
+                # En caso que el opdo izq sea variable
+                elif opdo_izq_dir != 0 and opdo_der_dir == 0 :
+                    pOperandos.append(bool_dir_temporales)
+
+                    if operador == 6 :
+                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                    elif operador == 7 :
+                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                    else :
+                        print("Error en el operador de asignaciones - Expresion")
+                        exit()
+
+                    bool_dir_temporales += 1
+                    cantidad_bool += 1
+                # En caso que amos sean constantes
+                elif opdo_izq_dir == 0 and opdo_der_dir == 0 :
+                    pOperandos.append(bool_dir_temporales)
+
+                    if operador == 6 :
+                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq, opdo_der, bool_dir_temporales]
+                    elif operador == 7 :
+                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq, opdo_der, bool_dir_temporales]
+                    else :
+                        print("Error en el operador de asignaciones - Expresion")
+                        exit()
+
+                    bool_dir_temporales += 1
+                    cantidad_bool += 1
+                else :
+                    print("Error de asignacion - Expresion")
+                    exit()
+
                 pTipos.append(tipo_res)
-                contTemporales+=1
-                contCuadruplos+=1
+                contCuadruplos += 1
             else:
                 print("Error de condicion - valor no booleano")
                 exit()
@@ -876,7 +958,7 @@ def p_nodo10(p):
 
 
                 # En caso de que ambos sean variables
-                if opdo_izq_dir != 0 and opdo_der_dir != 0 : #overflow
+                if opdo_izq_dir != 0 and opdo_der_dir != 0 :
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
@@ -970,7 +1052,7 @@ def p_nodo10(p):
                     exit()
 
                 pTipos.append(tipo_res)
-                contCuadruplos+=1
+                contCuadruplos += 1
             else:
                 print("Error arimetico - tipos no validos - Nueva exp")
                 exit()
