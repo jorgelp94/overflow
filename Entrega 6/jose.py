@@ -119,7 +119,7 @@ pSaltos = deque([])
 ###########################
 
 # Cantidad de cuadruplos
-contCuadruplos = 0
+contador_cuadruplos = 0
 
 # Cantidad de variables por tipos
 cantidad_int = 0
@@ -703,21 +703,22 @@ def p_ciclo(p):
 #############################
 def p_nodo16(p):
     '''nodo16 : '''
-    global contCuadruplos
-    pSaltos.append(contCuadruplos)
+    global contador_cuadruplos
+
+    pSaltos.append(contador_cuadruplos)
 
 #############################
 ## Nodo17                  ##
 #############################
 def p_nodo17(p):
     '''nodo17 : '''
-    global contCuadruplos
-    operador = GOTO
+    global contador_cuadruplos
+
     salto_en_falso = pSaltos.pop()
-    dirCuadruplo = pSaltos.pop()
-    dir_cuadruplos[contCuadruplos] = [operador, "", "", dirCuadruplo]
-    contCuadruplos+=1
-    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
+    dir_salto = pSaltos.pop()
+    dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", dir_salto]
+    contador_cuadruplos += 1
+    dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
 
 #############################
 ## Condicion               ##
@@ -734,38 +735,38 @@ def p_condicion_option(p):
 #############################
 def p_nodo15(p):
     '''nodo15 : '''
-    global contCuadruplos
-    
+    global contador_cuadruplos
+
     salto_en_falso = pSaltos.pop()
-    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
+    dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
 
 #############################
 ## Nodo14                  ##
 #############################
 def p_nodo14(p):
     '''nodo14 : '''
-    global contCuadruplos
+    global contador_cuadruplos
 
     salto_en_falso = pSaltos.pop()
-    dir_cuadruplos[contCuadruplos] = ['GOTO', "", "", ""]
-    pSaltos.append(contCuadruplos)
-    contCuadruplos += 1
-    dir_cuadruplos[salto_en_falso][3] = contCuadruplos
+    dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", ""]
+    pSaltos.append(contador_cuadruplos)
+    contador_cuadruplos += 1
+    dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
 
 #############################
 ## Nodo13                  ##
 #############################
 def p_nodo13(p):
     '''nodo13 : '''
-    global contCuadruplos
+    global contador_cuadruplos
 
     #Checa si el ultimo valor en la pila es booleano
     if pTipos[-1] == BOOL:
         opdo_izq = pOperandos.pop()
         pTipos.pop()
-        dir_cuadruplos[contCuadruplos] = ['GOTOF', opdo_izq, "", ""]
-        pSaltos.append(contCuadruplos)
-        contCuadruplos += 1
+        dir_cuadruplos[contador_cuadruplos] = ['GOTOF', opdo_izq, "", ""]
+        pSaltos.append(contador_cuadruplos)
+        contador_cuadruplos += 1
     else:
         print ("Expresion no booleana")
         exit()
@@ -801,7 +802,7 @@ def p_nodo12_or(p):
 #############################
 def p_nodo11(p):
     '''nodo11 : '''
-    global contCuadruplos
+    global contador_cuadruplos
     global bool_dir_temporales
     global cantidad_bool
 
@@ -838,9 +839,9 @@ def p_nodo11(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 6 :
-                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 7 :
-                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Expresion")
                         exit()
@@ -853,9 +854,9 @@ def p_nodo11(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 6 :
-                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 7 :
-                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Expresion")
                         exit()
@@ -868,9 +869,9 @@ def p_nodo11(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 6 :
-                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 7 :
-                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Expresion")
                         exit()
@@ -882,9 +883,9 @@ def p_nodo11(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 6 :
-                        dir_cuadruplos[contCuadruplos] = ['OR', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 7 :
-                        dir_cuadruplos[contCuadruplos] = ['AND', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq, opdo_der, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Expresion")
                         exit()
@@ -896,7 +897,7 @@ def p_nodo11(p):
                     exit()
 
                 pTipos.append(tipo_res)
-                contCuadruplos += 1
+                contador_cuadruplos += 1
             else:
                 print("Error de condicion - valor no booleano")
                 exit()
@@ -921,7 +922,7 @@ def p_nuevaexp_type(p):
 #############################
 def p_nodo10(p):
     '''nodo10 : '''
-    global contCuadruplos
+    global contador_cuadruplos
     global bool_dir_temporales
     global cantidad_bool
 
@@ -962,17 +963,17 @@ def p_nodo10(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 9 :
-                        dir_cuadruplos[contCuadruplos] = ['MENOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 10 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 11 :
-                        dir_cuadruplos[contCuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 12 :
-                        dir_cuadruplos[contCuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     elif operador == 13 :
-                        dir_cuadruplos[contCuadruplos] = ['DIF', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Nueva exp")
                         exit()
@@ -985,17 +986,17 @@ def p_nodo10(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 9 :
-                        dir_cuadruplos[contCuadruplos] = ['MENOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 10 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 11 :
-                        dir_cuadruplos[contCuadruplos] = ['MENORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 12 :
-                        dir_cuadruplos[contCuadruplos] = ['IGUAL', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     elif operador == 13 :
-                        dir_cuadruplos[contCuadruplos] = ['DIF', opdo_izq, opdo_der_dir, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq, opdo_der_dir, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Nueva exp")
                         exit()
@@ -1008,17 +1009,17 @@ def p_nodo10(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 9 :
-                        dir_cuadruplos[contCuadruplos] = ['MENOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 10 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 11 :
-                        dir_cuadruplos[contCuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 12 :
-                        dir_cuadruplos[contCuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     elif operador == 13 :
-                        dir_cuadruplos[contCuadruplos] = ['DIF', opdo_izq_dir, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq_dir, opdo_der, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Nueva exp")
                         exit()
@@ -1030,17 +1031,17 @@ def p_nodo10(p):
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYOR', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 9 :
-                        dir_cuadruplos[contCuadruplos] = ['MENOR', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 10 :
-                        dir_cuadruplos[contCuadruplos] = ['MAYORIG', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 11 :
-                        dir_cuadruplos[contCuadruplos] = ['MENORIG', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 12 :
-                        dir_cuadruplos[contCuadruplos] = ['IGUAL', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq, opdo_der, bool_dir_temporales]
                     elif operador == 13 :
-                        dir_cuadruplos[contCuadruplos] = ['DIF', opdo_izq, opdo_der, bool_dir_temporales]
+                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq, opdo_der, bool_dir_temporales]
                     else :
                         print("Error en el operador de asignaciones - Nueva exp")
                         exit()
@@ -1052,7 +1053,7 @@ def p_nodo10(p):
                     exit()
 
                 pTipos.append(tipo_res)
-                contCuadruplos += 1
+                contador_cuadruplos += 1
             else:
                 print("Error arimetico - tipos no validos - Nueva exp")
                 exit()
@@ -1106,7 +1107,7 @@ def p_asignacion_type(p):
 def p_nodo8(p):
     '''nodo8 : '''
     global contTemporales
-    global contCuadruplos
+    global contador_cuadruplos
 
     # Nombre del programa
     program_name = dir_proc.keys()[0]
@@ -1184,15 +1185,15 @@ def p_nodo8(p):
 
                 # Si es != de cero es variable de lo contrario es constante
                 if opdo_izq_dir != 0 and opdo_der_dir != 0 :
-                    dir_cuadruplos[contCuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir]
+                    dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir]
                 elif opdo_izq_dir == 0 and opdo_der_dir != 0 :
-                    dir_cuadruplos[contCuadruplos] = ['ASIG', opdo_izq, "", opdo_der_dir]
+                    dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq, "", opdo_der_dir]
                 elif opdo_izq_dir != 0 and opdo_der_dir == 0 :
-                    dir_cuadruplos[contCuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der]
+                    dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der]
                 else :
                     print("Error de asignacion")
 
-                contCuadruplos+=1
+                contador_cuadruplos+=1
             else :
                 print("Error de asignacion - tipo de variable no es compatible con asignacion")
                 exit()
@@ -1227,7 +1228,7 @@ def p_nodo3_resta(p):
 #############################
 def p_nodo5(p):
     '''nodo5 : '''
-    global contCuadruplos
+    global contador_cuadruplos
     global int_dir_temporales
     global float_dir_temporales
     global cantidad_int
@@ -1273,9 +1274,9 @@ def p_nodo5(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1286,9 +1287,9 @@ def p_nodo5(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1305,9 +1306,9 @@ def p_nodo5(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq, opdo_der_dir, int_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq, opdo_der_dir, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1318,9 +1319,9 @@ def p_nodo5(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq, opdo_der_dir, float_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq, opdo_der_dir, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1337,9 +1338,9 @@ def p_nodo5(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq_dir, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq_dir, opdo_der, int_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq_dir, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq_dir, opdo_der, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1350,9 +1351,9 @@ def p_nodo5(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq_dir, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq_dir, opdo_der, float_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq_dir, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq_dir, opdo_der, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1369,9 +1370,9 @@ def p_nodo5(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq, opdo_der, int_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq, opdo_der, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1382,9 +1383,9 @@ def p_nodo5(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 1 :
-                            dir_cuadruplos[contCuadruplos] = ['SUMA', opdo_izq, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['SUMA', opdo_izq, opdo_der, float_dir_temporales]
                         elif operador == 2 :
-                            dir_cuadruplos[contCuadruplos] = ['RESTA', opdo_izq, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['RESTA', opdo_izq, opdo_der, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - Exp")
                             exit()
@@ -1399,7 +1400,7 @@ def p_nodo5(p):
                     exit()
 
                 pTipos.append(tipo_res)
-                contCuadruplos += 1
+                contador_cuadruplos += 1
             else:
                 print("Error arimetico - tipos no validos - Exp")
                 exit()
@@ -1434,7 +1435,7 @@ def p_nodo2_div(p):
 #############################
 def p_nodo4(p):
     '''nodo4 : '''
-    global contCuadruplos
+    global contador_cuadruplos
     global int_dir_temporales
     global float_dir_temporales
     global cantidad_int
@@ -1480,9 +1481,9 @@ def p_nodo4(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq_dir, opdo_der_dir, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1493,9 +1494,9 @@ def p_nodo4(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq_dir, opdo_der_dir, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1512,9 +1513,9 @@ def p_nodo4(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq, opdo_der_dir, int_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq, opdo_der_dir, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq, opdo_der_dir, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1525,9 +1526,9 @@ def p_nodo4(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq, opdo_der_dir, float_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq, opdo_der_dir, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq, opdo_der_dir, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1544,9 +1545,9 @@ def p_nodo4(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq_dir, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq_dir, opdo_der, int_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq_dir, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq_dir, opdo_der, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1557,9 +1558,9 @@ def p_nodo4(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq_dir, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq_dir, opdo_der, float_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq_dir, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq_dir, opdo_der, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1576,9 +1577,9 @@ def p_nodo4(p):
                         pOperandos.append(int_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq, opdo_der, int_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq, opdo_der, int_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq, opdo_der, int_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1589,9 +1590,9 @@ def p_nodo4(p):
                         pOperandos.append(float_dir_temporales)
 
                         if operador == 3 :
-                            dir_cuadruplos[contCuadruplos] = ['MULT', opdo_izq, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['MULT', opdo_izq, opdo_der, float_dir_temporales]
                         elif operador == 4 :
-                            dir_cuadruplos[contCuadruplos] = ['DIV', opdo_izq, opdo_der, float_dir_temporales]
+                            dir_cuadruplos[contador_cuadruplos] = ['DIV', opdo_izq, opdo_der, float_dir_temporales]
                         else :
                             print("Error en el operador de asignaciones - termino")
                             exit()
@@ -1606,7 +1607,7 @@ def p_nodo4(p):
                     exit()
 
                 pTipos.append(tipo_res)
-                contCuadruplos+=1
+                contador_cuadruplos+=1
             else:
                 print("Error arimetico - tipos no validos - termino")
                 exit()
@@ -1743,6 +1744,7 @@ def p_nodoCteC(p):
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error at %s, illegal token %s!"%(p.lineno, p.value))
+    exit()
 
 # Build the lexer
 lex.lex()
