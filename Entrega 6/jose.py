@@ -1,6 +1,7 @@
 import sys
 import ply.lex as lex
 import ply.yacc as yacc
+import collections
 from collections import deque
 
 #############################################################################################
@@ -15,8 +16,7 @@ reserved = {
   'else' : 'ELSE', 'var' : 'VAR', 'int' : 'INTTYPE', 'float' : 'FLOATTYPE',
   'char' : 'CHARTYPE', 'bool' : 'BOOLTYPE', 'void' : 'VOIDTYPE',
   'while' : 'WHILE', 'and' : 'AND', 'or'  : 'OR', 'main' : 'MAIN',
-  'return' : 'RETURN', 'true' : 'TRUE', 'false' : 'FALSE'
-  # 'func' : 'FUNC'
+  'return' : 'RETURN', 'true' : 'TRUE', 'false' : 'FALSE', 'func' : 'FUNC'
 }
 
 ###########################
@@ -96,9 +96,13 @@ dir_var_locales = {}
 # Pila de variables globales y locales
 pila_var_globales = []
 pila_var_locales = []
+pila_funciones = []
+pila_var_funciones = []
 
 # Directorio de funciones
 dir_funciones = {}
+dir_var_funciones = {}
+dir_var_locales_funciones = {}
 
 # Directorio de procedimientos
 dir_proc = {}
@@ -130,29 +134,42 @@ cantidad_bool = 0
 # Cantidad de variables
 cantidad_vars = {'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool}
 
-contTemporales = 40001
-
 ###########################
 ## Dicrecciones virtuales##
 ###########################
 
 # Locales
-int_dir_local = 10000
-float_dir_local = 12500
-char_dir_local = 15000
-bool_dir_local = 17500
+int_dir_locales = 10000
+float_dir_locales = 12500
+char_dir_locales = 15000
+bool_dir_locales = 17500
 
 # Globales
-int_dir_global = 20000
-float_dir_global = 22500
-char_dir_global = 25000
-bool_dir_global = 27500
+int_dir_globales = 20000
+float_dir_globales = 22500
+char_dir_globales = 25000
+bool_dir_globales = 27500
 
 # Temporales
 int_dir_temporales = 30000
 float_dir_temporales = 32500
 char_dir_temporales = 35000
 bool_dir_temporales = 37500
+
+# Params Funciones
+int_dir_funciones = 40000
+float_dir_funciones = 42500
+char_dir_funciones = 45000
+bool_dir_funciones = 47500
+
+# Local Funciones
+int_dir_funciones_locales = 50000
+float_dir_funciones_locales = 52500
+char_dir_funciones_locales = 55000
+bool_dir_funciones_locales = 57500
+
+# Funciones
+id_funciones = 60000
 
 ###########################
 ## Tipos                 ##
@@ -482,16 +499,24 @@ def p_programa(p):
     print(dir_var_locales)
     print("\n")
 
+    print("Funciones")
+    print(dir_funciones)
+    print("\n")
+
+    print("Params de Funciones")
+    print(collections.OrderedDict(sorted(dir_var_funciones.items())))
+    print("\n")
+
+    print("Variables de Funciones")
+    print(dir_var_locales_funciones)
+    print("\n")
+
     print("Cuadruplos")
     print(dir_cuadruplos)
     print("\n")
 
     print("Contador de variables")
     print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
-    print("\n")
-
-    print("Directorio de procedimientos")
-    print(dir_proc)
     print("\n")
 
 #############################
@@ -524,10 +549,10 @@ def p_variable_end_loop(p):
 
 def p_global_addType(p):
     '''global_addType :'''
-    global int_dir_global
-    global float_dir_global
-    global char_dir_global
-    global bool_dir_global
+    global int_dir_globales
+    global float_dir_globales
+    global char_dir_globales
+    global bool_dir_globales
     global cantidad_int
     global cantidad_float
     global cantidad_char
@@ -544,20 +569,20 @@ def p_global_addType(p):
             exit()
         else:
             if p[-1] == 'int' :
-                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_global}
-                int_dir_global += 1
+                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_globales}
+                int_dir_globales += 1
                 cantidad_int += 1
             elif p[-1] == 'float' :
-                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_global}
-                float_dir_global += 1
+                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_globales}
+                float_dir_globales += 1
                 cantidad_float += 1
             elif p[-1] == 'char' :
-                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_global}
-                char_dir_global += 1
+                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_globales}
+                char_dir_globales += 1
                 cantidad_char += 1
             elif p[-1] == 'bool' :
-                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_global}
-                bool_dir_global += 1
+                dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_globales}
+                bool_dir_globales += 1
                 cantidad_bool += 1
             else :
                 print("Error al agregar variable global")
@@ -578,7 +603,6 @@ def p_variable_local_id_loop_coma(p):
 # Agrega las variabes de un solo tipo a la pila
 def p_add_pila_var_locales(p):
     '''add_pila_var_locales :'''
-    global pila_var_locales
     pila_var_locales.append(p[-1])
 
 # En caso de querer seguir declarando variables de otro tipo
@@ -588,10 +612,10 @@ def p_variable_local_end_loop(p):
 
 def p_local_addType(p):
     '''local_addType :'''
-    global int_dir_local
-    global float_dir_local
-    global char_dir_local
-    global bool_dir_local
+    global int_dir_locales
+    global float_dir_locales
+    global char_dir_locales
+    global bool_dir_locales
     global cantidad_int
     global cantidad_float
     global cantidad_char
@@ -608,20 +632,20 @@ def p_local_addType(p):
             exit()
         else:
             if p[-1] == 'int' :
-                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_local}
-                int_dir_local += 1
+                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_locales}
+                int_dir_locales += 1
                 cantidad_int += 1
             elif p[-1] == 'float' :
-                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_local}
-                float_dir_local += 1
+                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_locales}
+                float_dir_locales += 1
                 cantidad_float += 1
             elif p[-1] == 'char' :
-                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_local}
-                char_dir_local += 1
+                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_locales}
+                char_dir_locales += 1
                 cantidad_char += 1
             elif p[-1] == 'bool' :
-                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_local}
-                bool_dir_local += 1
+                dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_locales}
+                bool_dir_locales += 1
                 cantidad_bool += 1
             else :
                 print("Error al agregar variable local")
@@ -630,14 +654,135 @@ def p_local_addType(p):
 ## Funciones               ##
 #############################
 def p_declaracion_funciones(p):
-    '''declaracion_funciones : '''
+    '''declaracion_funciones : funcion declaracion_funciones
+    |'''
+
+def p_funcion(p):
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion bloque'''
+
+def p_add_dir_funciones(p):
+    '''add_dir_funciones : '''
+
+    scope = 'Funcion'
+
+    #Checa si la funcion ya esta declarada
+    if p[-1] not in dir_funciones :
+        dir_funciones[p[-1]] = {'Tipo' : p[-3].upper(), 'Scope' : scope, 'ID' : id_funciones}
+        pila_funciones.append([p[-1]])
+    else :
+        print("Ya existe una funcion con este nombre")
+        exit()
+
+def p_params(p):
+    '''params : ID add_pila_funciones params_loop COLON tipo function_add_type semicolon_function_loop
+    |'''
+
+def p_params_loop(p):
+    '''params_loop : COMA ID add_pila_funciones params_loop
+    |'''
+
+def p_add_pila_funciones(p):
+    '''add_pila_funciones : '''
+    # Cecha si el parametro no se repite
+    if p[-1] not in pila_var_funciones :
+        pila_var_funciones.append(p[-1])
+    else :
+        print("Ya existe una variable con ese nombre - funcion")
+        exit()
+
+def p_semicolon_function_loop(p):
+    '''semicolon_function_loop : SEMICOLON params
+    |'''
+
+def p_vars_locales_funcion(p):
+    '''vars_locales_funcion : VAR ID add_pila_funciones vars_locales_id_loop COLON tipo function_local_add_type semicolon_function_local_loop
+    |'''
+
+def p_vars_locales_id_loop(p):
+    '''vars_locales_id_loop : COMA ID add_pila_funciones vars_locales_id_loop
+    |'''
+
+def p_semicolon_function_local_loop(p):
+    '''semicolon_function_local_loop : SEMICOLON vars_locales_funcion
+    |'''
+
+def p_function_add_type(p):
+    '''function_add_type : '''
+    global int_dir_funciones
+    global float_dir_funciones
+    global char_dir_funciones
+    global bool_dir_funciones
+    global cantidad_int
+    global cantidad_float
+    global cantidad_char
+    global cantidad_bool
+
+    scope = pila_funciones[-1][0].upper()
+
+    while (len(pila_var_funciones) > 0) :
+        tempPop = pila_var_funciones.pop()
+
+        # Checa si el tipo de las variables
+        if p[-1] == 'int' :
+            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
+            int_dir_funciones += 1
+            cantidad_int += 1
+        elif p[-1] == 'float' :
+            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
+            float_dir_funciones += 1
+            cantidad_float += 1
+        elif p[-1] == 'char' :
+            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
+            char_dir_funciones += 1
+            cantidad_char += 1
+        elif p[-1] == 'bool' :
+            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
+            bool_dir_funciones += 1
+            cantidad_bool += 1
+        else :
+            print("Error al agregar variable local")
+
+def p_function_local_add_type(p):
+    '''function_local_add_type : '''
+    global int_dir_funciones_locales
+    global float_dir_funciones_locales
+    global char_dir_funciones_locales
+    global bool_dir_funciones_locales
+    global cantidad_int
+    global cantidad_float
+    global cantidad_char
+    global cantidad_bool
+
+    scope = pila_funciones[-1][0].upper()
+
+    while (len(pila_var_funciones) > 0) :
+        tempPop = pila_var_funciones.pop()
+
+        # Checa si el tipo de las variables
+        if p[-1] == 'int' :
+            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones_locales}
+            int_dir_funciones_locales += 1
+            cantidad_int += 1
+        elif p[-1] == 'float' :
+            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones_locales}
+            float_dir_funciones_locales += 1
+            cantidad_float += 1
+        elif p[-1] == 'char' :
+            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones_locales}
+            char_dir_funciones_locales += 1
+            cantidad_char += 1
+        elif p[-1] == 'bool' :
+            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}
+            bool_dir_funciones_locales += 1
+            cantidad_bool += 1
+        else :
+            print("Error al agregar variable local")
 
 #############################
 ## Proc Dir                ##
 #############################
 def p_add_dir_proc(p):
     '''add_dir_proc :'''
-    global dir_var_globales
     dir_proc[p[-4]] = {
         'Variables Globales' : dir_var_globales,
         'Variables Locales' : dir_var_locales,
@@ -676,14 +821,15 @@ def p_estatuto(p):
       | ciclo
       | variables_locales'''
 
-
 #############################
-## ??       ##
+## Regreso                 ##
 #############################
-
 def p_regreso(p):
     '''regreso : RETURN exp SEMICOLON'''
 
+#############################
+## Escritura               ##
+#############################
 def p_escritura(p):
     '''escritura : PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON'''
 
