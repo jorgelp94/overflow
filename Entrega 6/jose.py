@@ -103,13 +103,18 @@ pila_var_funciones = []
 # Directorio de funciones
 dir_funciones = {}
 dir_var_funciones = {}
+dir_var_funciones_pila = []
 dir_var_locales_funciones = {}
+dir_var_locales_funciones_pila = []
 
 # Directorio de procedimientos
 dir_proc = {}
 
 # Directorio de cuadruplos
 dir_cuadruplos = {}
+
+#Scope
+scope = 'Global'
 
 ###########################
 ## Pilas                 ##
@@ -131,6 +136,11 @@ cantidad_int = 0
 cantidad_float = 0
 cantidad_char = 0
 cantidad_bool = 0
+
+cantidad_int_func = 0
+cantidad_float_func = 0
+cantidad_char_func = 0
+cantidad_bool_func = 0
 
 # Cantidad de variables
 cantidad_vars = {'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool}
@@ -489,7 +499,7 @@ cuboSemantico[BOOL][BOOL][DIF] = BOOL
 # Gramatica
 #############################################################################################
 def p_programa(p):
-    '''programa : PROGRAM ID SEMICOLON variables_globales declaracion_funciones add_dir_proc MAIN LPARENTHESIS RPARENTHESIS bloque END'''
+    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales add_main_goto update_dir_proc declaracion_funciones MAIN LPARENTHESIS RPARENTHESIS bloque END'''
     p[0] = "OK"
 
     global cantidad_int
@@ -530,6 +540,12 @@ def p_programa(p):
     print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
     print("\n")
 
+def p_add_main_goto(p):
+    '''add_main_goto : '''
+    global contador_cuadruplos
+    dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", ""]
+    contador_cuadruplos += 1
+
 #############################
 ## Variables Globlaes      ##
 #############################
@@ -568,6 +584,7 @@ def p_global_addType(p):
     global cantidad_float
     global cantidad_char
     global cantidad_bool
+    global scope
 
     scope = 'Global'
 
@@ -631,6 +648,7 @@ def p_local_addType(p):
     global cantidad_float
     global cantidad_char
     global cantidad_bool
+    global scope
 
     scope = 'Local'
 
@@ -669,17 +687,22 @@ def p_declaracion_funciones(p):
     |'''
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion bloque'''
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque'''
 
 def p_add_dir_funciones(p):
     '''add_dir_funciones : '''
+    global id_funciones
+    global scope
 
     scope = 'Funcion'
 
     #Checa si la funcion ya esta declarada
     if p[-1] not in dir_funciones :
         dir_funciones[p[-1]] = {'Tipo' : p[-3].upper(), 'Scope' : scope, 'ID' : id_funciones}
-        pila_funciones.append([p[-1]])
+        dir_var_funciones[p[-1]] = {} # se les pone la llave de la funcion
+        dir_var_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
+        id_funciones += 1
+        pila_funciones.append([p[-1]]) # Agregas la funcion a la pila
     else :
         print("Ya existe una funcion con este nombre")
         exit()
@@ -694,12 +717,40 @@ def p_params_loop(p):
 
 def p_add_pila_funciones(p):
     '''add_pila_funciones : '''
-    # Cecha si el parametro no se repite
+    # Cecha si el parametro no se repite, guarda las variables
     if p[-1] not in pila_var_funciones :
-        pila_var_funciones.append(p[-1])
+        pila_var_funciones.insert(0, p[-1])
     else :
         print("Ya existe una variable con ese nombre - funcion")
         exit()
+
+def p_add_cantidad_vars(p):
+    '''add_cantidad_vars : '''
+    global cantidad_int_func
+    global cantidad_float_func
+    global cantidad_bool_func
+    global cantidad_char_func
+    global dir_var_locales_funciones
+    global contador_cuadruplos
+    global dir_var_funciones_pila
+    global dir_var_locales_funciones_pila
+
+    dir_funciones[p[-6]].update({'Start' : contador_cuadruplos})
+
+    dir_funciones[p[-6]].update({'Parametros' : dir_var_funciones_pila})
+
+    dir_funciones[p[-6]].update({'Vars Locales' : dir_var_locales_funciones_pila})
+
+    dir_funciones[p[-6]].update({'Cantidad Vars' :
+    {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
+
+    # Se resetean los contadores
+    dir_var_locales_funciones_pila = []
+    dir_var_funciones_pila = []
+    cantidad_int_func = 0
+    cantidad_float_func = 0
+    cantidad_bool_func = 0
+    cantidad_char_func = 0
 
 def p_semicolon_function_loop(p):
     '''semicolon_function_loop : SEMICOLON params
@@ -723,33 +774,39 @@ def p_function_add_type(p):
     global float_dir_funciones
     global char_dir_funciones
     global bool_dir_funciones
-    global cantidad_int
-    global cantidad_float
-    global cantidad_char
-    global cantidad_bool
+    global cantidad_int_func
+    global cantidad_float_func
+    global cantidad_char_func
+    global cantidad_bool_func
+    global scope
 
-    scope = pila_funciones[-1][0].upper()
+    func_scope = pila_funciones[-1][0]
+    scope = 'Funcion'
 
     while (len(pila_var_funciones) > 0) :
         tempPop = pila_var_funciones.pop()
 
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
-            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
+            dir_var_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
+            dir_var_funciones_pila.append([tempPop ,'INT', int_dir_funciones])
             int_dir_funciones += 1
-            cantidad_int += 1
+            cantidad_int_func += 1
         elif p[-1] == 'float' :
-            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
+            dir_var_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
+            dir_var_funciones_pila.append([tempPop ,'FLOAT', float_dir_funciones])
             float_dir_funciones += 1
-            cantidad_float += 1
+            cantidad_float_func += 1
         elif p[-1] == 'char' :
-            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
+            dir_var_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
+            dir_var_funciones_pila.append([tempPop ,'CHAR', char_dir_funciones])
             char_dir_funciones += 1
-            cantidad_char += 1
+            cantidad_char_func += 1
         elif p[-1] == 'bool' :
-            dir_var_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
+            dir_var_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
+            dir_var_funciones_pila.append([tempPop ,'BOOL', bool_dir_funciones])
             bool_dir_funciones += 1
-            cantidad_bool += 1
+            cantidad_bool_func += 1
         else :
             print("Error al agregar variable local")
 
@@ -759,33 +816,39 @@ def p_function_local_add_type(p):
     global float_dir_funciones_locales
     global char_dir_funciones_locales
     global bool_dir_funciones_locales
-    global cantidad_int
-    global cantidad_float
-    global cantidad_char
-    global cantidad_bool
+    global cantidad_int_func
+    global cantidad_float_func
+    global cantidad_char_func
+    global cantidad_bool_func
+    global scope
 
-    scope = pila_funciones[-1][0].upper()
+    func_scope = pila_funciones[-1][0]
+    scope = 'Funcion'
 
     while (len(pila_var_funciones) > 0) :
         tempPop = pila_var_funciones.pop()
 
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
-            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones_locales}
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones_locales}
+            dir_var_locales_funciones_pila.append([tempPop ,'INT', int_dir_funciones_locales])
             int_dir_funciones_locales += 1
-            cantidad_int += 1
+            cantidad_int_func += 1
         elif p[-1] == 'float' :
-            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones_locales}
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones_locales}
+            dir_var_locales_funciones_pila.append([tempPop ,'FLOAT', int_dir_funciones_locales])
             float_dir_funciones_locales += 1
-            cantidad_float += 1
+            cantidad_float_func += 1
         elif p[-1] == 'char' :
-            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones_locales}
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones_locales}
+            dir_var_locales_funciones_pila.append([tempPop ,'CHAR', int_dir_funciones_locales])
             char_dir_funciones_locales += 1
-            cantidad_char += 1
+            cantidad_char_func += 1
         elif p[-1] == 'bool' :
-            dir_var_locales_funciones[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}
+            dir_var_locales_funciones_pila.append([tempPop ,'BOOL', int_dir_funciones_locales])
             bool_dir_funciones_locales += 1
-            cantidad_bool += 1
+            cantidad_bool_func += 1
         else :
             print("Error al agregar variable local")
 
@@ -794,11 +857,15 @@ def p_function_local_add_type(p):
 #############################
 def p_add_dir_proc(p):
     '''add_dir_proc :'''
-    dir_proc[p[-4]] = {
-        'Variables Globales' : dir_var_globales,
-        'Variables Locales' : dir_var_locales,
-        'Funciones' : dir_funciones
-    }
+    dir_proc[p[-2]] = {}
+
+def p_update_dir_proc(p):
+    '''update_dir_proc : '''
+    dir_proc[p[-5]].update({
+    'Variables Globales' : dir_var_globales,
+    'Variables Locales' : dir_var_locales,
+    'Funciones' : dir_funciones
+    })
 
 #############################
 ## Tipos                   ##
@@ -1089,7 +1156,6 @@ def p_nodo10(p):
     if pOperadores:
         # Checa si es un operador relacional
         if pOperadores[-1] == MENOR or pOperadores[-1] == MAYOR or pOperadores[-1] == MENORIG or pOperadores[-1] == MAYORIG or pOperadores[-1] == IGUAL or pOperadores[-1] == DIF:
-            print(pOperandos)
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
             tipo_der = pTipos.pop()
@@ -1265,50 +1331,96 @@ def p_asignacion_type(p):
 def p_nodo8(p):
     '''nodo8 : '''
     global contador_cuadruplos
+    global scope
 
     # Nombre del programa
-    program_name = dir_proc.keys()[0] #overflow
+    program_name = dir_proc.keys()[0]
 
-    # Variables locales
-    vars_locales = dir_proc[program_name]['Variables Locales'].keys()
+    # Checa en las variables locales de la funcion
+    if scope == 'Funcion' :
+        if p[-3] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+            pOperandos.append(p[-3])
+            pOperadores.append(ASIG)
+            if dir_var_locales_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'INT' :
+              pTipos.append(INT)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'CHAR' :
+              pTipos.append(CHAR)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
 
-    # Variables globales
-    vars_globales = dir_proc[program_name]['Variables Globales'].keys()
+        # Busca en los parametros
+        elif p[-3] in dir_var_funciones[pila_funciones[-1][0]].keys() :
+            pOperandos.append(p[-3])
+            pOperadores.append(ASIG)
+            if dir_var_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'INT' :
+              pTipos.append(INT)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'CHAR' :
+              pTipos.append(CHAR)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-3]]['Tipo'] == 'BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
 
-    # Checa si el ID esta en la variables locales
-    if p[-3] in vars_locales :
-      pOperandos.append(p[-3])
-      pOperadores.append(ASIG)
-      if dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'INT' :
-          pTipos.append(INT)
-      elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'FLOAT' :
-          pTipos.append(FLOAT)
-      elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'CHAR' :
-          pTipos.append(CHAR)
-      elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'BOOL' :
-          pTipos.append(BOOL)
-      else :
-          print("Error de asignacion - tipo no valido")
-          exit()
+        # Busca en las variables Globales
+        elif p[-3] in dir_var_globales.keys() :
+            pOperandos.append(p[-3])
+            pOperadores.append(ASIG)
+            if dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'INT' :
+                pTipos.append(INT)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'FLOAT' :
+                pTipos.append(FLOAT)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'CHAR' :
+                pTipos.append(CHAR)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'BOOL' :
+                pTipos.append(BOOL)
+            else :
+                print("Error de asignacion - tipo no valido")
+                exit()
 
-    # Checa si el ID esta en las variables globales
-    elif p[-3] in vars_globales :
-        pOperandos.append(p[-3])
-        pOperadores.append(ASIG)
-        if dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'INT' :
-            pTipos.append(INT)
-        elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'FLOAT' :
-            pTipos.append(FLOAT)
-        elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'CHAR' :
-            pTipos.append(CHAR)
-        elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'BOOL' :
-            pTipos.append(BOOL)
-        else :
-            print("Error de asignacion - tipo no valido")
-            exit()
+    # El scope ya no es de funcion
     else :
-      print("Error de asignacion - variable no declarada")
-      exit()
+        # Checa si el ID esta en la variables locales
+        if p[-3] in dir_var_locales.keys() :
+            pOperandos.append(p[-3])
+            pOperadores.append(ASIG)
+            if dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'INT' :
+              pTipos.append(INT)
+            elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'CHAR' :
+              pTipos.append(CHAR)
+            elif dir_proc[program_name]['Variables Locales'][p[-3]]['Tipo'] == 'BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
+
+        # Checa si el ID esta en las variables globales
+        elif p[-3] in dir_var_globales.keys() :
+            pOperandos.append(p[-3])
+            pOperadores.append(ASIG)
+            if dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'INT' :
+                pTipos.append(INT)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'FLOAT' :
+                pTipos.append(FLOAT)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'CHAR' :
+                pTipos.append(CHAR)
+            elif dir_proc[program_name]['Variables Globales'][p[-3]]['Tipo'] == 'BOOL' :
+                pTipos.append(BOOL)
+            else :
+                print("Error de asignacion - tipo no valido")
+                exit()
+        else :
+          print("Error de asignacion - variable no declarada")
+          exit()
 
     # Checa si la pila de operadores contiene algo
     if pOperadores :
@@ -1328,20 +1440,33 @@ def p_nodo8(p):
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
-                # Checa si es operando derecho es una variable
-                if opdo_der in vars_locales :
-                    opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
-                elif opdo_der in vars_globales :
-                    opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
+                if scope == 'Funcion':
+                    if opdo_der in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
-                # Checa si el operando izquierdo es una variable
-                if opdo_izq in vars_locales :
-                    print(dir_var_locales[opdo_der])
-                    opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
-                elif opdo_izq in vars_globales :
-                    opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                    if opdo_izq in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                else :
+                    # Checa si es operando derecho es una variable
+                    if opdo_der in dir_var_locales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
-                # Si es != de cero es variable de lo contrario es constante
+                    # Checa si el operando izquierdo es una variable
+                    if opdo_izq in dir_var_locales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+
                 if opdo_izq_dir != 0 and opdo_der_dir != 0 :
                     dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir]
                 elif opdo_izq_dir == 0 and opdo_der_dir != 0 :
@@ -1349,7 +1474,7 @@ def p_nodo8(p):
                 elif opdo_izq_dir != 0 and opdo_der_dir == 0 :
                     dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der]
                 else :
-                    print("Error de asignacion")
+                    print("Error de asignacion - asig")
 
                 contador_cuadruplos+=1
             else :
@@ -1787,9 +1912,9 @@ def p_factor_exp(p):
 ## Nodo1                   ##
 #############################
 def p_nodo1(p):
-    '''nodo1 : ''' #overflow
+    '''nodo1 : '''
     # Checa que no sea una variable ya declarada previamente
-    if p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys():
+    if p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_var_locales_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_var_funciones[pila_funciones[-1][0]].keys() :
         pOperandos.append(dir_var_constantes[p[-1]]['Dir'])
 
 #############################
@@ -1838,38 +1963,86 @@ def p_varcte_arr(p):
 #############################
 def p_nodoCteV(p):
     '''nodoCteV : '''
-    # Checa si el ID esta en las variables locales
-    if p[-2] in dir_var_locales.keys() :
-        pOperandos.append(dir_var_locales[p[-2]]['Dir'])
-        if dir_var_locales[p[-2]]['Tipo'] == 'INT' :
-            pTipos.append(1)
-        elif dir_var_locales[p[-2]]['Tipo'] == 'FLOAT' :
-            pTipos.append(2)
-        elif dir_var_locales[p[-2]]['Tipo'] == 'CHAR' :
-            pTipos.append(3)
-        elif dir_var_locales[p[-2]]['Tipo'] == 'BOOL' :
-            pTipos.append(4)
-        else :
-            print("Error en asignacion de tipo de variable")
-            exit()
+    global scope #overflow
 
-    # Checa si el ID esta en las variables globales
-    elif p[-2] in dir_var_globales.keys() :
-        pOperandos.append(dir_var_globales[p[-2]]['Dir'])
-        if dir_var_globales[p[-2]]['Tipo'] ==  'INT' :
-            pTipos.append(1)
-        elif dir_var_globales[p[-2]]['Tipo'] == 'FLOAT' :
-            pTipos.append(2)
-        elif dir_var_globales[p[-2]]['Tipo'] == 'CHAR' :
-            pTipos.append(3)
-        elif dir_var_globales[p[-2]]['Tipo'] == 'BOOL' :
-            pTipos.append(4)
+    if scope == 'Funcion':
+        if p[-2] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+            pOperandos.append(dir_var_locales_funciones[pila_funciones[-1][0]][p[-2]]['Dir'])
+            if dir_var_locales_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'INT' :
+                pTipos.append(1)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_locales_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
+        elif p[-2] in dir_var_funciones[pila_funciones[-1][0]].keys() :
+            pOperandos.append(dir_var_funciones[pila_funciones[-1][0]][p[-2]]['Dir'])
+            if dir_var_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'INT' :
+                pTipos.append(1)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_funciones[pila_funciones[-1][0]][p[-2]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
+        elif p[-2] in dir_var_globales.keys() :
+            pOperandos.append(dir_var_globales[p[-2]]['Dir'])
+            if dir_var_globales[p[-2]]['Tipo'] ==  'INT' :
+                pTipos.append(1)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
         else :
-            print("Error en asignacion de tipo de variable")
+            print("Variable no declarada")
             exit()
     else :
-        print("Variable no declarada")
-        exit()
+
+        # Checa si el ID esta en las variables locales
+        if p[-2] in dir_var_locales.keys() :
+            pOperandos.append(dir_var_locales[p[-2]]['Dir'])
+            if dir_var_locales[p[-2]]['Tipo'] == 'INT' :
+                pTipos.append(1)
+            elif dir_var_locales[p[-2]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_locales[p[-2]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_locales[p[-2]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
+
+        # Checa si el ID esta en las variables globales
+        elif p[-2] in dir_var_globales.keys() :
+            pOperandos.append(dir_var_globales[p[-2]]['Dir'])
+            if dir_var_globales[p[-2]]['Tipo'] ==  'INT' :
+                pTipos.append(1)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_globales[p[-2]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
+
+        else :
+            print("Variable no declarada")
+            exit()
 
 #############################
 ## Nodo cteE               ##
