@@ -1045,64 +1045,34 @@ def p_nodo11(p):
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
-                # Checa si es operando derecho es una variable
-                if opdo_der in dir_var_locales.keys() :
-                    opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
-                elif opdo_der in dir_var_globales.keys() :
-                    opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
+                if scope == 'Funcion':
+                    if opdo_der in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
-                # Checa si el operando izquierdo es una variable
-                if opdo_izq in dir_var_locales.keys() :
-                    opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
-                elif opdo_izq in dir_var_globales.keys() :
-                    opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                    if opdo_izq in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                else :
+                    # Checa si es operando derecho es una variable
+                    if opdo_der in dir_var_locales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
-                # En caso de que ambos sean variables
-                if opdo_izq_dir != 0 and opdo_der_dir != 0 :
-                    pOperandos.append(bool_dir_temporales)
+                    # Checa si el operando izquierdo es una variable
+                    if opdo_izq in dir_var_locales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
 
-                    if operador == 6 :
-                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 7 :
-                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Expresion")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
-
-                # En caso que el opdo der sea variable
-                elif opdo_izq_dir == 0 and opdo_der_dir != 0 :
-                    pOperandos.append(bool_dir_temporales)
-
-                    if operador == 6 :
-                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 7 :
-                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Expresion")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
-
-                # En caso que el opdo izq sea variable
-                elif opdo_izq_dir != 0 and opdo_der_dir == 0 :
-                    pOperandos.append(bool_dir_temporales)
-
-                    if operador == 6 :
-                        dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 7 :
-                        dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Expresion")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
-                # En caso que amos sean constantes
-                elif opdo_izq_dir == 0 and opdo_der_dir == 0 :
+                if opdo_izq_dir == 0 and opdo_der_dir == 0 :
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 6 :
@@ -1169,89 +1139,35 @@ def p_nodo10(p):
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
-                # Checa si es operando derecho es una variable
-                if opdo_der in dir_var_locales.keys() :
-                    opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
-                elif opdo_der in dir_var_globales.keys() :
-                    opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
+                if scope == 'Funcion':
+                    if opdo_der in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
-                # Checa si el operando izquierdo es una variable
-                if opdo_izq in dir_var_locales.keys() :
-                    opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
-                elif opdo_izq in dir_var_globales.keys() :
-                    opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                    if opdo_izq in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
+                else :
+                    # Checa si es operando derecho es una variable
+                    if opdo_der in dir_var_locales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Locales'][opdo_der]['Dir']
+                    elif opdo_der in dir_var_globales.keys() :
+                        opdo_der_dir = dir_proc[program_name]['Variables Globales'][opdo_der]['Dir']
 
+                    # Checa si el operando izquierdo es una variable
+                    if opdo_izq in dir_var_locales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
 
-                # En caso de que ambos sean variables
-                if opdo_izq_dir != 0 and opdo_der_dir != 0 :
-                    pOperandos.append(bool_dir_temporales)
-
-                    if operador == 8 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 9 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 10 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 11 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 12 :
-                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 13 :
-                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq_dir, opdo_der_dir, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Nueva exp")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
-
-                # En caso que el opdo der sea variable
-                elif opdo_izq_dir == 0 and opdo_der_dir != 0 :
-                    pOperandos.append(bool_dir_temporales)
-
-                    if operador == 8 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 9 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 10 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 11 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 12 :
-                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    elif operador == 13 :
-                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq, opdo_der_dir, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Nueva exp")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
-
-                # En caso que el opdo izq sea variable
-                elif opdo_izq_dir != 0 and opdo_der_dir == 0 :
-                    pOperandos.append(bool_dir_temporales)
-
-                    if operador == 8 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 9 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 10 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 11 :
-                        dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 12 :
-                        dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    elif operador == 13 :
-                        dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq_dir, opdo_der, bool_dir_temporales]
-                    else :
-                        print("Error en el operador de asignaciones - Nueva exp")
-                        exit()
-
-                    bool_dir_temporales += 1
-                    cantidad_bool += 1
                 # En caso que amos sean constantes
-                elif opdo_izq_dir == 0 and opdo_der_dir == 0 :
+                if opdo_izq_dir == 0 and opdo_der_dir == 0 :
                     pOperandos.append(bool_dir_temporales)
 
                     if operador == 8 :
