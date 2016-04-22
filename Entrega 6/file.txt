@@ -1,20 +1,20 @@
 program overflow;
 	var k : bool;
 
-	int func suma(x, y: bool; c, b: char)
+	void func suma(x, y: bool; c, b: char)
 	var a, kappa :bool;
 	{
 		if(a) {
 			kappa = false;
 		} else {
 			kappa = true;
-		}		
+		}
 	}
 
 	bool func mayor(x : int; y: float)
 	var kappa : char;
 	{
-
+		kappa = 'c';
 	}
 
 main () {

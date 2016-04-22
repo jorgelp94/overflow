@@ -687,7 +687,7 @@ def p_declaracion_funciones(p):
     |'''
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque'''
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque return_cuad'''
 
 def p_add_dir_funciones(p):
     '''add_dir_funciones : '''
@@ -851,6 +851,19 @@ def p_function_local_add_type(p):
             cantidad_bool_func += 1
         else :
             print("Error al agregar variable local")
+
+def p_return_cuad(p):
+    '''return_cuad : '''
+    global contador_cuadruplos
+    
+    if p[-10] == 'void' :
+        dir_cuadruplos[contador_cuadruplos] = ['ENDFUNC', "", "", ""]
+        contador_cuadruplos += 1
+    else :
+        dir_cuadruplos[contador_cuadruplos] = ['RETURN', "", "", ""]
+        contador_cuadruplos += 1
+        dir_cuadruplos[contador_cuadruplos] = ['ENDFUNC', "", "", ""]
+        contador_cuadruplos += 1
 
 #############################
 ## Proc Dir                ##
