@@ -92,6 +92,7 @@ def t_error(t):
 # Directorio de variables globales
 dir_var_globales = {}
 dir_var_locales = {}
+dir_var_constantes = {}
 
 # Pila de variables globales y locales
 pila_var_globales = []
@@ -156,17 +157,23 @@ float_dir_temporales = 32500
 char_dir_temporales = 35000
 bool_dir_temporales = 37500
 
+# Constantes
+int_dir_constantes = 40000
+float_dir_constantes = 42500
+char_dir_constantes = 45000
+bool_dir_constantes = 47500
+
 # Params Funciones
-int_dir_funciones = 40000
-float_dir_funciones = 42500
-char_dir_funciones = 45000
-bool_dir_funciones = 47500
+int_dir_funciones = 50000
+float_dir_funciones = 52500
+char_dir_funciones = 55000
+bool_dir_funciones = 57500
 
 # Local Funciones
-int_dir_funciones_locales = 50000
-float_dir_funciones_locales = 52500
-char_dir_funciones_locales = 55000
-bool_dir_funciones_locales = 57500
+int_dir_funciones_locales = 60000
+float_dir_funciones_locales = 62500
+char_dir_funciones_locales = 65000
+bool_dir_funciones_locales = 67500
 
 # Funciones
 id_funciones = 60000
@@ -499,12 +506,16 @@ def p_programa(p):
     print(dir_var_locales)
     print("\n")
 
+    print("Variables Constantes")
+    print(dir_var_constantes)
+    print("\n")
+
     print("Funciones")
     print(dir_funciones)
     print("\n")
 
     print("Params de Funciones")
-    print(collections.OrderedDict(sorted(dir_var_funciones.items())))
+    print(dir_var_funciones)
     print("\n")
 
     print("Variables de Funciones")
@@ -1078,11 +1089,13 @@ def p_nodo10(p):
     if pOperadores:
         # Checa si es un operador relacional
         if pOperadores[-1] == MENOR or pOperadores[-1] == MAYOR or pOperadores[-1] == MENORIG or pOperadores[-1] == MAYORIG or pOperadores[-1] == IGUAL or pOperadores[-1] == DIF:
+            print(pOperandos)
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
+
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
 
@@ -1251,11 +1264,10 @@ def p_asignacion_type(p):
 #############################
 def p_nodo8(p):
     '''nodo8 : '''
-    global contTemporales
     global contador_cuadruplos
 
     # Nombre del programa
-    program_name = dir_proc.keys()[0]
+    program_name = dir_proc.keys()[0] #overflow
 
     # Variables locales
     vars_locales = dir_proc[program_name]['Variables Locales'].keys()
@@ -1324,6 +1336,7 @@ def p_nodo8(p):
 
                 # Checa si el operando izquierdo es una variable
                 if opdo_izq in vars_locales :
+                    print(dir_var_locales[opdo_der])
                     opdo_izq_dir = dir_proc[program_name]['Variables Locales'][opdo_izq]['Dir']
                 elif opdo_izq in vars_globales :
                     opdo_izq_dir = dir_proc[program_name]['Variables Globales'][opdo_izq]['Dir']
@@ -1774,10 +1787,10 @@ def p_factor_exp(p):
 ## Nodo1                   ##
 #############################
 def p_nodo1(p):
-    '''nodo1 : '''
+    '''nodo1 : ''' #overflow
     # Checa que no sea una variable ya declarada previamente
-    if p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys() :
-        pOperandos.append(p[-1])
+    if p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys():
+        pOperandos.append(dir_var_constantes[p[-1]]['Dir'])
 
 #############################
 ## Nodo6                   ##
@@ -1863,28 +1876,56 @@ def p_nodoCteV(p):
 #############################
 def p_nodoCteE(p):
     '''nodoCteE : '''
+    global int_dir_constantes
+    global cantidad_int
+
     pTipos.append(INT)
+    if p[-1] not in dir_var_constantes :
+        dir_var_constantes[p[-1]] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
+        int_dir_constantes += 1
+        cantidad_int += 1
 
 #############################
 ## Nodo cteF               ##
 #############################
 def p_nodoCteF(p):
     '''nodoCteF : '''
+    global float_dir_constantes
+    global cantidad_float
+
     pTipos.append(FLOAT)
+    if p[-1] not in dir_var_constantes :
+        dir_var_constantes[p[-1]] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
+        float_dir_constantes += 1
+        cantidad_float += 1
 
 #############################
 ## Nodo cteB               ##
 #############################
 def p_nodoCteB(p):
     '''nodoCteB : '''
+    global bool_dir_constantes
+    global cantidad_bool
+
     pTipos.append(BOOL)
+    if p[-1] not in dir_var_constantes :
+        dir_var_constantes[p[-1]] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
+        bool_dir_constantes += 1
+        cantidad_bool += 1
 
 #############################
 ## Nodo cteC               ##
 #############################
 def p_nodoCteC(p):
     '''nodoCteC : '''
+    global char_dir_constantes
+    global cantidad_char
+
     pTipos.append(CHAR)
+    if p[-1] not in dir_var_constantes :
+        dir_var_constantes[p[-1]] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
+        char_dir_constantes += 1
+        cantidad_char += 1
 
 # Error rule for syntax errors
 def p_error(p):
