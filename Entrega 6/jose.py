@@ -962,6 +962,8 @@ def p_nodo15(p):
 
     salto_en_falso = pSaltos.pop()
     dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
+    dir_cuadruplos[contador_cuadruplos] = ['ENDIF', "", "", ""]
+    contador_cuadruplos += 1
 
 #############################
 ## Nodo14                  ##
