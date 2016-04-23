@@ -1,0 +1,68 @@
+program pato;
+	var a,b,c : int;
+	var g: float;
+	var bb : float;
+	var cc : int;
+	var d : bool;
+	var z : int;
+	var zz : char;
+
+	int func suma(x, y: int; c, b: float)
+	var a, kappa :int;
+	var x : int;
+	{
+		a = 4;
+		kappa = a;
+
+		x = a*kappa;
+
+		if (a > 3) {
+			a = 0;
+		}
+
+		while((a >7) or (a == 0)) {
+			if ((a - a) < 10 ) {
+
+			} else {
+				
+			}
+		}
+	}
+
+	bool func mayor(x : int; y: float)
+	var kappa : char;
+	{
+		kappa = 'k';
+	}
+
+main () {
+	var n : int;
+	var a : int;
+	a = 3;
+	n = a;
+	a = 8*3;
+	b = 15;
+	c = a + b;
+	if(a > 1) {
+		a = 50;
+	} else {
+		a = 1;
+	}
+
+	while((10 > 2) and (3 < 5)) {
+  		a = 25;
+  		b = a*a;
+  	}
+
+	if (5 > 2) {
+    if (2 == 2) {
+        if ( 3 < 10) {
+            a = 2222222;
+        } else {}
+    } else {}
+  	a = 3;
+  } else {
+  	a = 5;
+  }
+}
+end

@@ -540,6 +540,10 @@ def p_programa(p):
     print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
     print("\n")
 
+    print("Directorio de procedimientos")
+    print(dir_proc)
+    print("\n")
+
 def p_add_main_goto(p):
     '''add_main_goto : '''
     global contador_cuadruplos
@@ -568,6 +572,7 @@ def p_add_pila_var_globales(p):
     '''add_pila_var_globales :'''
     global pila_var_globales
     pila_var_globales.append(p[-1])
+    
 
 # En caso de querer seguir declarando variables de otro tipo
 def p_variable_end_loop(p):
@@ -741,7 +746,7 @@ def p_add_cantidad_vars(p):
 
     dir_funciones[p[-6]].update({'Vars Locales' : dir_var_locales_funciones_pila})
 
-    dir_funciones[p[-6]].update({'Cantidad Vars' :
+    dir_funciones[p[-6]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
 
     # Se resetean los contadores
