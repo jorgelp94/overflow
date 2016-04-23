@@ -1,27 +1,12 @@
 program overflow;
-	var k : bool;
 
-	void func suma(x, y: bool; c:int; b: char)
-	var a, kappa :bool;
-  var z : int;
-	{
-		if(a) {
-			kappa = false;
-		} else {
-			kappa = true;
-		}
-    z = 12*34/7 + 123 * 23;
-    c = z *10;
-	}
+int func suma(a : int)
+{
 
-	bool func mayor(x : int; y: float)
-	var kappa : char;
-	{
-		kappa = 'c';
-	}
+}
 
 main () {
-	var a, kappa : int;
-
+	var a : int;
+	a = call suma(3);
 }
 end
