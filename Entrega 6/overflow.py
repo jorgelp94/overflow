@@ -1015,6 +1015,8 @@ def p_nodo13(p):
 #############################
 def p_expresion(p):
     '''expresion : nuevaexp expresion_option nodo11 expresion_loop'''
+    #modifica aqui
+    p[0] = p[1]
 
 def p_expresion_option(p):
     '''expresion_option : AND nodo12_and nuevaexp
@@ -1116,6 +1118,8 @@ def p_nodo11(p):
 #############################
 def p_nuevaexp(p):
     '''nuevaexp : exp nuevaexp_type nodo10'''
+    #modifica aqui
+    p[0] = p[1]
 
 def p_nuevaexp_type(p):
     '''nuevaexp_type : LESS nodo9_menor exp
@@ -1478,6 +1482,8 @@ def p_nodo8(p):
 #############################
 def p_exp(p):
     '''exp : termino nodo5 exp_loop'''
+    #modifica aqui
+    p[0] = p[1]
 
 def p_exp_loop(p):
     '''exp_loop : exp_type_loop
@@ -1604,6 +1610,8 @@ def p_nodo5(p):
 #############################
 def p_termino(p):
     '''termino : factor nodo4 termino_loop'''
+    #modifica aqui
+    p[0] = p[1]
 
 def p_termino_loop(p):
     '''termino_loop : termino_type_loop
@@ -1730,10 +1738,13 @@ def p_nodo4(p):
 def p_factor(p):
     '''factor : factor_var
       | factor_exp'''
+    #modifica aqui
+    p[0] = p[1]
 
 def p_factor_var(p):
     '''factor_var : varcte nodo1'''
-
+    #modifica aqui
+    p[0] = p[1]
 def p_factor_exp(p):
     '''factor_exp : LPARENTHESIS nodo6 expresion RPARENTHESIS nodo7'''
 
@@ -1775,6 +1786,7 @@ def p_varcte(p):
       | CTEBOOL nodoCteB
       | CTECHAR nodoCteC'''
     p[0] = p[1]
+    #modifica aqui
 
 # Verifica si es valor es booleano
 def p_CTEBOOL(p):
