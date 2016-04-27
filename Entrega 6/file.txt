@@ -1,23 +1,22 @@
 program overflow;
 
-int func resta(a, b, c: int)
 var x, y, z : int;
+
+int func resta(a, b, c: int)
 {
 
 }
 
-int func suma(a,b,c:int)
+int func suma(h,b,c:int)
 var l,m,n:int
 {
-	while(m > 3) {
-	
-	}
+	print(x);
 }
 
 main () {
 	var a : int;
 	var b : float;
 	a = call suma(1,2,4);
-	a = 4;
+	print(x);
 }
 end

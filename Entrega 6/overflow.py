@@ -712,7 +712,6 @@ def p_add_dir_funciones(p):
         dir_var_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
         id_funciones += 1
         pila_funciones.append([p[-1]]) # Agregas la funcion a la pila
-        #overflow
     else :
         print("Ya existe una funcion con este nombre")
         exit()
@@ -932,11 +931,81 @@ def p_regreso(p):
 ## Escritura               ##
 #############################
 def p_escritura(p):
-    '''escritura : PRINT LPARENTHESIS escritura_type RPARENTHESIS SEMICOLON'''
+    '''escritura : PRINT LPARENTHESIS expresion print_cuad RPARENTHESIS SEMICOLON'''
 
-def p_escritura_type(p):
-    '''escritura_type : expresion
-      | QUOTE CTECHAR QUOTE'''
+def p_print_cuad(p):
+    '''print_cuad : '''
+    global contador_cuadruplos
+    global contador_params
+    global scope
+
+    if scope == 'Funcion' :
+        # Enteros
+        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Flotantes
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Chars
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Bools
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Variables locales de la funcion
+        elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        # parametros de la funcion
+        elif p[-1] in dir_var_funciones[pila_funciones[-1][0]].keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        # En caso de que el argumento sea una constante
+        elif p[-1] in dir_var_constantes.keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_constantes[p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        # En caso de variable global
+        elif p[-1] in dir_var_globales.keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        else :
+            print("El tipo de argumento no coincide con el parametro")
+            exit()
+    else :
+        # Enteros
+        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Flotantes
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Chars
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        # Bools
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
+            contador_cuadruplos += 1
+        elif p[-1] in dir_var_locales.keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_locales[p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        # En caso de que el argumento sea una constante
+        elif p[-1] in dir_var_constantes.keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_constantes[p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        # En caso de variable global
+        elif p[-1] in dir_var_globales.keys() :
+            dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
+            contador_cuadruplos += 1
+        else :
+            print("El tipo de argumento no coincide con el parametro")
+            exit()
 
 #############################
 ## Ciclo                   ##
