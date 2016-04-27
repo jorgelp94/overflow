@@ -99,6 +99,7 @@ dir_var_constantes = {}
 pila_var_globales = []
 pila_var_locales = []
 pila_funciones = []
+pila_funcion_actual = []
 pila_var_funciones = []
 
 # Directorio de funciones
@@ -131,6 +132,8 @@ pSaltos = deque([])
 
 # Cantidad de cuadruplos
 contador_cuadruplos = 0
+
+contador_params = 0
 
 # Cantidad de variables por tipos
 cantidad_int = 0
@@ -500,7 +503,7 @@ cuboSemantico[BOOL][BOOL][DIF] = BOOL
 # Gramatica
 #############################################################################################
 def p_programa(p):
-    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales add_main_goto update_dir_proc declaracion_funciones MAIN LPARENTHESIS RPARENTHESIS bloque END'''
+    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales add_main_goto update_dir_proc declaracion_funciones MAIN init_goto LPARENTHESIS RPARENTHESIS bloque END'''
     p[0] = "OK"
 
     global cantidad_int
@@ -546,6 +549,11 @@ def p_add_main_goto(p):
     global contador_cuadruplos
     dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", ""]
     contador_cuadruplos += 1
+
+def p_init_goto(p):
+    '''init_goto : '''
+    global contador_cuadruplos
+    dir_cuadruplos[0] = ['GOTO', "", "", contador_cuadruplos]
 
 #############################
 ## Variables Globlaes      ##
@@ -704,6 +712,7 @@ def p_add_dir_funciones(p):
         dir_var_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
         id_funciones += 1
         pila_funciones.append([p[-1]]) # Agregas la funcion a la pila
+        #overflow
     else :
         print("Ya existe una funcion con este nombre")
         exit()
@@ -858,12 +867,12 @@ def p_return_cuad(p):
     global contador_cuadruplos
 
     if p[-10] == 'void' :
-        dir_cuadruplos[contador_cuadruplos] = ['ENDFUNC', "", "", ""]
+        dir_cuadruplos[contador_cuadruplos] = ['RET', "", "", ""]
         contador_cuadruplos += 1
     else :
         dir_cuadruplos[contador_cuadruplos] = ['RETURN', "", "", ""]
         contador_cuadruplos += 1
-        dir_cuadruplos[contador_cuadruplos] = ['ENDFUNC', "", "", ""]
+        dir_cuadruplos[contador_cuadruplos] = ['RET', "", "", ""]
         contador_cuadruplos += 1
 
 #############################
@@ -956,6 +965,8 @@ def p_nodo17(p):
     dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", dir_salto]
     contador_cuadruplos += 1
     dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
+    dir_cuadruplos[contador_cuadruplos] = ['ENDWHILE', "", "", ""]
+    contador_cuadruplos += 1
 
 #############################
 ## Condicion               ##
@@ -1015,7 +1026,6 @@ def p_nodo13(p):
 #############################
 def p_expresion(p):
     '''expresion : nuevaexp expresion_option nodo11 expresion_loop'''
-    #modifica aqui
     p[0] = p[1]
 
 def p_expresion_option(p):
@@ -1118,7 +1128,6 @@ def p_nodo11(p):
 #############################
 def p_nuevaexp(p):
     '''nuevaexp : exp nuevaexp_type nodo10'''
-    #modifica aqui
     p[0] = p[1]
 
 def p_nuevaexp_type(p):
@@ -1253,7 +1262,7 @@ def p_asignacion(p):
 
 def p_asignacion_option(p):
     '''asignacion_option : ASSIGN expresion nodo8 SEMICOLON
-      | ASSIGN CALL ID function_call LPARENTHESIS func_params RPARENTHESIS SEMICOLON
+      | ASSIGN CALL ID function_call LPARENTHESIS func_params RPARENTHESIS gosub SEMICOLON
       | LBRACKET CTEINT RBRACKET ASSIGN nodo8 LBRACKET asignacion_type RBRACKET SEMICOLON'''
 
 def p_asignacion_type(p):
@@ -1268,58 +1277,130 @@ def p_function_call(p):
 
     if p[-1] in dir_funciones.keys():
         dir_cuadruplos[contador_cuadruplos] = ['ERA', p[-1].upper(), "", ""]
+        pila_funcion_actual.append(p[-1])
         contador_cuadruplos += 1
     else :
         print("funcion no declarada")
         exit()
 
 def p_func_params(p):
-    '''func_params : expresion func_params_loop param_cuad'''
+    '''func_params : expresion param_cuad func_params_loop'''
 
 def p_func_params_loop(p):
-    '''func_params_loop : COMA expresion func_params_loop
+    '''func_params_loop : COMA expresion param_cuad func_params_loop
     |'''
+
+def p_gosub(p):
+    '''gosub : '''
+    global contador_params
+    global contador_cuadruplos
+
+    if(contador_params != len(dir_funciones[pila_funcion_actual[-1]]['Parametros'])) :
+        print("El numero de argumentos y parametos no coincide")
+        exit()
+
+    dir_cuadruplos[contador_cuadruplos] = ['GOSUB', pila_funcion_actual[-1].upper(), "", ""]
+    contador_cuadruplos += 1
+    pila_funcion_actual.pop()
+    contador_params = 0
 
 def p_param_cuad(p):
     '''param_cuad : '''
     global contador_cuadruplos
-    k = 0 # iterador del while
-    j = 0 # saca el numero de cuadruplo
-    m = len(dir_funciones[pila_funciones[-1][0]]['Parametros']) - 1 # Cantidad de parametros
-    n = len(dir_funciones[pila_funciones[-1][0]]['Parametros']) # Cantidad de parametros
-    i = -1
-    print(p[-2])
+    global contador_params
+    global scope
 
-    while(k < len(dir_funciones[pila_funciones[-1][0]]['Parametros'])) :
-        #print(dir_var_constantes)
-        #print(dir_cuadruplos)
-        #print(dir_funciones[pila_funciones[-1][0]]['Parametros'])
+    if contador_params > len(dir_funciones[pila_funcion_actual[-1]]['Parametros']) - 1 :
+        print("El numero de argumentos no coincide con los parametros")
+        exit()
 
-        if dir_cuadruplos[contador_cuadruplos - j - 1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos - j - 1][3] <= 32499 :
-            if dir_funciones[pila_funciones[-1][0]]['Parametros'][m][1] == 'INT':
-                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos - j - 1][3] , "", dir_funciones[pila_funciones[-1][0]]['Parametros'][m][2]]
-                contador_cuadruplos += 1
-                j = j + 1
-            else :
-                print("Argumento no compatible con parametro - INT")
-                exit()
+    if scope == 'Funcion' :
 
-        elif dir_cuadruplos[contador_cuadruplos - j - 1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos - j - 1][3] <= 34999 :
+        if dir_cuadruplos[contador_cuadruplos-1][0] == 'ERA' or dir_cuadruplos[contador_cuadruplos-1][0] == 'PARAM' :
 
-            if dir_funciones[pila_funciones[-1][0]]['Parametros'][m][1] == 'FLOAT':
-                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos - j - 1][3] , "", dir_funciones[pila_funciones[-1][0]]['Parametros'][m][2]]
-                contador_cuadruplos += 1
-                j = j + 1
-            else :
-                print("Argumento no compatible con parametro - FLOAT")
-                exit()
+            # En caso de que el argumento sea una variable local
+            if p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+
+                if dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Tipo'] == dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
+                    exit()
+
+            # En caso de que el argumento sea una constante
+            elif p[-1] in dir_var_constantes.keys() :
+
+                if dir_var_constantes[p[-1]]['Tipo'] == dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_constantes[p[-1]]['Dir'], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
+                    exit()
+        # En caso de que sea alguna operacion o comparacion
         else :
-            print("algo")
+            # Enteros
+            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] == 'INT' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Flotantes
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] == 'FLOAT' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Chars
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] == 'CHAR' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Bools
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][1] == 'BOOL' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funciones[-1][0]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            else :
+                print("El tipo de argumento no coincide con el parametro")
+                exit()
 
-        k = k + 1
-        j = j + 1
-        m = m - 1
-        i = i - 1
+    else :
+        if dir_cuadruplos[contador_cuadruplos-1][0] == 'ERA' or dir_cuadruplos[contador_cuadruplos-1][0] == 'PARAM' :
+            # En caso de que el argumento sea una variable local
+            if p[-1] in dir_var_locales.keys() :
+                if dir_var_locales[p[-1]]['Tipo'] == dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales[p[-1]]['Dir'], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
+                    exit()
+            # En caso de que el argumento sea una constante
+            elif p[-1] in dir_var_constantes.keys() :
+                if dir_var_constantes[p[-1]]['Tipo'] == dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_constantes[p[-1]]['Dir'], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
+                    exit()
+
+        # En caso de que sea alguna operacion o comparacion
+        else :
+            # Enteros
+            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] == 'INT' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Flotantes
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] == 'FLOAT' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Chars
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] == 'CHAR' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            # Bools
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][1] == 'BOOL' :
+                dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_funcion_actual[-1]]['Parametros'][contador_params][2]]
+                contador_cuadruplos += 1
+            else :
+                print("El tipo de argumento no coincide con el parametro")
+                exit()
+
+    contador_params += 1
 
 #############################
 ## Nodo8                   ##
@@ -1482,7 +1563,6 @@ def p_nodo8(p):
 #############################
 def p_exp(p):
     '''exp : termino nodo5 exp_loop'''
-    #modifica aqui
     p[0] = p[1]
 
 def p_exp_loop(p):
@@ -1610,7 +1690,6 @@ def p_nodo5(p):
 #############################
 def p_termino(p):
     '''termino : factor nodo4 termino_loop'''
-    #modifica aqui
     p[0] = p[1]
 
 def p_termino_loop(p):
@@ -1738,13 +1817,12 @@ def p_nodo4(p):
 def p_factor(p):
     '''factor : factor_var
       | factor_exp'''
-    #modifica aqui
     p[0] = p[1]
 
 def p_factor_var(p):
     '''factor_var : varcte nodo1'''
-    #modifica aqui
     p[0] = p[1]
+
 def p_factor_exp(p):
     '''factor_exp : LPARENTHESIS nodo6 expresion RPARENTHESIS nodo7'''
 
@@ -1786,7 +1864,6 @@ def p_varcte(p):
       | CTEBOOL nodoCteB
       | CTECHAR nodoCteC'''
     p[0] = p[1]
-    #modifica aqui
 
 # Verifica si es valor es booleano
 def p_CTEBOOL(p):
@@ -1894,7 +1971,7 @@ def p_nodoCteE(p):
         dir_var_constantes[p[-1]] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
         int_dir_constantes += 1
         cantidad_int += 1
-    p[0] = p[-1] #overflow
+    #p[0] = p[-1]
 
 #############################
 ## Nodo cteF               ##
