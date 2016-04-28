@@ -9,20 +9,26 @@ int func mult(d, e ,f : int) {
 	while(true) {
 		print(d);
 	}
-	return(4);
 }
+return(4);
 
 bool func suma(g, h ,i : bool) {
-	a = call mult(1,2,3);
-	return(g);
+	a = call mult(1,2,5);
 }
+return(h);
 
 char func resta(j, k : char) {
-	return(j);
+
 }
+return(j);
 
 float func div(l, m : float) {
-	return(l);
+
+}
+return(l);
+
+void func say() {
+	print(true);
 }
 
 main () {

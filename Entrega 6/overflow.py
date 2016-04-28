@@ -685,7 +685,8 @@ def p_declaracion_funciones(p):
     |'''
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque ret_cuad'''
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque regreso ret_cuad
+    | VOIDTYPE FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque ret_cuad'''
 
 def p_add_dir_funciones(p):
     '''add_dir_funciones : '''
@@ -898,7 +899,6 @@ def p_estatuto(p):
     '''estatuto : asignacion
       | condicion
       | escritura
-      | regreso
       | ciclo
       | variables_locales'''
 
@@ -1460,6 +1460,10 @@ def p_asign_return_cuad(p):
     '''asign_return_cuad : '''
     global contador_cuadruplos
     global scope
+
+    if pila_llamadas_funcion[0] not in dir_returns :
+        print("No se puede asignar una funcion void a una variable")
+        exit()
 
     if scope == 'Funcion' :
         if p[-10] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
