@@ -1,22 +1,34 @@
 program overflow;
 
-var x, y, z : int;
+var a : int;
+var b : float;
+var x : char;
+var y : bool;
 
-int func resta(a, b, c: int)
-{
-
+int func mult(d, e ,f : int) {
+	while(true) {
+		print(d);
+	}
+	return(4);
 }
 
-int func suma(h,b,c:int)
-var l,m,n:int
-{
-	print(x);
+bool func suma(g, h ,i : bool) {
+	a = call mult(1,2,3);
+	return(g);
+}
+
+char func resta(j, k : char) {
+	return(j);
+}
+
+float func div(l, m : float) {
+	return(l);
 }
 
 main () {
-	var a : int;
-	var b : float;
-	a = call suma(1,2,4);
-	print(x);
+	var h : bool;
+
+	h = call suma(true, false, true);
+
 }
 end
