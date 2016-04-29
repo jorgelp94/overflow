@@ -1656,6 +1656,8 @@ def p_set_arr_values(p):
     global bool_dir_constantes
     global cantidad_bool
 
+    #TODO funciones ??
+
     if scope == 'Local' :
         if p[-5] in dir_arr_locales.keys() :
             cant_casillas = dir_arr_locales[p[-5]]['Tam']
@@ -1730,25 +1732,42 @@ def p_asign_arr(p):
     global scope
     global pos
 
-    #TODO falta poner verificaciones de tipos
-    #TODO falta el scope de funciones
-
     pos = pila_tam_arr.pop()
 
-    if p[-6] in dir_arr_locales.keys() :
-        pOperandos.append(p[-6])
-        pOperadores.append(ASIG)
-        if dir_arr_locales[p[-6]]['Tipo'] == 'ARR INT' :
-          pTipos.append(INT)
-        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR FLOAT' :
-          pTipos.append(FLOAT)
-        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR CHAR' :
-          pTipos.append(CHAR)
-        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR BOOL' :
-          pTipos.append(BOOL)
-        else :
-          print("Error de asignacion - tipo no valido")
-          exit()
+    if scope == 'Funcion' :
+        print('Fuera de servicio')
+        #TODO arr funcion local
+        #TODO arr parametros de funcion
+        #TODO arr globales
+    else :
+        if p[-7] in dir_arr_locales.keys() :
+            pOperandos.append(p[-7])
+            pOperadores.append(ASIG)
+            if dir_arr_locales[p[-7]]['Tipo'] == 'ARR INT' :
+              pTipos.append(INT)
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR CHAR' :
+              pTipos.append(CHAR)
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
+        elif p[-7] in dir_arr_globales.keys() :
+            pOperandos.append(p[-7])
+            pOperadores.append(ASIG)
+            if dir_arr_globales[p[-7]]['Tipo'] == 'ARR INT' :
+              pTipos.append(INT)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR CHAR' :
+              pTipos.append(CHAR)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
 
     # Checa si la pila de operadores contiene algo
     if pOperadores :
@@ -1760,31 +1779,34 @@ def p_asign_arr(p):
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
-            print(opdo_der)
-            print(opdo_izq)
-            print(tipo_der)
-            print(tipo_izq)
+            #print(opdo_der)
+            #print(tipo_der)
+            #print(opdo_izq)
+            #print(tipo_izq)
 
             # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
 
-                #Falta checar que el tipo del valor asignado concuerde con el arreglo
-
                 # Se inicializan en cero
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
+                #TODO funciones
+
                 if opdo_der in dir_arr_locales.keys() :
-                    opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base'] + pos
+                    opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base']
+                elif opdo_der in dir_arr_globales.keys() :
+                    opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
 
                 if opdo_izq in dir_var_locales.keys() :
                     opdo_izq_dir = dir_var_locales[opdo_izq]['Dir']
+                elif opdo_izq in dir_var_globales.keys() :
+                    opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+                else :
+                    opdo_izq_dir = opdo_izq
 
-                print(opdo_der_dir)
-                print(opdo_izq)
-
-                dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq, "", opdo_der_dir]
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir, "(" + str(pos) + ")"]
                 contador_cuadruplos += 1
             else :
                 print("Error de asignacion tipos no compatibles - arreglos")
