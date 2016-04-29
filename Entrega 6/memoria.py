@@ -1,4 +1,6 @@
 
+from overflow import *
+
 class Memoria:
 
 	def __init__(self, name, memoria):
@@ -7,6 +9,10 @@ class Memoria:
 		self.floats = memoria['FLOAT'] * [""]
 		self.chars = memoria['CHAR'] * [""]
 		self.bools = memoria['BOOL'] * [""]
+		self.temp_int = 10 * [""]
+		self.temp_float = 10 * [""]
+		self.temp_bool = 10 * [""]
+		self.temp_char = 10 * [""]
 
 
 	def offsetDireccion(self, direccion):
@@ -54,8 +60,18 @@ class Memoria:
 				return self.chars
 			elif tipo == 'BOOL':
 				return self.bools
+		elif scope == 'Temporales':
+			if tipo == 'INT':
+				return self.temp_int
+			elif tipo == 'FLOAT':
+				return self.temp_float
+			elif tipo == 'CHAR':
+				return self.temp_char
+			elif tipo == 'BOOL':
+				return self.temp_bool
 
-	def getValorDeDireccion(self, direccion):
+
+	def getValorDeDireccion(self, direccion, constantes):
 		scope = self.scopeDireccion(direccion)[0]
 		tipo = self.offsetDireccion(direccion)[0]
 		if scope != 'CONSTANTE':
@@ -64,6 +80,16 @@ class Memoria:
 			real = direccion - dirBase - offset
 			mem = self.memoriaActual(scope, tipo)
 			return mem[real]
+		else:
+			keys = constantes.keys()
+			cons = constantes[keys[0]]
+			cantidad = len(constantes.keys())
+			i = 0
+			while i < cantidad:
+				if constantes[keys[i]]['Dir'] == direccion:
+					return keys[i]
+				i += 1
+
 
 	def setValorDeDireccion(self, direccion, valor):
 		scope = self.scopeDireccion(direccion)[0]

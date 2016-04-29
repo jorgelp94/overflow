@@ -1,14 +1,32 @@
-var k : bool;
+program overflow;
 
-int func suma(x, y: bool; c : int; b: char)
-var a, kappa :bool;
-var z : int;
+var a : int;
+var b, c, d : float;
+var x : char;
+var y : bool;
+
+arr m[5], z[10] : int;
+
+float func suma( f : float)
+arr m[10] : bool;
 {
-	if(a) {
-		kappa = false;
-	} else {
-		kappa = true;
-	}
-	z = 12 * 34 / 7 + 123 * 23;
-	c = z;
+
 }
+return(b);
+
+main () {
+	var i : int;
+	arr kappa[3] : bool;
+  a = 3 + 12;
+  b = 10.0 - 2.0;
+  c = a * b;
+
+  d = c/10;
+
+  if (a > 1) {
+  
+  }
+
+	kappa = [true, false, true];
+}
+end
