@@ -531,6 +531,10 @@ def p_programa(p):
     print(dir_funciones)
     print("\n")
 
+    print("Arr Funciones")
+    print(dir_arr_locales_funciones)
+    print("\n")
+
     print("Cuadruplos")
     print(dir_cuadruplos)
     print("\n")
@@ -839,6 +843,7 @@ def p_add_dir_funciones(p):
         dir_funciones[p[-1]] = {'Tipo' : p[-3].upper(), 'Scope' : scope}
         dir_param_funciones[p[-1]] = {} # se les pone la llave de la funcion
         dir_var_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
+        dir_arr_locales_funciones[p[-1]] = {}
         pila_funciones.append([p[-1]])
     else :
         print("Ya existe una funcion con este nombre")
@@ -914,6 +919,12 @@ def p_function_add_type(p):
 
     while (len(pila_params) > 0) :
         tempPop = pila_params.pop()
+
+        # Checa si la variable se repite
+        if dir_param_funciones[func_scope].has_key(tempPop) :
+            print("Error: Ya existe otra variable con el ID %s" % tempPop)
+            exit()
+
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
@@ -971,6 +982,11 @@ def p_function_local_add_type(p):
     while (len(pila_params) > 0) :
         tempPop = pila_params.pop()
 
+        # Checa si la variable se repite
+        if dir_var_locales_funciones[func_scope].has_key(tempPop) :
+            print("Error: Ya existe otra variable con el ID %s" % tempPop)
+            exit()
+
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones_locales}
@@ -985,7 +1001,7 @@ def p_function_local_add_type(p):
             char_dir_funciones_locales += 1
             cantidad_char_func += 1
         elif p[-1] == 'bool' :
-            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}        
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}
             bool_dir_funciones_locales += 1
             cantidad_bool_func += 1
         else :
@@ -999,7 +1015,7 @@ def p_arrs_locales_funcion(p):
     |'''
 
 def p_arrs_locales_id_loop(p):
-    '''arrs_locales_id_loop : COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
+    '''arrs_locales_id_loop : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
     |'''
 
 def p_semicolon_function_local_arr_loop(p):
@@ -1010,7 +1026,7 @@ def p_add_pila_arr_funciones(p):
     '''add_pila_arr_funciones : '''
     # Cecha si el parametro no se repite, guarda las variables
     if p[-1] not in pila_arr_funciones :
-        pila_arr_funciones.insert(0, p[-1])
+        pila_arr_funciones.insert(0, p[-5])
     else :
         print("Ya existe una variable con ese nombre - funcion")
         exit()
@@ -1041,19 +1057,19 @@ def p_function_local_arr_add_type(p):
 
         else:
             if p[-1] == 'int' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_funciones_locales, 'Tam' : tam}
                 int_dir_funciones_locales += tam
                 cantidad_int_func += tam
             elif p[-1] == 'float' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_funciones_locales, 'Tam' : tam}
                 float_dir_funciones_locales += tam
                 cantidad_float_func += tam
             elif p[-1] == 'char' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_funciones_locales, 'Tam' : tam}
                 char_dir_funciones_locales += tam
                 cantidad_char_func += tam
             elif p[-1] == 'bool' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_funciones_locales, 'Tam' : tam}
                 bool_dir_funciones_locales += tam
                 cantidad_bool_func += tam
             else :

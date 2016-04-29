@@ -66,7 +66,7 @@ Rule 60    semicolon_function_local_loop -> <empty>
 Rule 61    function_local_add_type -> <empty>
 Rule 62    arrs_locales_funcion -> ARR ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop COLON tipo function_local_arr_add_type semicolon_function_local_arr_loop
 Rule 63    arrs_locales_funcion -> <empty>
-Rule 64    arrs_locales_id_loop -> COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
+Rule 64    arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
 Rule 65    arrs_locales_id_loop -> <empty>
 Rule 66    semicolon_function_local_arr_loop -> SEMICOLON arrs_locales_funcion
 Rule 67    semicolon_function_local_arr_loop -> <empty>
@@ -191,7 +191,7 @@ COLON                : 7 17 26 34 46 55 62
 COMA                 : 8 18 27 35 48 57 64 130 131 134
 CTECHAR              : 167
 CTEFLOAT             : 129 131 165
-CTEINT               : 17 18 34 35 62 127 128 130 164
+CTEINT               : 17 18 34 35 62 64 127 128 130 164
 DIVISION             : 152
 ELSE                 : 95
 END                  : 1
@@ -204,7 +204,7 @@ GREATEREQUAL         : 113
 ID                   : 1 7 8 17 18 26 27 34 35 43 44 46 48 55 57 62 64 124 126 163
 IF                   : 94
 INTTYPE              : 73
-LBRACKET             : 17 18 34 35 62 127 127
+LBRACKET             : 17 18 34 35 62 64 127 127
 LCURLY               : 78
 LESS                 : 110
 LESSEQUAL            : 112
@@ -215,7 +215,7 @@ NOTEQUAL             : 114
 OR                   : 102
 PRINT                : 89
 PROGRAM              : 1
-RBRACKET             : 17 18 34 35 62 127 127
+RBRACKET             : 17 18 34 35 62 64 127 127
 RCURLY               : 78
 RETURN               : 87
 RPARENTHESIS         : 1 43 44 87 89 91 94 126 159
@@ -4620,7 +4620,7 @@ state 292
 state 293
 
     (62) arrs_locales_funcion -> ARR ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones . arrs_locales_id_loop COLON tipo function_local_arr_add_type semicolon_function_local_arr_loop
-    (64) arrs_locales_id_loop -> . COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
+    (64) arrs_locales_id_loop -> . COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
     (65) arrs_locales_id_loop -> .
 
     COMA            shift and go to state 304
@@ -4725,7 +4725,7 @@ state 303
 
 state 304
 
-    (64) arrs_locales_id_loop -> COMA . ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
+    (64) arrs_locales_id_loop -> COMA . ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
 
     ID              shift and go to state 312
 
@@ -4799,13 +4799,10 @@ state 311
 
 state 312
 
-    (64) arrs_locales_id_loop -> COMA ID . add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
-    (68) add_pila_arr_funciones -> .
+    (64) arrs_locales_id_loop -> COMA ID . LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
 
-    COMA            reduce using rule 68 (add_pila_arr_funciones -> .)
-    COLON           reduce using rule 68 (add_pila_arr_funciones -> .)
+    LBRACKET        shift and go to state 316
 
-    add_pila_arr_funciones         shift and go to state 316
 
 state 313
 
@@ -4840,13 +4837,10 @@ state 315
 
 state 316
 
-    (64) arrs_locales_id_loop -> COMA ID add_pila_arr_funciones . add_arr_tam arrs_locales_id_loop
-    (23) add_arr_tam -> .
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET . CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
 
-    COMA            reduce using rule 23 (add_arr_tam -> .)
-    COLON           reduce using rule 23 (add_arr_tam -> .)
+    CTEINT          shift and go to state 319
 
-    add_arr_tam                    shift and go to state 319
 
 state 317
 
@@ -4870,14 +4864,12 @@ state 318
 
 state 319
 
-    (64) arrs_locales_id_loop -> COMA ID add_pila_arr_funciones add_arr_tam . arrs_locales_id_loop
-    (64) arrs_locales_id_loop -> . COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
-    (65) arrs_locales_id_loop -> .
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET CTEINT . add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
+    (23) add_arr_tam -> .
 
-    COMA            shift and go to state 304
-    COLON           reduce using rule 65 (arrs_locales_id_loop -> .)
+    RBRACKET        reduce using rule 23 (add_arr_tam -> .)
 
-    arrs_locales_id_loop           shift and go to state 322
+    add_arr_tam                    shift and go to state 322
 
 state 320
 
@@ -4903,9 +4895,9 @@ state 321
 
 state 322
 
-    (64) arrs_locales_id_loop -> COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop .
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam . RBRACKET add_pila_arr_funciones arrs_locales_id_loop
 
-    COLON           reduce using rule 64 (arrs_locales_id_loop -> COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop .)
+    RBRACKET        shift and go to state 326
 
 
 state 323
@@ -4917,7 +4909,7 @@ state 323
     ARR             shift and go to state 137
     LCURLY          reduce using rule 63 (arrs_locales_funcion -> .)
 
-    arrs_locales_funcion           shift and go to state 326
+    arrs_locales_funcion           shift and go to state 327
 
 state 324
 
@@ -4935,9 +4927,37 @@ state 325
 
 state 326
 
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam RBRACKET . add_pila_arr_funciones arrs_locales_id_loop
+    (68) add_pila_arr_funciones -> .
+
+    COMA            reduce using rule 68 (add_pila_arr_funciones -> .)
+    COLON           reduce using rule 68 (add_pila_arr_funciones -> .)
+
+    add_pila_arr_funciones         shift and go to state 328
+
+state 327
+
     (66) semicolon_function_local_arr_loop -> SEMICOLON arrs_locales_funcion .
 
     LCURLY          reduce using rule 66 (semicolon_function_local_arr_loop -> SEMICOLON arrs_locales_funcion .)
+
+
+state 328
+
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones . arrs_locales_id_loop
+    (64) arrs_locales_id_loop -> . COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
+    (65) arrs_locales_id_loop -> .
+
+    COMA            shift and go to state 304
+    COLON           reduce using rule 65 (arrs_locales_id_loop -> .)
+
+    arrs_locales_id_loop           shift and go to state 329
+
+state 329
+
+    (64) arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop .
+
+    COLON           reduce using rule 64 (arrs_locales_id_loop -> COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop .)
 
 WARNING: 
 WARNING: Conflicts:
