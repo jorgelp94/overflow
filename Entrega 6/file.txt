@@ -7,24 +7,23 @@ var y : bool;
 
 arr m[5], z[10] : int;
 
-int func mult(d, e, f : int) var h : float; {
+int func mult(d:int;c:bool;x:char)
+var h : float;
+{
 	while(true) {
 		print(d);
 	}
 }
-return(4);
+return(a);
 
-int func mults(d, e, f : int) {
-	while(true) {
-		print(d);
-	}
+float func suma(a, e, f : float)
+{
+
 }
-return(4);
+return(a);
 
 main () {
-	var h, i : bool;
-	arr c[20] : char;
-
-	h = false;
+	var i : int;
+	i = call mult(1,true,'a');
 }
 end

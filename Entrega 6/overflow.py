@@ -103,23 +103,24 @@ dir_var_locales_funciones = {}
 dir_returns = {}
 dir_arr_globales = {}
 dir_arr_locales = {}
+dir_arr_locales_funciones = {}
 
 ###########################
-## Pilas                 ##overflow
+## Pilas                 ##
 ###########################
 pila_var_globales = []
 pila_var_locales = []
 pila_funciones = []
 pila_llamadas_funcion = []
 pila_param_funciones = []
-pila_var_funciones = []
-pila_var_locales_funciones = []
+pila_params = []
 pOperadores = []
 pOperandos = []
 pTipos = []
 pSaltos = deque([])
 pila_arr_globales = []
 pila_arr_locales = []
+pila_arr_funciones = []
 pila_tam_arr = []
 
 ###########################
@@ -824,8 +825,8 @@ def p_declaracion_funciones(p):
     |'''
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque regreso ret_cuad
-    | VOIDTYPE FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion add_cantidad_vars bloque ret_cuad'''
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque regreso ret_cuad
+    | VOIDTYPE FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque ret_cuad'''
 
 def p_add_dir_funciones(p):
     '''add_dir_funciones : '''
@@ -854,8 +855,8 @@ def p_params_loop(p):
 def p_add_pila_funciones(p):
     '''add_pila_funciones : '''
     # Cecha si el parametro no se repite, guarda las variables
-    if p[-1] not in pila_param_funciones :
-        pila_param_funciones.insert(0, p[-1])
+    if p[-1] not in pila_params :
+        pila_params.insert(0, p[-1])
     else :
         print("Ya existe una variable con ese nombre - funcion")
         exit()
@@ -876,19 +877,17 @@ def p_add_cantidad_vars(p):
     global dir_var_locales_funciones
     global contador_cuadruplos
     global pila_param_funciones
-    global pila_var_locales_funciones
 
-    dir_funciones[p[-6]].update({'Start' : contador_cuadruplos})
+    dir_funciones[p[-7]].update({'Start' : contador_cuadruplos})
 
-    dir_funciones[p[-6]].update({'Parametros' : dir_param_funciones[pila_funciones[-1][0]]})
+    dir_funciones[p[-7]].update({'Parametros' : pila_param_funciones})
 
-    dir_funciones[p[-6]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]})
+    dir_funciones[p[-7]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]}) #overflow
 
-    dir_funciones[p[-6]].update({'Memoria' :
+    dir_funciones[p[-7]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
 
     # Se resetean los contadores
-    pila_var_locales_funciones = []
     pila_param_funciones = []
     cantidad_int_func = 0
     cantidad_float_func = 0
@@ -913,27 +912,27 @@ def p_function_add_type(p):
     func_scope = pila_funciones[-1][0]
     scope = 'Funcion'
 
-    while (len(pila_param_funciones) > 0) :
-        tempPop = pila_param_funciones.pop()
+    while (len(pila_params) > 0) :
+        tempPop = pila_params.pop()
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
-            pila_var_funciones.append([tempPop ,'INT', int_dir_funciones])
+            pila_param_funciones.append([tempPop ,'INT', int_dir_funciones])
             int_dir_funciones += 1
             cantidad_int_func += 1
         elif p[-1] == 'float' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
-            pila_var_funciones.append([tempPop ,'FLOAT', float_dir_funciones])
+            pila_param_funciones.append([tempPop ,'FLOAT', float_dir_funciones])
             float_dir_funciones += 1
             cantidad_float_func += 1
         elif p[-1] == 'char' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
-            pila_var_funciones.append([tempPop ,'CHAR', char_dir_funciones])
+            pila_param_funciones.append([tempPop ,'CHAR', char_dir_funciones])
             char_dir_funciones += 1
             cantidad_char_func += 1
         elif p[-1] == 'bool' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
-            pila_var_funciones.append([tempPop ,'BOOL', bool_dir_funciones])
+            pila_param_funciones.append([tempPop ,'BOOL', bool_dir_funciones])
             bool_dir_funciones += 1
             cantidad_bool_func += 1
         else :
@@ -969,28 +968,24 @@ def p_function_local_add_type(p):
     func_scope = pila_funciones[-1][0]
     scope = 'Funcion'
 
-    while (len(pila_param_funciones) > 0) :
-        tempPop = pila_param_funciones.pop()
+    while (len(pila_params) > 0) :
+        tempPop = pila_params.pop()
 
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones_locales}
-            pila_var_locales_funciones.append([tempPop ,'INT', int_dir_funciones_locales])
             int_dir_funciones_locales += 1
             cantidad_int_func += 1
         elif p[-1] == 'float' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones_locales}
-            pila_var_locales_funciones.append([tempPop ,'FLOAT', int_dir_funciones_locales])
             float_dir_funciones_locales += 1
             cantidad_float_func += 1
         elif p[-1] == 'char' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones_locales}
-            pila_var_locales_funciones.append([tempPop ,'CHAR', int_dir_funciones_locales])
             char_dir_funciones_locales += 1
             cantidad_char_func += 1
         elif p[-1] == 'bool' :
-            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}
-            pila_var_locales_funciones.append([tempPop ,'BOOL', int_dir_funciones_locales])
+            dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones_locales}        
             bool_dir_funciones_locales += 1
             cantidad_bool_func += 1
         else :
@@ -999,8 +994,70 @@ def p_function_local_add_type(p):
 #############################
 ## Funcion arr locales     ##
 #############################
+def p_arrs_locales_funcion(p):
+    '''arrs_locales_funcion : ARR ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop COLON tipo function_local_arr_add_type semicolon_function_local_arr_loop
+    |'''
 
+def p_arrs_locales_id_loop(p):
+    '''arrs_locales_id_loop : COMA ID add_pila_arr_funciones add_arr_tam arrs_locales_id_loop
+    |'''
 
+def p_semicolon_function_local_arr_loop(p):
+    '''semicolon_function_local_arr_loop : SEMICOLON arrs_locales_funcion
+    |'''
+
+def p_add_pila_arr_funciones(p):
+    '''add_pila_arr_funciones : '''
+    # Cecha si el parametro no se repite, guarda las variables
+    if p[-1] not in pila_arr_funciones :
+        pila_arr_funciones.insert(0, p[-1])
+    else :
+        print("Ya existe una variable con ese nombre - funcion")
+        exit()
+
+def p_function_local_arr_add_type(p):
+    '''function_local_arr_add_type : '''
+    global int_dir_funciones_locales
+    global float_dir_funciones_locales
+    global char_dir_funciones_locales
+    global bool_dir_funciones_locales
+    global cantidad_int_func
+    global cantidad_float_func
+    global cantidad_char_func
+    global cantidad_bool_func
+    global scope
+
+    func_scope = pila_funciones[-1][0]
+    scope = 'Funcion'
+
+    while (len(pila_arr_funciones) > 0) :
+        tempPop = pila_arr_funciones.pop()
+        tam = pila_tam_arr.pop()
+
+        # Checa si la variable se repite
+        if dir_arr_locales.has_key(tempPop) :
+            print("Error: Ya existe otra variable con el ID %s" % tempPop)
+            exit()
+
+        else:
+            if p[-1] == 'int' :
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
+                int_dir_funciones_locales += tam
+                cantidad_int_func += tam
+            elif p[-1] == 'float' :
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
+                float_dir_funciones_locales += tam
+                cantidad_float_func += tam
+            elif p[-1] == 'char' :
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
+                char_dir_funciones_locales += tam
+                cantidad_char_func += tam
+            elif p[-1] == 'bool' :
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
+                bool_dir_funciones_locales += tam
+                cantidad_bool_func += tam
+            else :
+              print("Error al agregar variable global")
 
 #############################
 ## Funcion RET             ##
