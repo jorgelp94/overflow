@@ -2573,7 +2573,7 @@ def p_nodoCteF(p):
         cantidad_float += 1
 
 #############################
-## Nodo cteB               ##
+## Nodo cteB               ##git 
 #############################
 def p_nodoCteB(p):
     '''nodoCteB : '''
@@ -2623,7 +2623,7 @@ if __name__ == '__main__':
 			f.close()
 			# Parse the data
 			if (parser.parse(data, tracking=True) == 'OK'):
-				ejecutaMaquina(dir_proc, dir_cuadruplos)
+				ejecutaMaquina(dir_proc, dir_cuadruplos, dir_constantes)
 
 		except EOFError:
 	   		print(EOFError)
