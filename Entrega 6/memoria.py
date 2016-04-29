@@ -9,8 +9,6 @@ class Memoria:
 		self.bools = memoria['BOOL'] * [""]
 
 
-
-
 	def offsetDireccion(self, direccion):
 		addressScope = self.scopeDireccion(direccion)[1]
 
