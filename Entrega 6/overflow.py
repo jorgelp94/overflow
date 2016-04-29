@@ -2413,7 +2413,7 @@ def p_factor_exp(p):
     '''factor_exp : LPARENTHESIS nodo6 expresion RPARENTHESIS nodo7'''
 
 #############################
-## Nodo1                   ##
+## Nodo1                   ###
 #############################
 def p_nodo1(p):
     '''nodo1 : '''

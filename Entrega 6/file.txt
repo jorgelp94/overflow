@@ -5,7 +5,7 @@ var b : float;
 var x : char;
 var y : bool;
 
-arr m[5], z[10] : int;
+arr m[5], z[10] : float;
 
 float func suma( f : float)
 arr m[10] : bool;
@@ -18,7 +18,7 @@ main () {
 	var i : int;
 	arr kappa[3] : bool;
 
-	kappa[i] = 4 + 5 * i;
+	z[4 + i] = 4.4 + 5.5;
 
 	kappa = [true, false, true];
 }
