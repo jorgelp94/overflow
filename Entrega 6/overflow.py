@@ -123,6 +123,7 @@ pila_arr_globales = []
 pila_arr_locales = []
 pila_arr_funciones = []
 pila_tam_arr = []
+pila_arr_valores = []
 
 ###########################
 ## Scope                 ##
@@ -140,7 +141,7 @@ cantidad_float = 0
 cantidad_char = 0
 cantidad_bool = 0
 
-cant_int_globales = 0 
+cant_int_globales = 0
 cant_float_globales = 0
 cant_char_globales = 0
 cant_bool_globales = 0
@@ -930,7 +931,7 @@ def p_add_cantidad_vars(p):
 
     dir_funciones[p[-7]].update({'Parametros' : pila_param_funciones})
 
-    dir_funciones[p[-7]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]}) #overflow
+    dir_funciones[p[-7]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]})
 
     dir_funciones[p[-7]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
@@ -1618,14 +1619,180 @@ def p_asignacion(p):
 def p_asignacion_option(p):
     '''asignacion_option : ASSIGN expresion nodo8 SEMICOLON
       | ASSIGN CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON asign_return_cuad
-      | LBRACKET CTEINT RBRACKET ASSIGN nodo8 LBRACKET asignacion_type RBRACKET SEMICOLON'''
+      | ASSIGN LBRACKET asignacion_type RBRACKET set_arr_values SEMICOLON
+      | LBRACKET expresion arr_pos RBRACKET ASSIGN expresion asign_arr SEMICOLON'''
 
 def p_asignacion_type(p):
-    '''asignacion_type : CTEINT
-    | CTEFLOAT
-    | CTEINT COMA asignacion_type
-    | CTEFLOAT COMA asignacion_type'''
+    '''asignacion_type : CTEINT add_arr_valores_pila asignacion_coma_loop
+    | CTEFLOAT add_arr_valores_pila asignacion_coma_loop
+    | CTECHAR add_arr_valores_pila asignacion_coma_loop
+    | CTEBOOL add_arr_valores_pila asignacion_coma_loop'''
 
+def p_asignacion_coma_loop(p):
+    '''asignacion_coma_loop : COMA asignacion_type_loop
+    |'''
+
+def p_asignacion_type_loop(p):
+    '''asignacion_type_loop : CTEINT add_arr_valores_pila asignacion_coma_loop
+    | CTEFLOAT add_arr_valores_pila asignacion_coma_loop
+    | CTECHAR add_arr_valores_pila asignacion_coma_loop
+    | CTEBOOL add_arr_valores_pila asignacion_coma_loop
+    |'''
+
+def p_add_arr_valores_pila(p):
+    '''add_arr_valores_pila : '''
+    pila_arr_valores.insert(0, p[-1])
+
+def p_set_arr_values(p):
+    '''set_arr_values : '''
+    global scope
+    global contador_cuadruplos
+    global int_dir_constantes
+    global cantidad_int
+    global float_dir_constantes
+    global cantidad_float
+    global char_dir_constantes
+    global cantidad_char
+    global bool_dir_constantes
+    global cantidad_bool
+
+    if scope == 'Local' :
+        if p[-5] in dir_arr_locales.keys() :
+            cant_casillas = dir_arr_locales[p[-5]]['Tam']
+            dir_base = dir_arr_locales[p[-5]]['Dir Base']
+            tipo_arr = dir_arr_locales[p[-5]]['Tipo']
+
+        elif p[-5] in dir_arr_globales.keys() :
+            cant_casillas = dir_arr_globales[p[-5]]['Tam']
+            dir_base = dir_arr_globales[p[-5]]['Dir Base']
+            tipo_arr = dir_arr_globales[p[-5]]['Tipo']
+
+        if cant_casillas != len(pila_arr_valores) :
+            print("El tamano del arreglo asignado no coincide con el tamano del arreglo declarado")
+            exit()
+
+        while(cant_casillas > 0) :
+            valor = pila_arr_valores.pop()
+            if isinstance(valor, int) and tipo_arr == 'ARR INT' :
+                if valor not in dir_constantes.keys() :
+                    dir_constantes[valor] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
+                    int_dir_constantes += 1
+                    cantidad_int += 1
+            elif isinstance(valor, float) and tipo_arr == 'ARR FLOAT' :
+                if valor not in dir_constantes.keys() :
+                    dir_constantes[valor] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
+                    float_dir_constantes += 1
+                    cantidad_float += 1
+            elif isinstance(valor, str) and tipo_arr == 'ARR CHAR' :
+                if valor not in dir_constantes.keys() :
+                    if len(valor) > 3:
+                        print("Solo se aceptan caracters")
+                        exit()
+                    dir_constantes[valor] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
+                    char_dir_constantes += 1
+                    cantidad_char += 1
+            elif valor == 'true' or valor == 'false' and tipo_arr == 'ARR BOOL' :
+                if valor not in dir_constantes.keys() :
+                    dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
+                    bool_dir_constantes += 1
+                    cantidad_bool += 1
+            else :
+                print("Los valores asignados no concuerdan con el tipo de arreglo")
+                exit()
+
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_constantes[valor]['Dir'], "", dir_base]
+            contador_cuadruplos += 1
+            dir_base += 1
+            cant_casillas -= 1
+
+#############################
+## Asignacion  Areglos     ##
+#############################
+def p_arr_pos(p):
+    '''arr_pos : '''
+    global contador_cuadruplos
+
+    #TODO Falta poner scope funciones
+
+    if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
+        pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
+    elif p[-1] in dir_var_locales.keys() and dir_var_locales[p[-1]]['Tipo'] == 'INT' :
+        pila_tam_arr.append(dir_var_locales[p[-1]]['Dir'])
+    elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
+        pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+    else :
+        print("Tipo de valor para posicion de arreglo no valida")
+        exit()
+
+def p_asign_arr(p):
+    '''asign_arr : '''
+    global contador_cuadruplos
+    global scope
+    global pos
+
+    #TODO falta poner verificaciones de tipos
+    #TODO falta el scope de funciones
+
+    pos = pila_tam_arr.pop()
+
+    if p[-6] in dir_arr_locales.keys() :
+        pOperandos.append(p[-6])
+        pOperadores.append(ASIG)
+        if dir_arr_locales[p[-6]]['Tipo'] == 'ARR INT' :
+          pTipos.append(INT)
+        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR FLOAT' :
+          pTipos.append(FLOAT)
+        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR CHAR' :
+          pTipos.append(CHAR)
+        elif dir_arr_locales[p[-6]]['Tipo'] == 'ARR BOOL' :
+          pTipos.append(BOOL)
+        else :
+          print("Error de asignacion - tipo no valido")
+          exit()
+
+    # Checa si la pila de operadores contiene algo
+    if pOperadores :
+        # En caso de ser una asignacion
+        if pOperadores[-1] == ASIG :
+            operador = pOperadores.pop()
+            opdo_der = pOperandos.pop()
+            tipo_der = pTipos.pop()
+            opdo_izq = pOperandos.pop()
+            tipo_izq = pTipos.pop()
+
+            print(opdo_der)
+            print(opdo_izq)
+            print(tipo_der)
+            print(tipo_izq)
+
+            # Se verifica que los tipos seran validos en el cubo semantico
+            if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
+                tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
+
+                #Falta checar que el tipo del valor asignado concuerde con el arreglo
+
+                # Se inicializan en cero
+                opdo_der_dir = 0
+                opdo_izq_dir = 0
+
+                if opdo_der in dir_arr_locales.keys() :
+                    opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base'] + pos
+
+                if opdo_izq in dir_var_locales.keys() :
+                    opdo_izq_dir = dir_var_locales[opdo_izq]['Dir']
+
+                print(opdo_der_dir)
+                print(opdo_izq)
+
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq, "", opdo_der_dir]
+                contador_cuadruplos += 1
+            else :
+                print("Error de asignacion tipos no compatibles - arreglos")
+                exit()
+
+#############################
+## Llamada a funcion       ##
+#############################
 def p_function_call(p):
     '''function_call : '''
     global contador_cuadruplos
@@ -2368,7 +2535,6 @@ def p_nodoCteE(p):
         dir_constantes[p[-1]] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
         int_dir_constantes += 1
         cantidad_int += 1
-    #p[0] = p[-1]
 
 #############################
 ## Nodo cteF               ##

@@ -6,26 +6,20 @@ var x : char;
 var y : bool;
 
 arr m[5], z[10] : int;
-arr zzz[12] : float;
 
-int func mult(d:int;a:bool;x:char)
-var h, z : float;
-{
-	while(true) {
-		print(d);
-	}
-}
-return(4);
-
-float func suma(a, e, f : float)
-arr k[10], m[10] : bool;
+float func suma( f : float)
+arr m[10] : bool;
 {
 
 }
-return(a);
+return(b);
 
 main () {
 	var i : int;
-	i = call mult(1,true,'a');
+	arr kappa[3] : bool;
+
+	kappa[i] = 4 + 5 * i;
+
+	kappa = [true, false, true];
 }
 end
