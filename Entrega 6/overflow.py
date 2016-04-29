@@ -17,7 +17,7 @@ reserved = {
   'char' : 'CHARTYPE', 'bool' : 'BOOLTYPE', 'void' : 'VOIDTYPE',
   'while' : 'WHILE', 'and' : 'AND', 'or'  : 'OR', 'main' : 'MAIN',
   'return' : 'RETURN', 'true' : 'TRUE', 'false' : 'FALSE', 'func' : 'FUNC',
-  'call' : 'CALL'
+  'call' : 'CALL', 'arr' : 'ARR'
 }
 
 ###########################
@@ -101,9 +101,11 @@ dir_funciones = {}
 dir_param_funciones = {}
 dir_var_locales_funciones = {}
 dir_returns = {}
+dir_arr_globales = {}
+dir_arr_locales = {}
 
 ###########################
-## Pilas                 ##
+## Pilas                 ##overflow
 ###########################
 pila_var_globales = []
 pila_var_locales = []
@@ -116,6 +118,9 @@ pOperadores = []
 pOperandos = []
 pTipos = []
 pSaltos = deque([])
+pila_arr_globales = []
+pila_arr_locales = []
+pila_tam_arr = []
 
 ###########################
 ## Scope                 ##
@@ -492,7 +497,7 @@ cuboSemantico[BOOL][BOOL][DIF] = BOOL
 # Gramatica
 #############################################################################################
 def p_programa(p):
-    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales add_main_goto update_dir_proc declaracion_funciones MAIN init_goto LPARENTHESIS RPARENTHESIS bloque END'''
+    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales arreglos_globales add_main_goto update_dir_proc declaracion_funciones MAIN init_goto LPARENTHESIS RPARENTHESIS bloque END'''
     p[0] = "OK"
 
     global cantidad_int
@@ -505,8 +510,16 @@ def p_programa(p):
     print(dir_var_globales)
     print("\n")
 
+    print("Arreglos Globales")
+    print(dir_arr_globales)
+    print("\n")
+
     print("Variables Locales")
     print(dir_var_locales)
+    print("\n")
+
+    print("Arreglos Locales")
+    print(dir_arr_locales)
     print("\n")
 
     print("Variables Constantes")
@@ -515,14 +528,6 @@ def p_programa(p):
 
     print("Funciones")
     print(dir_funciones)
-    print("\n")
-
-    print("Params de Funciones")
-    print(dir_param_funciones)
-    print("\n")
-
-    print("Variables de Funciones")
-    print(dir_var_locales_funciones)
     print("\n")
 
     print("Cuadruplos")
@@ -548,18 +553,18 @@ def p_init_goto(p):
 ## Variables Globlaes      ##
 #############################
 def p_variables_globales(p):
-    '''variables_globales : var_global variables_globales
+    '''variables_globales : VAR var_global variables_globales
       |'''
 
 def p_var_global(p):
-    '''var_global : VAR variable_global_id_loop SEMICOLON variable_global_end_loop'''
+    '''var_global : variable_global_id_loop SEMICOLON variable_global_end_loop'''
 
 def p_variable_global_id_loop(p):
-    '''variable_global_id_loop : variable_global_id_loop_coma COLON tipo global_addType'''
+    '''variable_global_id_loop : ID add_pila_var_globales variable_global_id_loop_coma COLON tipo global_addType'''
 
 def p_variable_global_id_loop_coma(p):
-    '''variable_global_id_loop_coma : ID add_pila_var_globales
-        | ID add_pila_var_globales COMA variable_global_id_loop_coma'''
+    '''variable_global_id_loop_coma : COMA ID add_pila_var_globales variable_global_id_loop_coma
+        |'''
 
 # Agrega las variabes de un solo tipo a la pila
 def p_add_pila_var_globales(p):
@@ -614,17 +619,88 @@ def p_global_addType(p):
                 print("Error al agregar variable global")
 
 #############################
+## Arreglos Globales       ##
+#############################
+def p_arreglos_globales(p):
+    '''arreglos_globales : ARR arr_global arreglos_globales
+      |'''
+
+def p_arr_global(p):
+    '''arr_global : arr_global_id_loop SEMICOLON arr_global_end_loop'''
+
+def p_arr_global_id_loop(p):
+    '''arr_global_id_loop : ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_globales arr_global_id_loop_coma COLON tipo arr_global_addType'''
+
+def p_arr_global_id_loop_coma(p):
+    '''arr_global_id_loop_coma : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_globales arr_global_id_loop_coma
+        |'''
+
+def p_arr_global_end_loop(p):
+    '''arr_global_end_loop : arr_global
+      |'''
+
+def p_add_pila_arr_globales(p):
+    '''add_pila_arr_globales :'''
+    pila_arr_globales.append(p[-5])
+
+def p_add_arr_tam(p):
+    '''add_arr_tam : '''
+    pila_tam_arr.append(p[-1])
+
+def p_arr_global_addType(p):
+    '''arr_global_addType :'''
+    global int_dir_globales
+    global float_dir_globales
+    global char_dir_globales
+    global bool_dir_globales
+    global cantidad_int
+    global cantidad_float
+    global cantidad_char
+    global cantidad_bool
+    global scope
+
+    scope = 'Global'
+
+    while (len(pila_arr_globales) > 0):
+        tempPop = pila_arr_globales.pop()
+        tam = pila_tam_arr.pop()
+
+        # Checa si la variable se repite
+        if dir_arr_globales.has_key(tempPop) or dir_var_globales.has_key(tempPop) :
+            print("Error: Ya existe otra variable con el ID %s" % tempPop)
+            exit()
+        else:
+            if p[-1] == 'int' :
+                dir_arr_globales[tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_globales, 'Tam' : tam}
+                int_dir_globales += tam
+                cantidad_int += tam
+            elif p[-1] == 'float' :
+                dir_arr_globales[tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_globales, 'Tam' : tam}
+                float_dir_globales += tam
+                cantidad_float += tam
+            elif p[-1] == 'char' :
+                dir_arr_globales[tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_globales, 'Tam' : tam}
+                char_dir_globales += tam
+                cantidad_char += tam
+            elif p[-1] == 'bool' :
+                dir_arr_globales[tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_globales, 'Tam' : tam}
+                bool_dir_globales += tam
+                cantidad_bool += tam
+            else :
+              print("Error al agregar variable global")
+
+#############################
 ## Variables Locales       ##
 #############################
 def p_variables_locales(p):
     '''variables_locales : VAR variable_local_id_loop SEMICOLON variable_local_end_loop'''
 
 def p_variable_local_id_loop(p):
-    '''variable_local_id_loop : variable_local_id_loop_coma COLON tipo local_addType'''
+    '''variable_local_id_loop : ID add_pila_var_locales variable_local_id_loop_coma COLON tipo local_addType'''
 
 def p_variable_local_id_loop_coma(p):
-    '''variable_local_id_loop_coma : ID add_pila_var_locales
-        | ID add_pila_var_locales COMA variable_local_id_loop_coma'''
+    '''variable_local_id_loop_coma : COMA ID add_pila_var_locales variable_local_id_loop_coma
+        |'''
 
 # Agrega las variabes de un solo tipo a la pila
 def p_add_pila_var_locales(p):
@@ -678,6 +754,69 @@ def p_local_addType(p):
                 print("Error al agregar variable local")
 
 #############################
+## Arreglos Locales        ##
+#############################
+def p_arreglos_locales(p):
+    '''arreglos_locales : ARR arr_local_id_loop SEMICOLON arr_local_end_loop'''
+
+def p_arr_local_id_loop(p):
+    '''arr_local_id_loop : ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_locales arr_local_id_loop_coma COLON tipo arr_local_addType'''
+
+def p_arr_local_id_loop_coma(p):
+    '''arr_local_id_loop_coma : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_locales arr_local_id_loop_coma
+        |'''
+
+def p_arr_end_loop(p):
+    '''arr_local_end_loop : arreglos_locales
+      |'''
+
+def p_add_pila_arr_locales(p):
+    '''add_pila_arr_locales :'''
+    pila_arr_locales.append(p[-5])
+
+def p_arr_local_addType(p):
+    '''arr_local_addType :'''
+    global int_dir_locales
+    global float_dir_locales
+    global char_dir_locales
+    global bool_dir_locales
+    global cantidad_int
+    global cantidad_float
+    global cantidad_char
+    global cantidad_bool
+    global scope
+
+    scope = 'Local'
+
+    while (len(pila_arr_locales) > 0):
+        tempPop = pila_arr_locales.pop()
+        tam = pila_tam_arr.pop()
+
+        # Checa si la variable se repite
+        if dir_arr_locales.has_key(tempPop) :
+            print("Error: Ya existe otra variable con el ID %s" % tempPop)
+            exit()
+        else:
+            if p[-1] == 'int' :
+                dir_arr_locales[tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
+                int_dir_locales += tam
+                cantidad_int += tam
+            elif p[-1] == 'float' :
+                dir_arr_locales[tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
+                float_dir_locales += tam
+                cantidad_float += tam
+            elif p[-1] == 'char' :
+                dir_arr_locales[tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
+                char_dir_locales += tam
+                cantidad_char += tam
+            elif p[-1] == 'bool' :
+                dir_arr_locales[tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
+                bool_dir_locales += tam
+                cantidad_bool += tam
+            else :
+              print("Error al agregar variable global")
+
+#############################
 ## Funciones               ##
 #############################
 def p_declaracion_funciones(p):
@@ -721,6 +860,13 @@ def p_add_pila_funciones(p):
         print("Ya existe una variable con ese nombre - funcion")
         exit()
 
+def p_semicolon_function_loop(p):
+    '''semicolon_function_loop : SEMICOLON params
+    |'''
+
+#############################
+## Funcion cantidad vars   ##
+#############################
 def p_add_cantidad_vars(p):
     '''add_cantidad_vars : '''
     global cantidad_int_func
@@ -729,42 +875,29 @@ def p_add_cantidad_vars(p):
     global cantidad_char_func
     global dir_var_locales_funciones
     global contador_cuadruplos
-    global pila_var_funciones
+    global pila_param_funciones
     global pila_var_locales_funciones
 
     dir_funciones[p[-6]].update({'Start' : contador_cuadruplos})
 
-    dir_funciones[p[-6]].update({'Parametros' : pila_var_funciones})
+    dir_funciones[p[-6]].update({'Parametros' : dir_param_funciones[pila_funciones[-1][0]]})
 
-    dir_funciones[p[-6]].update({'Vars Locales' : pila_var_locales_funciones})
+    dir_funciones[p[-6]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]})
 
     dir_funciones[p[-6]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
 
     # Se resetean los contadores
     pila_var_locales_funciones = []
-    pila_var_funciones = []
+    pila_param_funciones = []
     cantidad_int_func = 0
     cantidad_float_func = 0
     cantidad_bool_func = 0
     cantidad_char_func = 0
 
-def p_semicolon_function_loop(p):
-    '''semicolon_function_loop : SEMICOLON params
-    |'''
-
-def p_vars_locales_funcion(p):
-    '''vars_locales_funcion : VAR ID add_pila_funciones vars_locales_id_loop COLON tipo function_local_add_type semicolon_function_local_loop
-    |'''
-
-def p_vars_locales_id_loop(p):
-    '''vars_locales_id_loop : COMA ID add_pila_funciones vars_locales_id_loop
-    |'''
-
-def p_semicolon_function_local_loop(p):
-    '''semicolon_function_local_loop : SEMICOLON vars_locales_funcion
-    |'''
-
+#############################
+## Funcion parametros      ##
+#############################
 def p_function_add_type(p):
     '''function_add_type : '''
     global int_dir_funciones
@@ -782,7 +915,6 @@ def p_function_add_type(p):
 
     while (len(pila_param_funciones) > 0) :
         tempPop = pila_param_funciones.pop()
-
         # Checa si el tipo de las variables
         if p[-1] == 'int' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
@@ -806,6 +938,21 @@ def p_function_add_type(p):
             cantidad_bool_func += 1
         else :
             print("Error al agregar variable local")
+
+#############################
+## Funcion var locales     ##
+#############################
+def p_vars_locales_funcion(p):
+    '''vars_locales_funcion : VAR ID add_pila_funciones vars_locales_id_loop COLON tipo function_local_add_type semicolon_function_local_loop
+    |'''
+
+def p_vars_locales_id_loop(p):
+    '''vars_locales_id_loop : COMA ID add_pila_funciones vars_locales_id_loop
+    |'''
+
+def p_semicolon_function_local_loop(p):
+    '''semicolon_function_local_loop : SEMICOLON vars_locales_funcion
+    |'''
 
 def p_function_local_add_type(p):
     '''function_local_add_type : '''
@@ -849,6 +996,15 @@ def p_function_local_add_type(p):
         else :
             print("Error al agregar variable local")
 
+#############################
+## Funcion arr locales     ##
+#############################
+
+
+
+#############################
+## Funcion RET             ##
+#############################
 def p_ret_cuad(p):
     '''ret_cuad : '''
     global contador_cuadruplos
@@ -865,7 +1021,7 @@ def p_add_dir_proc(p):
 
 def p_update_dir_proc(p):
     '''update_dir_proc : '''
-    dir_proc[p[-5]].update({
+    dir_proc[p[-6]].update({
     'Variables Globales' : dir_var_globales,
     'Variables Locales' : dir_var_locales,
     'Funciones' : dir_funciones
@@ -900,7 +1056,8 @@ def p_estatuto(p):
       | condicion
       | escritura
       | ciclo
-      | variables_locales'''
+      | variables_locales
+      | arreglos_locales'''
 
 #############################
 ## Regreso                 ##
@@ -1416,7 +1573,6 @@ def p_args_cuad(p):
         if dir_cuadruplos[contador_cuadruplos-1][0] == 'ERA' or dir_cuadruplos[contador_cuadruplos-1][0] == 'PARAM' :
             # En caso de que el argumento sea una variable local
             if p[-1] in dir_var_locales.keys() :
-                print(dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1])
                 if dir_var_locales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
