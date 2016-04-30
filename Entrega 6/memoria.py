@@ -9,10 +9,10 @@ class Memoria:
 		self.floats = memoria['FLOAT'] * [""]
 		self.chars = memoria['CHAR'] * [""]
 		self.bools = memoria['BOOL'] * [""]
-		self.temp_int = 10 * [""]
-		self.temp_float = 10 * [""]
-		self.temp_bool = 10 * [""]
-		self.temp_char = 10 * [""]
+		self.temp_int = 20 * [""]
+		self.temp_float = 20 * [""]
+		self.temp_bool = 20 * [""]
+		self.temp_char = 20 * [""]
 
 
 	def offsetDireccion(self, direccion):
