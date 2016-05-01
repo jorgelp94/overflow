@@ -884,7 +884,7 @@ def p_declaracion_funciones(p):
     |'''
 
 def p_funcion(p):
-    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque regreso ret_cuad
+    '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque ret_cuad
     | VOIDTYPE FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque ret_cuad'''
 
 def p_add_dir_funciones(p):
@@ -1238,6 +1238,7 @@ def p_estatuto(p):
       | ciclo
       | variables_locales
       | arreglos_locales
+      | regreso
       | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON verify_func_type'''
 
 #############################
@@ -1661,8 +1662,7 @@ def p_asignacion(p):
     '''asignacion : ID asignacion_option'''
 
 def p_asignacion_option(p):
-    '''asignacion_option : ASSIGN ID LBRACKET expresion acceso_pos RBRACKET SEMICOLON
-      | ASSIGN expresion nodo8 SEMICOLON
+    '''asignacion_option : ASSIGN expresion nodo8 SEMICOLON
       | ASSIGN CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON asign_return_cuad
       | ASSIGN LBRACKET asignacion_type RBRACKET set_arr_values SEMICOLON
       | LBRACKET expresion arr_pos RBRACKET ASSIGN expresion asign_arr SEMICOLON'''
@@ -1921,19 +1921,6 @@ def p_asign_arr(p):
             else :
                 print("Error de asignacion tipos no compatibles - arreglos")
                 exit()
-
-def p_acceso_pos(p):
-    '''acceso_pos : '''
-    global contador_cuadruplos
-
-    if p[-5] in dir_var_locales.keys():
-        opdo_izq_dir = dir_var_locales[p[-5]]['Dir']
-    elif p[-5] in dir_var_globales.keys():
-        opdo_izq_dir = dir_var_globales[p[-5]]['Dir']
-
-    if p[-3] in dir_arr_locales.keys() :
-        dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", dir_arr_locales[p[-3]]['Dir Base'], "(" + str(dir_cuadruplos[contador_cuadruplos-1][3]) + ")"]
-        contador_cuadruplos += 1
 
 #############################
 ## Llamada a funcion       ##
@@ -2544,9 +2531,10 @@ def p_nodo4(p):
 #############################
 ## Factor                  ##
 #############################
-def p_factor(p):
+def p_factor(p): #overflow
     '''factor : factor_var
-      | factor_exp'''
+    | factor_var LBRACKET expresion acceso_arr LBRACKET
+    | factor_exp'''
     p[0] = p[1]
 
 def p_factor_var(p):
@@ -2556,6 +2544,11 @@ def p_factor_var(p):
 def p_factor_exp(p):
     '''factor_exp : LPARENTHESIS nodo6 expresion RPARENTHESIS nodo7'''
 
+def p_acceso_arr(p):
+    '''acceso_arr : '''
+    print(p[-1])
+    print(dir_cuadruplos)
+    exit()
 #############################
 ## Nodo1                   ###
 #############################
@@ -2676,6 +2669,20 @@ def p_nodoCteV(p):
 
         # Checa si el ID esta en las variables globales
         elif p[-1] in dir_var_globales.keys() :
+            pOperandos.append(dir_var_globales[p[-1]]['Dir'])
+            if dir_var_globales[p[-1]]['Tipo'] ==  'INT' :
+                pTipos.append(1)
+            elif dir_var_globales[p[-1]]['Tipo'] == 'FLOAT' :
+                pTipos.append(2)
+            elif dir_var_globales[p[-1]]['Tipo'] == 'CHAR' :
+                pTipos.append(3)
+            elif dir_var_globales[p[-1]]['Tipo'] == 'BOOL' :
+                pTipos.append(4)
+            else :
+                print("Error en asignacion de tipo de variable")
+                exit()
+
+        elif p[-1] in dir_arr_locales.keys() :
             pOperandos.append(dir_var_globales[p[-1]]['Dir'])
             if dir_var_globales[p[-1]]['Tipo'] ==  'INT' :
                 pTipos.append(1)
