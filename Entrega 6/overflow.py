@@ -920,6 +920,26 @@ def p_semicolon_function_loop(p):
     '''semicolon_function_loop : SEMICOLON params
     |'''
 
+def p_verify_func_type(p): # overflow
+    '''verify_func_type : '''
+    global int_dir_temporales
+    global float_dir_temporales
+    global char_dir_temporales
+    global bool_dir_temporales
+
+    #TODO llamadas a funcion sin tipo para todo
+
+    if dir_funciones[p[-7]]['Tipo'] != 'VOID' :
+        print("funcion " + str(p[-7]) + " ocupa ser asignada a variable")
+        exit()
+    #elif dir_funciones[p[-7]]['Tipo'] == 'INT' :
+
+    #elif dir_funciones[p[-7]]['Tipo'] == 'FLOAT' :
+
+    #elif dir_funciones[p[-7]]['Tipo'] == 'CHAR' :
+
+    #elif dir_funciones[p[-7]]['Tipo'] == 'BOOL' :
+
 #############################
 ## Funcion cantidad vars   ##
 #############################
@@ -1204,7 +1224,8 @@ def p_estatuto(p):
       | escritura
       | ciclo
       | variables_locales
-      | arreglos_locales'''
+      | arreglos_locales
+      | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON verify_func_type'''
 
 #############################
 ## Regreso                 ##
