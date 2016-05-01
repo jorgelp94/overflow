@@ -151,6 +151,11 @@ cant_float_locales = 0
 cant_char_locales = 0
 cant_bool_locales = 0
 
+cant_int_temporales = 0
+cant_float_temporales = 0
+cant_char_temporales = 0
+cant_bool_temporales = 0
+
 cantidad_int_func = 0
 cantidad_float_func = 0
 cantidad_char_func = 0
@@ -920,7 +925,7 @@ def p_semicolon_function_loop(p):
     '''semicolon_function_loop : SEMICOLON params
     |'''
 
-def p_verify_func_type(p): # overflow
+def p_verify_func_type(p):
     '''verify_func_type : '''
     global int_dir_temporales
     global float_dir_temporales
@@ -1164,14 +1169,22 @@ def p_add_dir_proc(p):
 
 def p_update_dir_proc(p):
     '''update_dir_proc : '''
-
     global cant_int_globales
     global cant_float_globales
     global cant_char_globales
     global cant_bool_globales
+    global cant_int_locales
+    global cant_float_locales
+    global cant_char_locales
+    global cant_bool_locales
+    global cant_int_temporales
+    global cant_float_temporales
+    global cant_char_temporales
+    global cant_bool_temporales
 
     dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
     dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
+    dir_var_locales['Memoria'] = {'INT' : cant_int_temporales, 'FLOAT' : cant_float_temporales, 'BOOL' : cant_bool_temporales, 'CHAR' : cant_char_temporales}
 
     dir_proc[p[-6]].update({
     'Variables Globales' : dir_var_globales,
@@ -1644,7 +1657,8 @@ def p_asignacion(p):
     '''asignacion : ID asignacion_option'''
 
 def p_asignacion_option(p):
-    '''asignacion_option : ASSIGN expresion nodo8 SEMICOLON
+    '''asignacion_option : ASSIGN ID LBRACKET expresion acceso_pos RBRACKET SEMICOLON
+      | ASSIGN expresion nodo8 SEMICOLON
       | ASSIGN CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON asign_return_cuad
       | ASSIGN LBRACKET asignacion_type RBRACKET set_arr_values SEMICOLON
       | LBRACKET expresion arr_pos RBRACKET ASSIGN expresion asign_arr SEMICOLON'''
@@ -1903,6 +1917,19 @@ def p_asign_arr(p):
             else :
                 print("Error de asignacion tipos no compatibles - arreglos")
                 exit()
+
+def p_acceso_pos(p):
+    '''acceso_pos : '''
+    global contador_cuadruplos
+
+    if p[-5] in dir_var_locales.keys():
+        opdo_izq_dir = dir_var_locales[p[-5]]['Dir']
+    elif p[-5] in dir_var_globales.keys():
+        opdo_izq_dir = dir_var_globales[p[-5]]['Dir']
+
+    if p[-3] in dir_arr_locales.keys() :
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", dir_arr_locales[p[-3]]['Dir Base'], "(" + str(dir_cuadruplos[contador_cuadruplos-1][3]) + ")"]
+        contador_cuadruplos += 1
 
 #############################
 ## Llamada a funcion       ##
@@ -2289,6 +2316,8 @@ def p_nodo5(p):
     global contador_cuadruplos
     global int_dir_temporales
     global float_dir_temporales
+    global cant_int_temporales
+    global cant_float_temporales
     global cantidad_int
     global cantidad_float
     global scope
@@ -2352,6 +2381,7 @@ def p_nodo5(p):
                             exit()
 
                         int_dir_temporales += 1
+                        cant_int_temporales += 1
                         cantidad_int += 1
                     elif tipo_res == FLOAT :
                         pOperandos.append(float_dir_temporales)
@@ -2365,6 +2395,7 @@ def p_nodo5(p):
                             exit()
 
                         float_dir_temporales += 1
+                        cant_float_temporales += 1
                         cantidad_float += 1
                     else :
                         print("Error en tipo de respuesta - Exp")
@@ -2413,6 +2444,8 @@ def p_nodo4(p):
     global contador_cuadruplos
     global int_dir_temporales
     global float_dir_temporales
+    global cant_int_temporales
+    global cant_float_temporales
     global cantidad_int
     global cantidad_float
     global scope
@@ -2475,6 +2508,7 @@ def p_nodo4(p):
                             exit()
 
                         int_dir_temporales += 1
+                        cant_int_temporales += 1
                         cantidad_int += 1
                     elif tipo_res == FLOAT :
                         pOperandos.append(float_dir_temporales)
@@ -2488,6 +2522,7 @@ def p_nodo4(p):
                             exit()
 
                         float_dir_temporales += 1
+                        cant_float_temporales += 1
                         cantidad_float += 1
                     else :
                         print("Error en tipo de respuesta - termino")
