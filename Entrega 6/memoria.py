@@ -51,7 +51,7 @@ class Memoria:
 
 
 	def memoriaActual(self, scope, tipo):
-		if scope == 'Global' or scope == 'Funcion' or scope == 'Local':
+		if scope == 'Global' or scope == 'Funcion' or scope == 'Local' or scope == 'FuncionL':
 			if tipo == 'INT':
 				return self.ints
 			elif tipo == 'FLOAT':
@@ -93,11 +93,25 @@ class Memoria:
 
 	def setValorDeDireccion(self, direccion, valor):
 		scope = self.scopeDireccion(direccion)[0]
+		# print("scope")
+		# print(scope)
 		tipo = self.offsetDireccion(direccion)[0]
+		# print("tipo")
+		# print(tipo)
 		dirBase = self.scopeDireccion(direccion)[1]
+		# print("dir base")
+		# print(dirBase)
 		offset = self.offsetDireccion(direccion)[1]
+		# print("offset")
+		# print(offset)
 		real = direccion - dirBase - offset
+		# print("real")
+		# print(real)
 		mem = self.memoriaActual(scope, tipo)
+		# print("mem")
+		# print(mem)
+		# print("valor")
+		# print(valor)
 		mem[real] = valor
 
 

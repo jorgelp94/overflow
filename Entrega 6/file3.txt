@@ -5,28 +5,38 @@ var b, c, d : float;
 var x : char;
 var y : bool;
 
-arr m[5], z[10] : int;
+arr m[5], z[1] : int;
 
-float func suma( f : float)
+float func resta( f : float)
+var peso : float;
 arr m[10] : bool;
 {
-
+	peso = 25.0 * 3.0;
 }
 return(b);
 
 main () {
-	var i : int;
-	arr kappa[3] : bool;
-  a = 3 + 12;
-  b = 10.0 - 2.0;
-  c = a * b;
+ 	var i, acum : int;
+ 	arr kappa[3] : bool;
+ 	a = 3 + 12;
+ 	b = 10.0 - 4.0;
+ 	c = a * b;
+ 	i = 123;
+ 	d = c/10;
+ 	acum = 0;
 
-  d = c/10;
+ 	y = a < 5;
 
-  if (a > 1) {
-  
-  }
+ 	c = call resta(b);
+
+ 	m = [1,2,3,4,5];
+ 	z = [19];
 
 	kappa = [true, false, true];
+
+	i = 0;
+	while (i < 5) {
+		i = i + 1;
+	}
 }
 end

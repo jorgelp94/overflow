@@ -15,11 +15,32 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	cuadruplos[len(cuadruplos)] = ['ENDD', '', '', '']
 	print(cuadruplos)
 	stack_memoria = []
-
+	saltos = []
 	cont_cuadruplos = 0
 
 	memoria_global = Memoria(nombre_programa, directorio[nombre_programa]['Variables Globales']['Memoria'])
 	memoria_activa = Memoria('main', directorio[nombre_programa]['Variables Locales']['Memoria'])
+	memoria_nueva = ""
+
+	print(memoria_global.name)
+	print(memoria_global.ints)
+	print(memoria_global.floats)
+	print(memoria_global.chars)
+	print(memoria_global.bools)
+	print(memoria_global.temp_int)
+	print(memoria_global.temp_float)
+	print(memoria_global.temp_char)
+	print(memoria_global.temp_bool)
+	print(memoria_activa.name)
+	print(memoria_activa.ints)
+	print(memoria_activa.floats)
+	print(memoria_activa.chars)
+	print(memoria_activa.bools)
+	print(memoria_activa.temp_int)
+	print(memoria_activa.temp_float)
+	print(memoria_activa.temp_char)
+	print(memoria_activa.temp_bool)
+	print("------------------------------------------------------------------------------------")
 
 	while cuadruplos[cont_cuadruplos][0] != 'ENDD':
 		cuadruplo = cuadruplos[cont_cuadruplos]
@@ -144,7 +165,6 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			
 			result = valorOp1 > valorOp2
 			guarda =cuadruplo[3]
-
 			memoria_activa.setValorDeDireccion(guarda, result)
 
 
@@ -226,7 +246,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			
 			result = valorOp1 != valorOp2
 			guarda =cuadruplo[3]
-			
+
 			memoria_activa.setValorDeDireccion(guarda, result)
 
 
@@ -284,30 +304,79 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				memoria_activa.setValorDeDireccion(guarda, valorOp1)
 
 
+		elif cuadruplo[0] == 'GOTO':
+			nuevaPosicion = cuadruplo[3]
+			cont_cuadruplos = nuevaPosicion - 1
 
 
-			
+		elif cuadruplo[0] == 'ERA':
+			nombre = cuadruplo[1].lower()
+			memoria = directorio[nombre_programa]['Funciones'][nombre]['Memoria']
+			memoria_nueva = Memoria(nombre, memoria)
+
+		elif cuadruplo[0] == 'GOSUB':
+			saltos.append(cont_cuadruplos)
+			nombre = cuadruplo[1].lower()
+			salto = directorio[nombre_programa]['Funciones'][nombre]['Start']
+			cont_cuadruplos = salto - 1
+			stack_memoria.append(memoria_activa)
+			memoria_activa = memoria_nueva
+
+		elif cuadruplo[0] == 'RET':
+			memoria_activa = stack_memoria.pop()
+			cont_cuadruplos = saltos.pop()
+
+
+		elif cuadruplo[0] == 'PARAM':
+			op1 = cuadruplo[1]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			guarda = cuadruplo[3]
+
+			memoria_nueva.setValorDeDireccion(guarda, valorOp1)
+
+		elif cuadruplo[0] == 'GOTOF':
+			salto = cuadruplo[3]
+			verifica = cuadruplo[1]
+			res = memoria_activa.getValorDeDireccion(verifica, constantes)
+			if res == False:
+				cont_cuadruplos = salto-1
+
+
+
+
 		cont_cuadruplos += 1
-		#print(cont_cuadruplos)
+		#print("Contador cuadruplos: %s" % cont_cuadruplos)
+		print(cuadruplo)
 
 
-	print(memoria_global.name)
-	print(memoria_global.ints)
-	print(memoria_global.floats)
-	print(memoria_global.chars)
-	print(memoria_global.bools)
-	print(memoria_global.temp_int)
-	print(memoria_global.temp_float)
-	print(memoria_global.temp_char)
-	print(memoria_global.temp_bool)
-	print(memoria_activa.name)
-	print(memoria_activa.ints)
-	print(memoria_activa.floats)
-	print(memoria_activa.chars)
-	print(memoria_activa.bools)
-	print(memoria_activa.temp_int)
-	print(memoria_activa.temp_float)
-	print(memoria_activa.temp_char)
-	print(memoria_activa.temp_bool)
+		print(memoria_global.name)
+		print(memoria_global.ints)
+		print(memoria_global.floats)
+		print(memoria_global.chars)
+		print(memoria_global.bools)
+		print(memoria_global.temp_int)
+		print(memoria_global.temp_float)
+		print(memoria_global.temp_char)
+		print(memoria_global.temp_bool)
+		print(memoria_activa.name)
+		print(memoria_activa.ints)
+		print(memoria_activa.floats)
+		print(memoria_activa.chars)
+		print(memoria_activa.bools)
+		print(memoria_activa.temp_int)
+		print(memoria_activa.temp_float)
+		print(memoria_activa.temp_char)
+		print(memoria_activa.temp_bool)
+		print("------------------------------------------------------------------------------------")
+		
+
+
+	
+
 
 
