@@ -2434,7 +2434,7 @@ def p_nodo1(p):
     global scope
 
     # Checa que no sea una variable ya declarada previamente
-    if pila_funciones :
+    if scope == 'Funcion' :
         if p[-1] not in dir_var_locales_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_param_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_var_globales.keys() :
             pOperandos.append(dir_constantes[p[-1]]['Dir'])
     elif p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_funciones.keys() :
