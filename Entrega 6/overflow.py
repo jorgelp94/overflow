@@ -1656,9 +1656,22 @@ def p_set_arr_values(p):
     global bool_dir_constantes
     global cantidad_bool
 
-    #TODO funciones ??
+    if scope == 'Funcion' :
+        if p[-5] in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
+            cant_casillas = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Tam']
+            dir_base = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
+            tipo_arr = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
 
-    if scope == 'Local' :
+        elif p[-5] in dir_param_funciones[pila_funciones[-1][0]].keys() :
+            cant_casillas = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tam']
+            dir_base = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
+            tipo_arr = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
+
+        elif p[-5] in dir_arr_globales.keys() :
+            cant_casillas = dir_arr_globales[p[-5]]['Tam']
+            dir_base = dir_arr_globales[p[-5]]['Dir Base']
+            tipo_arr = dir_arr_globales[p[-5]]['Tipo']
+    else :
         if p[-5] in dir_arr_locales.keys() :
             cant_casillas = dir_arr_locales[p[-5]]['Tam']
             dir_base = dir_arr_locales[p[-5]]['Dir Base']
@@ -1669,43 +1682,44 @@ def p_set_arr_values(p):
             dir_base = dir_arr_globales[p[-5]]['Dir Base']
             tipo_arr = dir_arr_globales[p[-5]]['Tipo']
 
-        if cant_casillas != len(pila_arr_valores) :
-            print("El tamano del arreglo asignado no coincide con el tamano del arreglo declarado")
+
+    if cant_casillas != len(pila_arr_valores) :
+        print("El tamano del arreglo asignado no coincide con el tamano del arreglo declarado")
+        exit()
+
+    while(cant_casillas > 0) :
+        valor = pila_arr_valores.pop()
+        if isinstance(valor, int) and tipo_arr == 'ARR INT' :
+            if valor not in dir_constantes.keys() :
+                dir_constantes[valor] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
+                int_dir_constantes += 1
+                cantidad_int += 1
+        elif isinstance(valor, float) and tipo_arr == 'ARR FLOAT' :
+            if valor not in dir_constantes.keys() :
+                dir_constantes[valor] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
+                float_dir_constantes += 1
+                cantidad_float += 1
+        elif isinstance(valor, str) and tipo_arr == 'ARR CHAR' :
+            if valor not in dir_constantes.keys() :
+                if len(valor) > 3:
+                    print("Solo se aceptan caracters")
+                    exit()
+                dir_constantes[valor] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
+                char_dir_constantes += 1
+                cantidad_char += 1
+        elif valor == 'true' or valor == 'false' and tipo_arr == 'ARR BOOL' :
+            if valor not in dir_constantes.keys() :
+                dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
+                bool_dir_constantes += 1
+                cantidad_bool += 1
+        else :
+            print("Los valores asignados no concuerdan con el tipo de arreglo")
             exit()
 
-        while(cant_casillas > 0) :
-            valor = pila_arr_valores.pop()
-            if isinstance(valor, int) and tipo_arr == 'ARR INT' :
-                if valor not in dir_constantes.keys() :
-                    dir_constantes[valor] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
-                    int_dir_constantes += 1
-                    cantidad_int += 1
-            elif isinstance(valor, float) and tipo_arr == 'ARR FLOAT' :
-                if valor not in dir_constantes.keys() :
-                    dir_constantes[valor] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
-                    float_dir_constantes += 1
-                    cantidad_float += 1
-            elif isinstance(valor, str) and tipo_arr == 'ARR CHAR' :
-                if valor not in dir_constantes.keys() :
-                    if len(valor) > 3:
-                        print("Solo se aceptan caracters")
-                        exit()
-                    dir_constantes[valor] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
-                    char_dir_constantes += 1
-                    cantidad_char += 1
-            elif valor == 'true' or valor == 'false' and tipo_arr == 'ARR BOOL' :
-                if valor not in dir_constantes.keys() :
-                    dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
-                    bool_dir_constantes += 1
-                    cantidad_bool += 1
-            else :
-                print("Los valores asignados no concuerdan con el tipo de arreglo")
-                exit()
-
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_constantes[valor]['Dir'], "", dir_base]
-            contador_cuadruplos += 1
-            dir_base += 1
-            cant_casillas -= 1
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_constantes[valor]['Dir'], "", dir_base]
+        contador_cuadruplos += 1
+        dir_base += 1
+        cant_casillas -= 1
 
 #############################
 ## Asignacion  Areglos     ##
@@ -1714,17 +1728,30 @@ def p_arr_pos(p):
     '''arr_pos : '''
     global contador_cuadruplos
 
-    #TODO Falta poner scope funciones
+    #TODO Checar que esto funcione bien
 
-    if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
-        pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
-    elif p[-1] in dir_var_locales.keys() and dir_var_locales[p[-1]]['Tipo'] == 'INT' :
-        pila_tam_arr.append(dir_var_locales[p[-1]]['Dir'])
-    elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
-        pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+    if scope == 'Funcion' :
+        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
+            pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
+        elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+            pila_tam_arr.append(dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'])
+        elif p[-1] in dir_param_funciones[pila_funciones[-1][0]].keys() :
+            pila_tam_arr.append(dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'])
+        elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
+            pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+        else :
+            print("Tipo de valor para posicion de arreglo no valida")
+            exit()
     else :
-        print("Tipo de valor para posicion de arreglo no valida")
-        exit()
+        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
+            pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
+        elif p[-1] in dir_var_locales.keys() and dir_var_locales[p[-1]]['Tipo'] == 'INT' :
+            pila_tam_arr.append(dir_var_locales[p[-1]]['Dir'])
+        elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
+            pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+        else :
+            print("Tipo de valor para posicion de arreglo no valida")
+            exit()
 
 def p_asign_arr(p):
     '''asign_arr : '''
@@ -1734,11 +1761,38 @@ def p_asign_arr(p):
 
     pos = pila_tam_arr.pop()
 
+    #TODO arr parametros de funcion
+
     if scope == 'Funcion' :
-        print('Fuera de servicio')
-        #TODO arr funcion local
-        #TODO arr parametros de funcion
-        #TODO arr globales
+        if p[-7] in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
+            pOperandos.append(p[-7])
+            pOperadores.append(ASIG)
+            if dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR INT' :
+              pTipos.append(INT)
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR CHAR' :
+              pTipos.append(CHAR)
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
+
+        elif p[-7] in dir_arr_globales.keys() :
+            pOperandos.append(p[-7])
+            pOperadores.append(ASIG)
+            if dir_arr_globales[p[-7]]['Tipo'] == 'ARR INT' :
+              pTipos.append(INT)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+              pTipos.append(FLOAT)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR CHAR' :
+              pTipos.append(CHAR)
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR BOOL' :
+              pTipos.append(BOOL)
+            else :
+              print("Error de asignacion - tipo no valido")
+              exit()
     else :
         if p[-7] in dir_arr_locales.keys() :
             pOperandos.append(p[-7])
@@ -1754,6 +1808,7 @@ def p_asign_arr(p):
             else :
               print("Error de asignacion - tipo no valido")
               exit()
+
         elif p[-7] in dir_arr_globales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
@@ -1779,11 +1834,6 @@ def p_asign_arr(p):
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
-            #print(opdo_der)
-            #print(tipo_der)
-            #print(opdo_izq)
-            #print(tipo_izq)
-
             # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
@@ -1792,19 +1842,31 @@ def p_asign_arr(p):
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
-                #TODO funciones
+                #TODO arr parametos de funcion
+                if scope == 'Funcion' :
+                    if opdo_der in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_der_dir = dir_arr_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir Base']
+                    elif opdo_der in dir_arr_globales.keys() :
+                        opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
 
-                if opdo_der in dir_arr_locales.keys() :
-                    opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base']
-                elif opdo_der in dir_arr_globales.keys() :
-                    opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
-
-                if opdo_izq in dir_var_locales.keys() :
-                    opdo_izq_dir = dir_var_locales[opdo_izq]['Dir']
-                elif opdo_izq in dir_var_globales.keys() :
-                    opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+                    if opdo_izq in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
+                        opdo_izq_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+                    else :
+                        opdo_izq_dir = opdo_izq
                 else :
-                    opdo_izq_dir = opdo_izq
+                    if opdo_der in dir_arr_locales.keys() :
+                        opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base']
+                    elif opdo_der in dir_arr_globales.keys() :
+                        opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
+
+                    if opdo_izq in dir_var_locales.keys() :
+                        opdo_izq_dir = dir_var_locales[opdo_izq]['Dir']
+                    elif opdo_izq in dir_var_globales.keys() :
+                        opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+                    else :
+                        opdo_izq_dir = opdo_izq
 
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir, "(" + str(pos) + ")"]
                 contador_cuadruplos += 1
@@ -1916,7 +1978,6 @@ def p_args_cuad(p):
                     exit()
             # En caso de que el argumento sea una constante
             elif p[-1] in dir_constantes.keys() :
-                print(dir_constantes[p[-1]]['Tipo'])
                 if dir_constantes[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_constantes[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
@@ -2642,7 +2703,7 @@ if __name__ == '__main__':
 			f.close()
 			# Parse the data
 			if (parser.parse(data, tracking=True) == 'OK'):
-				ejecutaMaquina(dir_proc, dir_cuadruplos, dir_constantes)
+				exit();ejecutaMaquina(dir_proc, dir_cuadruplos, dir_constantes)
 
 		except EOFError:
 	   		print(EOFError)
