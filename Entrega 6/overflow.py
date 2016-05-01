@@ -1739,6 +1739,8 @@ def p_arr_pos(p):
             pila_tam_arr.append(dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'])
         elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
             pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+        elif p[-1] in dir_constantes.keys():
+            pila_tam_arr.append(dir_constantes[p[-1]]['Dir'])
         else :
             print("Tipo de valor para posicion de arreglo no valida")
             exit()
@@ -1749,6 +1751,8 @@ def p_arr_pos(p):
             pila_tam_arr.append(dir_var_locales[p[-1]]['Dir'])
         elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
             pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+        elif p[-1] in dir_constantes.keys():
+            pila_tam_arr.append(dir_constantes[p[-1]]['Dir'])
         else :
             print("Tipo de valor para posicion de arreglo no valida")
             exit()
