@@ -1286,7 +1286,7 @@ def p_return_cuad(p):
                 print("Valor de retorno no compatible con tipo de funcion")
                 exit()
         else :
-            print("El tipo de argumento no coincide con el parametro")
+            print("El tipo de argumento no coincide con el parametro, return")
             exit()
     else :
         print("Declaracion de return no valida en funcion")
@@ -1338,7 +1338,7 @@ def p_print_cuad(p):
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
         else :
-            print("El tipo de argumento no coincide con el parametro")
+            print("El tipo de argumento no coincide con el parametro, print funcion")
             exit()
     else :
         # Enteros
@@ -1369,7 +1369,7 @@ def p_print_cuad(p):
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
         else :
-            print("El tipo de argumento no coincide con el parametro")
+            print("El tipo de argumento no coincide con el parametro, print local")
             exit()
 
 #############################
@@ -1867,7 +1867,6 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro - var locales")
                     exit()
-
             # En caso de que el argumento sea una constante
             elif p[-1] in dir_constantes.keys() :
                 if dir_constantes[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
@@ -1875,6 +1874,13 @@ def p_args_cuad(p):
                     contador_cuadruplos += 1
                 else :
                     print("El tipo de argumento no coincide con el parametro - constantes")
+                    exit()
+            elif p[-1] in dir_var_globales.keys() :
+                if dir_var_globales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
                     exit()
         # En caso de que sea alguna operacion o comparacion
         else :
@@ -1910,8 +1916,16 @@ def p_args_cuad(p):
                     exit()
             # En caso de que el argumento sea una constante
             elif p[-1] in dir_constantes.keys() :
+                print(dir_constantes[p[-1]]['Tipo'])
                 if dir_constantes[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_constantes[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
+                    contador_cuadruplos += 1
+                else :
+                    print("El tipo de argumento no coincide con el parametro")
+                    exit()
+            elif p[-1] in dir_var_globales.keys() :
+                if dir_var_globales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
+                    dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
                 else :
                     print("El tipo de argumento no coincide con el parametro")
@@ -2420,7 +2434,6 @@ def p_nodo1(p):
     global scope
 
     # Checa que no sea una variable ya declarada previamente
-    print(p[-1])
     if pila_funciones :
         if p[-1] not in dir_var_locales_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_param_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_var_globales.keys() :
             pOperandos.append(dir_constantes[p[-1]]['Dir'])
