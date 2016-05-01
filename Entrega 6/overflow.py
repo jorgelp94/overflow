@@ -1529,6 +1529,7 @@ def p_nodo11(p):
     '''nodo11 : '''
     global contador_cuadruplos
     global bool_dir_temporales
+    global cant_bool_temporales
     global cantidad_bool
 
     # Checa si hay algun operador relacional en la pila
@@ -1554,6 +1555,7 @@ def p_nodo11(p):
 
                 bool_dir_temporales += 1
                 cantidad_bool += 1
+                cant_bool_temporales += 1
                 pTipos.append(tipo_res)
                 contador_cuadruplos += 1
             else:
@@ -1583,6 +1585,7 @@ def p_nodo10(p):
     '''nodo10 : '''
     global contador_cuadruplos
     global bool_dir_temporales
+    global cant_bool_temporales
     global cantidad_bool
 
     # Checa si hay algun operador relacional en la pila
@@ -1616,6 +1619,7 @@ def p_nodo10(p):
                     exit()
 
                 bool_dir_temporales += 1
+                cant_bool_temporales += 1
                 cantidad_bool += 1
                 pTipos.append(tipo_res)
                 contador_cuadruplos += 1
