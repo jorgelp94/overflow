@@ -510,7 +510,7 @@ cuboSemantico[BOOL][BOOL][DIF] = BOOL
 # Gramatica
 #############################################################################################
 def p_programa(p):
-    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales arreglos_globales add_main_goto update_dir_proc declaracion_funciones MAIN init_goto LPARENTHESIS RPARENTHESIS bloque second_update_dir_proc END'''
+    '''programa : PROGRAM ID SEMICOLON add_dir_proc variables_globales arreglos_globales add_main_goto update_dir_proc declaracion_funciones MAIN init_goto LPARENTHESIS RPARENTHESIS bloque second_update_dir_proc end_cuad END'''
     p[0] = "OK"
 
     global cantidad_int
@@ -565,6 +565,12 @@ def p_init_goto(p):
     '''init_goto : '''
     global contador_cuadruplos
     dir_cuadruplos[0] = ['GOTO', "", "", contador_cuadruplos]
+
+def p_end_cuad(p):
+    '''end_cuad : '''
+    global contador_cuadruplos
+    dir_cuadruplos[contador_cuadruplos] = ['ENDPROGRAM', "", "", ""]
+    contador_cuadruplos += 1
 
 #############################
 ## Variables Globlaes      ##
@@ -1728,8 +1734,6 @@ def p_arr_pos(p):
     '''arr_pos : '''
     global contador_cuadruplos
 
-    #TODO Checar que esto funcione bien
-
     if scope == 'Funcion' :
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
             pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
@@ -1847,6 +1851,7 @@ def p_asign_arr(p):
                 opdo_izq_dir = 0
 
                 #TODO arr parametos de funcion
+
                 if scope == 'Funcion' :
                     if opdo_der in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
                         opdo_der_dir = dir_arr_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir Base']
