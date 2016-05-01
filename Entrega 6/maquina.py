@@ -19,22 +19,10 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	cont_cuadruplos = 0
 
 	memoria_global = Memoria(nombre_programa, directorio[nombre_programa]['Variables Globales']['Memoria'])
-	print(memoria_global.name)
-	print(memoria_global.ints)
-	print(memoria_global.floats)
-	print(memoria_global.chars)
-	print(memoria_global.bools)
-
 	memoria_activa = Memoria('main', directorio[nombre_programa]['Variables Locales']['Memoria'])
-	print(memoria_activa.name)
-	print(memoria_activa.ints)
-	print(memoria_activa.floats)
-	print(memoria_activa.chars)
-	print(memoria_activa.bools)
 
 	while cuadruplos[cont_cuadruplos][0] != 'ENDD':
 		cuadruplo = cuadruplos[cont_cuadruplos]
-		#print(cuadruplo)
 
 		if cuadruplo[0] == 'SUMA':
 			op1 = cuadruplo[1]
@@ -42,9 +30,12 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 			if op1 >= 20000 and op1 < 30000:
 				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
-				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 			
@@ -59,9 +50,12 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 			if op1 >= 20000 and op1 < 30000:
 				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
-				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 			
@@ -76,9 +70,12 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 			if op1 >= 20000 and op1 < 30000:
 				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
-				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 			
@@ -94,13 +91,180 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 			if op1 >= 20000 and op1 < 30000:
 				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
-				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 			
 			result = valorOp1 / valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+
+		elif cuadruplo[0] == 'MENOR':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 < valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+
+		elif cuadruplo[0] == 'MAYOR':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 > valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+
+		elif cuadruplo[0] == 'IGUAL':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 == valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+
+		elif cuadruplo[0] == 'MAYORIG':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 >= valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+		elif cuadruplo[0] == 'MENORIG':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 <= valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+		elif cuadruplo[0] == 'DIF':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 != valorOp2
+			guarda =cuadruplo[3]
+			
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+
+		elif cuadruplo[0] == 'AND':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			
+			result = valorOp1 and valorOp2
+			guarda =cuadruplo[3]
+
+			memoria_activa.setValorDeDireccion(guarda, result)
+
+		elif cuadruplo[0] == 'OR':
+			op1 = cuadruplo[1]
+			op2 = cuadruplo[2]
+
+			if op1 >= 20000 and op1 < 30000:
+				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+			else:
+				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+
+			if op2 >= 20000 and op2 < 30000:
+				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
+			else:
+				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			result = valorOp1 or valorOp2
 			guarda =cuadruplo[3]
 
 			memoria_activa.setValorDeDireccion(guarda, result)
@@ -118,9 +282,13 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				memoria_global.setValorDeDireccion(guarda, valorOp1)
 			else:
 				memoria_activa.setValorDeDireccion(guarda, valorOp1)
+
+
+
+
 			
 		cont_cuadruplos += 1
-		print(cont_cuadruplos)
+		#print(cont_cuadruplos)
 
 
 	print(memoria_global.name)
