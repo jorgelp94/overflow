@@ -1179,11 +1179,12 @@ def p_update_dir_proc(p):
 
     dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
     dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
-    dir_var_locales['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
+    dir_temporal['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
 
     dir_proc[p[-6]].update({
     'Variables Globales' : dir_var_globales,
     'Variables Locales' : dir_var_locales,
+    'Temporales' : dir_temporal,
     'Funciones' : dir_funciones
     })
 
@@ -1954,9 +1955,12 @@ def p_asign_arr(p):
                     # Asigna el operando izquierdo
                     else :
                         opdo_izq_dir = opdo_izq
-                
+
+                # Genera cuadruplo de Asignacion
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir, "(" + str(pos) + ")"]
                 contador_cuadruplos += 1
+
+            # Error de asignacion
             else :
                 print("Error de asignacion tipos no compatibles - arreglos")
                 exit()
