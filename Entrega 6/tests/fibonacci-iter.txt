@@ -1,0 +1,31 @@
+program fibonacci;
+	
+int func fibonacci(n:int)
+var a, b, temp, i : int;
+{	
+	a = 0;
+	b = 1;
+	i = 1;
+	temp = 0;
+	if (n == 0){
+		return(0);
+	}
+		
+	while (i < n){
+		temp = a + b;
+		a = b;
+		b = temp;
+		i = i + 1;
+	}
+	return (b);
+	
+}
+
+main() 
+{	
+	var x : int;
+	x = call fibonacci(5);
+	print(x);
+}
+
+end
