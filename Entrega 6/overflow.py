@@ -2557,9 +2557,6 @@ def p_factor(p):
     | factor_exp'''
     p[0] = p[1]
 
-    print(dir_cuadruplos)
-    print("\n")
-
 def p_factor_var(p):
     '''factor_var : varcte nodo1'''
     p[0] = p[1]
