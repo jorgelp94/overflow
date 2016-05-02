@@ -705,22 +705,22 @@ def p_arr_global_addType(p):
             exit()
         else:
             if p[-1] == 'int' :
-                dir_arr_globales[tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_globales, 'Tam' : tam}
+                dir_arr_globales[tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_globales, 'Tam' : tam}
                 int_dir_globales += tam
                 cant_int_globales += tam
                 cantidad_int += tam
             elif p[-1] == 'float' :
-                dir_arr_globales[tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_globales, 'Tam' : tam}
+                dir_arr_globales[tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_globales, 'Tam' : tam}
                 float_dir_globales += tam
                 cant_float_globales += tam
                 cantidad_float += tam
             elif p[-1] == 'char' :
-                dir_arr_globales[tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_globales, 'Tam' : tam}
+                dir_arr_globales[tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_globales, 'Tam' : tam}
                 char_dir_globales += tam
                 cant_char_globales += tam
                 cantidad_char += tam
             elif p[-1] == 'bool' :
-                dir_arr_globales[tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_globales, 'Tam' : tam}
+                dir_arr_globales[tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_globales, 'Tam' : tam}
                 bool_dir_globales += tam
                 cant_bool_globales += tam
                 cantidad_bool += tam
@@ -848,22 +848,22 @@ def p_arr_local_addType(p):
             exit()
         else:
             if p[-1] == 'int' :
-                dir_arr_locales[tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
+                dir_arr_locales[tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
                 int_dir_locales += tam
                 cant_int_locales += tam
                 cantidad_int += tam
             elif p[-1] == 'float' :
-                dir_arr_locales[tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
+                dir_arr_locales[tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
                 float_dir_locales += tam
                 cant_float_locales += tam
                 cantidad_float += tam
             elif p[-1] == 'char' :
-                dir_arr_locales[tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
+                dir_arr_locales[tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
                 char_dir_locales += tam
                 cant_char_locales += tam
                 cantidad_char += tam
             elif p[-1] == 'bool' :
-                dir_arr_locales[tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
+                dir_arr_locales[tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
                 bool_dir_locales += tam
                 cant_bool_locales += tam
                 cantidad_bool += tam
@@ -926,21 +926,8 @@ def p_verify_func_type(p):
     global char_dir_temporales
     global bool_dir_temporales
 
-
     if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
         pOperandos.append(-1)
-    elif dir_funciones[p[-6]]['Tipo'] == 'INT' :
-        pOperandos.append(dir_returns[p[-6]]['Dir'])
-        pTipos.append(INT)
-    elif dir_funciones[p[-6]]['Tipo'] == 'FLOAT' :
-        pOperandos.append(dir_returns[p[-6]]['Dir'])
-        pTipos.append(FLOAT)
-    elif dir_funciones[p[-6]]['Tipo'] == 'CHAR' :
-        pOperandos.append(dir_returns[p[-6]]['Dir'])
-        pTipos.append(CHAR)
-    elif dir_funciones[p[-6]]['Tipo'] == 'BOOL' :
-        pOperandos.append(dir_returns[p[-6]]['Dir'])
-        pTipos.append(BOOL)
 
 def p_verify_void_type(p):
     '''verify_void_type : '''
@@ -1136,19 +1123,19 @@ def p_function_local_arr_add_type(p):
 
         else:
             if p[-1] == 'int' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR INT', 'Scope' : scope, 'Dir Base' : int_dir_funciones, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_funciones, 'Tam' : tam}
                 int_dir_funciones += tam
                 cantidad_int_func += tam
             elif p[-1] == 'float' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR FLOAT', 'Scope' : scope, 'Dir Base' : float_dir_funciones, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_funciones, 'Tam' : tam}
                 float_dir_funciones += tam
                 cantidad_float_func += tam
             elif p[-1] == 'char' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR CHAR', 'Scope' : scope, 'Dir Base' : char_dir_funciones, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_funciones, 'Tam' : tam}
                 char_dir_funciones += tam
                 cantidad_char_func += tam
             elif p[-1] == 'bool' :
-                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'ARR BOOL', 'Scope' : scope, 'Dir Base' : bool_dir_funciones, 'Tam' : tam}
+                dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_funciones, 'Tam' : tam}
                 bool_dir_funciones += tam
                 cantidad_bool_func += tam
             else :
@@ -1259,6 +1246,9 @@ def p_return_cuad(p):
 
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
         # Enteros
+
+        #overflow
+
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'INT' :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
@@ -1747,17 +1737,17 @@ def p_set_arr_values(p):
 
     while(cant_casillas > 0) :
         valor = pila_arr_valores.pop()
-        if isinstance(valor, int) and tipo_arr == 'ARR INT' :
+        if isinstance(valor, int) and tipo_arr == 'INT ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
                 int_dir_constantes += 1
                 cantidad_int += 1
-        elif isinstance(valor, float) and tipo_arr == 'ARR FLOAT' :
+        elif isinstance(valor, float) and tipo_arr == 'FLOAT ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
                 float_dir_constantes += 1
                 cantidad_float += 1
-        elif isinstance(valor, str) and tipo_arr == 'ARR CHAR' :
+        elif isinstance(valor, str) and tipo_arr == 'CHAR ARR' :
             if valor not in dir_constantes.keys() :
                 if len(valor) > 3:
                     print("Solo se aceptan caracters")
@@ -1765,7 +1755,7 @@ def p_set_arr_values(p):
                 dir_constantes[valor] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
                 char_dir_constantes += 1
                 cantidad_char += 1
-        elif valor == 'true' or valor == 'false' and tipo_arr == 'ARR BOOL' :
+        elif valor == 'true' or valor == 'false' and tipo_arr == 'BOOL ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
                 bool_dir_constantes += 1
@@ -1827,13 +1817,13 @@ def p_asign_arr(p):
         if p[-7] in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
-            if dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR INT' :
+            if dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'INT ARR' :
               pTipos.append(INT)
-            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR FLOAT' :
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'FLOAT ARR' :
               pTipos.append(FLOAT)
-            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR CHAR' :
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'CHAR ARR' :
               pTipos.append(CHAR)
-            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'ARR BOOL' :
+            elif dir_arr_locales_funciones[pila_funciones[-1][0]][p[-7]]['Tipo'] == 'BOOL ARR' :
               pTipos.append(BOOL)
             else :
               print("Error de asignacion - tipo no valido")
@@ -1842,13 +1832,13 @@ def p_asign_arr(p):
         elif p[-7] in dir_arr_globales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
-            if dir_arr_globales[p[-7]]['Tipo'] == 'ARR INT' :
+            if dir_arr_globales[p[-7]]['Tipo'] == 'INT ARR' :
               pTipos.append(INT)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'FLOAT ARR' :
               pTipos.append(FLOAT)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR CHAR' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'CHAR ARR' :
               pTipos.append(CHAR)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR BOOL' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'BOOL ARR' :
               pTipos.append(BOOL)
             else :
               print("Error de asignacion - tipo no valido")
@@ -1857,13 +1847,13 @@ def p_asign_arr(p):
         if p[-7] in dir_arr_locales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
-            if dir_arr_locales[p[-7]]['Tipo'] == 'ARR INT' :
+            if dir_arr_locales[p[-7]]['Tipo'] == 'INT ARR' :
               pTipos.append(INT)
-            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'FLOAT ARR' :
               pTipos.append(FLOAT)
-            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR CHAR' :
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'CHAR ARR' :
               pTipos.append(CHAR)
-            elif dir_arr_locales[p[-7]]['Tipo'] == 'ARR BOOL' :
+            elif dir_arr_locales[p[-7]]['Tipo'] == 'BOOL ARR' :
               pTipos.append(BOOL)
             else :
               print("Error de asignacion - tipo no valido")
@@ -1872,13 +1862,13 @@ def p_asign_arr(p):
         elif p[-7] in dir_arr_globales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
-            if dir_arr_globales[p[-7]]['Tipo'] == 'ARR INT' :
+            if dir_arr_globales[p[-7]]['Tipo'] == 'INT ARR' :
               pTipos.append(INT)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR FLOAT' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'FLOAT ARR' :
               pTipos.append(FLOAT)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR CHAR' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'CHAR ARR' :
               pTipos.append(CHAR)
-            elif dir_arr_globales[p[-7]]['Tipo'] == 'ARR BOOL' :
+            elif dir_arr_globales[p[-7]]['Tipo'] == 'BOOL ARR' :
               pTipos.append(BOOL)
             else :
               print("Error de asignacion - tipo no valido")
@@ -2561,11 +2551,14 @@ def p_nodo4(p):
 ## Factor                  ##
 #############################
 def p_factor(p):
-    '''factor : factor_var
+    '''factor : CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub verify_func_type
+    | factor_var
     | factor_var LBRACKET expresion acceso_arr RBRACKET
-    | factor_exp
-    | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub verify_func_type'''
+    | factor_exp'''
     p[0] = p[1]
+
+    print(dir_cuadruplos)
+    print("\n")
 
 def p_factor_var(p):
     '''factor_var : varcte nodo1'''
@@ -2743,13 +2736,13 @@ def p_nodoCteV(p):
                 exit()
 
         elif p[-1] in dir_arr_locales.keys() :
-            if dir_arr_locales[p[-1]]['Tipo'] ==  'ARR INT' :
+            if dir_arr_locales[p[-1]]['Tipo'] ==  'INT ARR' :
                 pTipos.append(1)
-            elif dir_arr_locales[p[-1]]['Tipo'] == 'ARR FLOAT' :
+            elif dir_arr_locales[p[-1]]['Tipo'] == 'FLOAT ARR' :
                 pTipos.append(2)
-            elif dir_arr_locales[p[-1]]['Tipo'] == 'ARR CHAR' :
+            elif dir_arr_locales[p[-1]]['Tipo'] == 'CHAR ARR' :
                 pTipos.append(3)
-            elif dir_arr_locales[p[-1]]['Tipo'] == 'ARR BOOL' :
+            elif dir_arr_locales[p[-1]]['Tipo'] == 'BOOL ARR' :
                 pTipos.append(4)
             else :
                 print("Error en asignacion de tipo de variable")
