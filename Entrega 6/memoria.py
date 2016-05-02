@@ -34,24 +34,23 @@ class Memoria:
 		if direccion >= 10000 and direccion < 20000:
 			return ['Local', 10000]
 
-		if direccion >= 20000 and direccion < 30000:
+		elif direccion >= 20000 and direccion < 30000:
 			return ['Global', 20000]
 
-		if direccion >= 30000 and direccion < 40000:
+		elif direccion >= 30000 and direccion < 40000:
 			return ['Temporales', 30000]
 
-		if direccion >= 40000 and direccion < 50000:
+		elif direccion >= 40000 and direccion < 50000:
 			return ['CONSTANTE', 40000]
 
-		if direccion >= 50000 and direccion < 60000:
+		elif direccion >= 50000 and direccion < 60000:
 			return ['Funcion', 50000]
-
-		if direccion >= 60000 and direccion < 70000:
-			return ['FuncionL', 60000]
+		else:
+			return ['Error', 9999999]
 
 
 	def memoriaActual(self, scope, tipo):
-		if scope == 'Global' or scope == 'Funcion' or scope == 'Local' or scope == 'FuncionL':
+		if scope == 'Global' or scope == 'Funcion' or scope == 'Local':
 			if tipo == 'INT':
 				return self.ints
 			elif tipo == 'FLOAT':
@@ -73,12 +72,24 @@ class Memoria:
 
 	def getValorDeDireccion(self, direccion, constantes):
 		scope = self.scopeDireccion(direccion)[0]
+		# print("scope")
+		# print(scope)
 		tipo = self.offsetDireccion(direccion)[0]
+		# print("tipo")
+		# print(tipo)
 		if scope != 'CONSTANTE':
 			dirBase = self.scopeDireccion(direccion)[1]
+			# print("dir base")
+			# print(dirBase)
 			offset = self.offsetDireccion(direccion)[1]
+			# print("offset")
+			# print(offset)
 			real = direccion - dirBase - offset
+			print("Real")
+			print(real)
 			mem = self.memoriaActual(scope, tipo)
+			# print("memoria")
+			# print(mem)
 			return mem[real]
 		else:
 			keys = constantes.keys()
@@ -112,6 +123,9 @@ class Memoria:
 		# print(mem)
 		# print("valor")
 		# print(valor)
+		if real >= len(mem):
+				print("Error: direccion no existente.")
+				exit()
 		mem[real] = valor
 
 

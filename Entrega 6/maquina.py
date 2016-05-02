@@ -12,11 +12,10 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	print(cuadruplos)
 	print(len(cuadruplos))
 	nombre_programa = directorio.keys()[0]
-	cuadruplos[len(cuadruplos)] = ['ENDD', '', '', '']
-	print(cuadruplos)
 	stack_memoria = []
 	saltos = []
 	cont_cuadruplos = 0
+	retunValue = None
 
 	memoria_global = Memoria(nombre_programa, directorio[nombre_programa]['Variables Globales']['Memoria'])
 	memoria_activa = Memoria('main', directorio[nombre_programa]['Variables Locales']['Memoria'])
@@ -42,9 +41,9 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	print(memoria_activa.temp_bool)
 	print("------------------------------------------------------------------------------------")
 
-	while cuadruplos[cont_cuadruplos][0] != 'ENDD':
+	while cuadruplos[cont_cuadruplos][0] != 'ENDPROGRAM':
 		cuadruplo = cuadruplos[cont_cuadruplos]
-
+		print(cuadruplo)
 		if cuadruplo[0] == 'SUMA':
 			op1 = cuadruplo[1]
 			op2 = cuadruplo[2]
@@ -59,7 +58,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
-			
+			print(valorOp2)
 			result = valorOp1 + valorOp2
 			guarda =cuadruplo[3]
 
@@ -292,12 +291,48 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 		elif cuadruplo[0] == 'ASIG':
 			op1 = cuadruplo[1]
-			if op1 >= 20000 and op1 < 30000:
-				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
-			else:
-				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+			
+			if len(cuadruplo) == 5:
+				if retunValue != None:
+					valorOp1 = retunValue
+					retunValue = None
+				else:
+					if op1 >= 20000 and op1 < 30000:
+						valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+					else:
+						print(op1)
+						valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+				
+				valorAgregado = cuadruplo[4]
+				
+				# quita los ( ) de la direccion relativa
+				otro = valorAgregado.replace("(", "")
+				otro2 = otro.replace(")", "")
+				valorAgregado = int(otro2)
 
-			guarda = cuadruplo[3]
+
+				if valorAgregado >= 20000 and valorAgregado < 30000:
+					sumale = memoria_global.getValorDeDireccion(valorAgregado, constantes)
+				else:
+					sumale = memoria_activa.getValorDeDireccion(valorAgregado, constantes)
+
+				
+				guarda = cuadruplo[3] + sumale
+				guarda = int(guarda)
+
+			else:
+				if retunValue != None:
+					valorOp1 = retunValue
+					retunValue = None
+				else:
+					if op1 >= 20000 and op1 < 30000:
+						valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
+					else:
+						valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
+			
+				guarda = cuadruplo[3]
+			
+
 			if guarda >= 20000 and guarda < 30000:
 				memoria_global.setValorDeDireccion(guarda, valorOp1)
 			else:
@@ -322,10 +357,28 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			stack_memoria.append(memoria_activa)
 			memoria_activa = memoria_nueva
 
+		elif cuadruplo[0] == 'RETURN':
+			valor = cuadruplo[1]
+			if valor >= 20000 and valor < 30000:
+				retorno = memoria_global.getValorDeDireccion(valor, constantes)
+			else:
+				retorno = memoria_activa.getValorDeDireccion(valor, constantes)
+
+			retunValue = retorno
+
+
 		elif cuadruplo[0] == 'RET':
 			memoria_activa = stack_memoria.pop()
 			cont_cuadruplos = saltos.pop()
-
+			print(memoria_activa.name)
+			print(memoria_activa.ints)
+			print(memoria_activa.floats)
+			print(memoria_activa.chars)
+			print(memoria_activa.bools)
+			print(memoria_activa.temp_int)
+			print(memoria_activa.temp_float)
+			print(memoria_activa.temp_char)
+			print(memoria_activa.temp_bool)
 
 		elif cuadruplo[0] == 'PARAM':
 			op1 = cuadruplo[1]
@@ -346,33 +399,42 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			if res == False:
 				cont_cuadruplos = salto-1
 
+		elif cuadruplo[0] == 'PRINT':
+			valor = cuadruplo[1]
+
+			if valor >= 20000 and valor < 30000:
+				retorno = memoria_global.getValorDeDireccion(valor, constantes)
+			else:
+				retorno = memoria_activa.getValorDeDireccion(valor, constantes)
+
+			print(retorno)
 
 
 
 		cont_cuadruplos += 1
 		#print("Contador cuadruplos: %s" % cont_cuadruplos)
-		print(cuadruplo)
+		
 
 
-		print(memoria_global.name)
-		print(memoria_global.ints)
-		print(memoria_global.floats)
-		print(memoria_global.chars)
-		print(memoria_global.bools)
-		print(memoria_global.temp_int)
-		print(memoria_global.temp_float)
-		print(memoria_global.temp_char)
-		print(memoria_global.temp_bool)
-		print(memoria_activa.name)
-		print(memoria_activa.ints)
-		print(memoria_activa.floats)
-		print(memoria_activa.chars)
-		print(memoria_activa.bools)
-		print(memoria_activa.temp_int)
-		print(memoria_activa.temp_float)
-		print(memoria_activa.temp_char)
-		print(memoria_activa.temp_bool)
-		print("------------------------------------------------------------------------------------")
+		# print(memoria_global.name)
+		# print(memoria_global.ints)
+		# print(memoria_global.floats)
+		# print(memoria_global.chars)
+		# print(memoria_global.bools)
+		# print(memoria_global.temp_int)
+		# print(memoria_global.temp_float)
+		# print(memoria_global.temp_char)
+		# print(memoria_global.temp_bool)
+		# print(memoria_activa.name)
+		# print(memoria_activa.ints)
+		# print(memoria_activa.floats)
+		# print(memoria_activa.chars)
+		# print(memoria_activa.bools)
+		# print(memoria_activa.temp_int)
+		# print(memoria_activa.temp_float)
+		# print(memoria_activa.temp_char)
+		# print(memoria_activa.temp_bool)
+		# print("------------------------------------------------------------------------------------")
 		
 
 
