@@ -928,6 +928,10 @@ def p_verify_func_type(p):
 
     if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
         pOperandos.append(-1)
+    else :
+        pOperandos.pop()
+        pTipos.append(INT)
+        pOperandos.append(dir_returns[pila_funciones[-1][0]]['Dir'])
 
 def p_verify_void_type(p):
     '''verify_void_type : '''
@@ -1247,7 +1251,7 @@ def p_return_cuad(p):
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
         # Enteros
 
-        #overflow
+        #print(dir_returns)
 
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'INT' :
