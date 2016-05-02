@@ -1179,7 +1179,7 @@ def p_update_dir_proc(p):
 
     dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
     dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
-    dir_var_locales['Memoria'] = {'INT' : cant_int_temporales, 'FLOAT' : cant_float_temporales, 'BOOL' : cant_bool_temporales, 'CHAR' : cant_char_temporales}
+    dir_var_locales['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
 
     dir_proc[p[-6]].update({
     'Variables Globales' : dir_var_globales,
@@ -1259,7 +1259,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'INT'}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # Flotantes
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
@@ -1268,7 +1268,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'FLOAT'}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # Chars
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
@@ -1277,7 +1277,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'CHAR'}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # Bools
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
@@ -1286,7 +1286,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'BOOL'}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # Variables locales de la funcion
         elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
@@ -1295,7 +1295,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], 'Tipo' : dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Tipo']}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # parametros de la funcion
         elif p[-1] in dir_param_funciones[pila_funciones[-1][0]].keys() :
@@ -1304,7 +1304,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], 'Tipo' : dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Tipo']}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # En caso de que el argumento sea una constante
         elif p[-1] in dir_constantes.keys() :
@@ -1313,7 +1313,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_constantes[p[-1]]['Dir'], 'Tipo' : dir_constantes[p[-1]]['Tipo']}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         # En caso de variable global
         elif p[-1] in dir_var_globales.keys() :
@@ -1322,7 +1322,7 @@ def p_return_cuad(p):
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_var_globales[p[-1]]['Dir'], 'Tipo' : dir_var_globales[p[-1]]['Tipo']}
             else :
-                print("Valor de retorno no compatible con tipo de funcion")
+                print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
         else :
             print("El tipo de argumento no coincide con el parametro, return")
@@ -1807,6 +1807,7 @@ def p_arr_pos(p):
             print("Tipo de valor para posicion de arreglo no valida")
             exit()
 
+# Valor de la expresion evaluda que se le asignara al arreglo
 def p_asign_arr(p):
     '''asign_arr : '''
     global contador_cuadruplos
@@ -1815,9 +1816,9 @@ def p_asign_arr(p):
 
     pos = pila_tam_arr.pop()
 
-    #TODO arr parametros de funcion
-
     if scope == 'Funcion' :
+
+        # Checa si el arreglo fue declarado en las variables locales de la funcion
         if p[-7] in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
@@ -1833,6 +1834,7 @@ def p_asign_arr(p):
               print("Error de asignacion - tipo no valido")
               exit()
 
+        # Checa si el arreglo fue declarado en las variables globales
         elif p[-7] in dir_arr_globales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
@@ -1847,7 +1849,11 @@ def p_asign_arr(p):
             else :
               print("Error de asignacion - tipo no valido")
               exit()
+
+    # Scope MAIN
     else :
+
+        # Checa si el arreglo fue declarado en las variables locales de main
         if p[-7] in dir_arr_locales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
@@ -1863,6 +1869,7 @@ def p_asign_arr(p):
               print("Error de asignacion - tipo no valido")
               exit()
 
+        # Checa si el arreglo fue declarado en las variables globales
         elif p[-7] in dir_arr_globales.keys() :
             pOperandos.append(p[-7])
             pOperadores.append(ASIG)
@@ -1880,14 +1887,17 @@ def p_asign_arr(p):
 
     # Checa si la pila de operadores contiene algo
     if pOperadores :
+
         # En caso de ser una asignacion
         if pOperadores[-1] == ASIG :
+
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
+            # Checa si los operadores son negativos en caso de serlo es funcion void
             if opdo_der == -1 or opdo_izq == -1 :
                 print("Funcion void no regresa valor");
                 exit()
@@ -1900,46 +1910,63 @@ def p_asign_arr(p):
                 opdo_der_dir = 0
                 opdo_izq_dir = 0
 
-                #TODO arr parametos de funcion
-
                 if scope == 'Funcion' :
+
+                    # Checamos si el operando derecho es una variable local de la funcion
                     if opdo_der in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
                         opdo_der_dir = dir_arr_locales_funciones[pila_funciones[-1][0]][opdo_der]['Dir Base']
+
+                    # Checamos si el operando derecho es una variable local de la funcion
                     elif opdo_der in dir_arr_globales.keys() :
                         opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
 
+                    # Checamos si el operando izquierdo es una variable local de la funcion
                     if opdo_izq in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
                         opdo_izq_dir = dir_var_locales_funciones[pila_funciones[-1][0]][opdo_izq]['Dir']
+
+                    # Checamos si el operando izquierdo es una variable global
                     elif opdo_izq in dir_var_globales.keys() :
                         opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+
+                    # Asigna el operando izquierdo
                     else :
                         opdo_izq_dir = opdo_izq
+
+                # Scope MAIN
                 else :
+
+                    # Checamos si el operando derecho es una variable local en main
                     if opdo_der in dir_arr_locales.keys() :
                         opdo_der_dir = dir_arr_locales[opdo_der]['Dir Base']
+
+                    # Checamos si el operando derecho es una variable global
                     elif opdo_der in dir_arr_globales.keys() :
                         opdo_der_dir = dir_arr_globales[opdo_der]['Dir Base']
 
+                    # Checamos si el operando derecho es una variable local en main
                     if opdo_izq in dir_var_locales.keys() :
                         opdo_izq_dir = dir_var_locales[opdo_izq]['Dir']
+
+                    # Checamos si el operando izquierdo es una variable globales
                     elif opdo_izq in dir_var_globales.keys() :
                         opdo_izq_dir = dir_var_globales[opdo_izq]['Dir']
+
+                    # Asigna el operando izquierdo
                     else :
                         opdo_izq_dir = opdo_izq
-
+                
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', opdo_izq_dir, "", opdo_der_dir, "(" + str(pos) + ")"]
                 contador_cuadruplos += 1
             else :
                 print("Error de asignacion tipos no compatibles - arreglos")
                 exit()
 
-#############################
-## Llamada a funcion       ##
-#############################
+
 def p_function_call(p):
     '''function_call : '''
     global contador_cuadruplos
 
+    # Checa si la funcion existe en el directorio de funciones y genera ERA
     if p[-1] in dir_funciones.keys():
         dir_cuadruplos[contador_cuadruplos] = ['ERA', p[-1].upper(), "", ""]
         contador_cuadruplos += 1
@@ -1948,25 +1975,31 @@ def p_function_call(p):
         print("funcion no declarada")
         exit()
 
+
 def p_func_args(p):
     '''func_args : expresion args_cuad func_args_loop'''
+
 
 def p_func_args_loop(p):
     '''func_args_loop : COMA expresion args_cuad func_args_loop
     |'''
+
 
 def p_gosub(p):
     '''gosub : '''
     global contador_params
     global contador_cuadruplos
 
+    # Checa que el numero de parametros y argumentos sea el mismo
     if contador_params != len(dir_funciones[p[-5]]['Parametros']) :
         print("El numero de argumentos y parametos no coincide")
         exit()
 
+    # Genera el cuadruplo de Gobsub
     dir_cuadruplos[contador_cuadruplos] = ['GOSUB', pila_llamadas_funcion[0].upper(), "", ""]
     contador_cuadruplos += 1
     contador_params = 0
+
 
 def p_args_cuad(p):
     '''args_cuad : '''
@@ -1974,13 +2007,16 @@ def p_args_cuad(p):
     global contador_params
     global scope
 
+    # Checa que el numero de parametros y argumentos sea el mismo
     if contador_params > len(dir_funciones[pila_llamadas_funcion[0]]['Parametros']) - 1 :
         print("El numero de argumentos no coincide con los parametros")
         exit()
 
     if scope == 'Funcion' :
+
         if dir_cuadruplos[contador_cuadruplos-1][0] == 'ERA' or dir_cuadruplos[contador_cuadruplos-1][0] == 'PARAM' :
-            # En caso de que el argumento sea una variable local
+
+            # Checa si el argumento es una variable local
             if p[-1] in dir_var_locales_funciones[pila_llamadas_funcion[0]].keys() :
                 if dir_var_locales_funciones[pila_llamadas_funcion[0]][p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales_funciones[pila_llamadas_funcion[0]][p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -1988,7 +2024,8 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro - var locales")
                     exit()
-            # En caso de que el argumento sea una constante
+
+            # Checa si el argumento es una constante
             elif p[-1] in dir_constantes.keys() :
                 if dir_constantes[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_constantes[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -1996,6 +2033,8 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro - constantes")
                     exit()
+
+            # Checa si el argumento es una variable global
             elif p[-1] in dir_var_globales.keys() :
                 if dir_var_globales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -2003,31 +2042,41 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro")
                     exit()
-        # En caso de que sea alguna operacion o comparacion
+
+        # En caso de que sea una expresion
         else :
-            # Enteros
+
+            # Checa si el resultado de la expresion es entera
             if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'INT' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Flotantes
+
+            # Checa si el resultado de la expresion es flotante
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'FLOAT' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Chars
+
+            # Checa si el resultado de la expresion es char
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'CHAR' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Bools
+
+            # Checa si el resultado de la expresion es booleana
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'BOOL' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
+
+            # Error de argumentos
             else :
                 print("El tipo de argumento no coincide con el parametro - temporales")
                 exit()
 
+    # Scope MAIN
     else :
+
         if dir_cuadruplos[contador_cuadruplos-1][0] == 'ERA' or dir_cuadruplos[contador_cuadruplos-1][0] == 'PARAM' :
-            # En caso de que el argumento sea una variable local
+
+            # Checa si el argumento es una variable local
             if p[-1] in dir_var_locales.keys() :
                 if dir_var_locales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -2035,7 +2084,8 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro")
                     exit()
-            # En caso de que el argumento sea una constante
+
+            # Checa si el argumento es una constante
             elif p[-1] in dir_constantes.keys() :
                 if dir_constantes[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_constantes[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -2043,6 +2093,8 @@ def p_args_cuad(p):
                 else :
                     print("El tipo de argumento no coincide con el parametro")
                     exit()
+
+            # Checa si el argumento es una variable global
             elif p[-1] in dir_var_globales.keys() :
                 if dir_var_globales[p[-1]]['Tipo'] == dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] :
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
@@ -2053,27 +2105,34 @@ def p_args_cuad(p):
 
         # En caso de que sea alguna operacion o comparacion
         else :
-            # Enteros
+
+            # Checa si el resultado de la expresion es entera
             if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'INT' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Flotantes
+
+            # Checa si el resultado de la expresion es flotante
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'FLOAT' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Chars
+
+            # Checa si el resultado de la expresion es un char
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'CHAR' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
-            # Bools
+
+            # Checa si el resultado de la expresion es booleana
             elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'BOOL' :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
+
+            # Error de argumento
             else :
                 print("El tipo de argumento no coincide con el parametro")
                 exit()
 
     contador_params += 1
+
 
 def p_asign_return_cuad(p):
     '''asign_return_cuad : '''
@@ -2086,6 +2145,8 @@ def p_asign_return_cuad(p):
         exit()
 
     if scope == 'Funcion' :
+
+        # Checa si la variable esta en las variables locales de la funcion
         if p[-10] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
             if dir_var_locales_funciones[pila_llamadas_funcion[0]][p[-10]]['Tipo'] == dir_returns[pila_llamadas_funcion[0]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", dir_var_locales_funciones[pila_funciones[-1][0]][p[-10]]['Dir']]
@@ -2093,6 +2154,8 @@ def p_asign_return_cuad(p):
             else :
                 print("Error de asignacion - valor de retorno de funcion no compatible con variable - localf")
                 exit()
+
+        # Checa si la variable esta en los parametros de la funcion
         elif p[-10] in dir_param_funciones[pila_funciones[-1][0]].keys() :
             if dir_param_funciones[pila_funciones[-1][0]][p[-10]]['Tipo'] == dir_returns[pila_llamadas_funcion[0]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", dir_param_funciones[pila_funciones[-1][0]][p[-10]]['Dir']]
@@ -2100,6 +2163,8 @@ def p_asign_return_cuad(p):
             else :
                 print("Error de asignacion - valor de retorno de funcion no compatible con variable - param")
                 exit()
+
+        # Checa si la variable esta en las variables globales
         elif p[-10] in dir_var_globales.keys() :
             if dir_var_globales[p[-10]]['Tipo'] == dir_returns[pila_llamadas_funcion[0]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", dir_var_globales[p[-10]]['Dir']]
@@ -2107,10 +2172,16 @@ def p_asign_return_cuad(p):
             else :
                 print("Error de asignacion - valor de retorno de funcion no compatible con variable - global")
                 exit()
+
+        # Error de delcaracion de variable
         else :
             print("Variable no declarada - return cuad func")
             exit()
+
+    # Scope MAIN
     else :
+
+        # Checa si la variable esta en las variables locales de main
         if p[-10] in dir_var_locales.keys() :
             if dir_var_locales[p[-10]]['Tipo'] == dir_returns[pila_llamadas_funcion[0]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", dir_var_locales[p[-10]]['Dir']]
@@ -2118,6 +2189,8 @@ def p_asign_return_cuad(p):
             else :
                 print("Error de asignacion - valor de retorno de funcion no compatible con variable")
                 exit()
+
+        # Checa si la variable esta en las variables globales
         elif p[-10] in dir_var_globales.keys() :
             if dir_var_globales[p[-10]]['Tipo'] == dir_returns[pila_llamadas_funcion[0]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", dir_var_globales[p[-10]]['Dir']]
@@ -2125,6 +2198,8 @@ def p_asign_return_cuad(p):
             else :
                 print("Error de asignacion - valor de retorno de funcion no compatible con variable")
                 exit()
+
+        # Error de declaracion de variable
         else :
             print("Variable no declarada - return cuad main")
             exit()
