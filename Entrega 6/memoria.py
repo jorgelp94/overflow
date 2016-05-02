@@ -3,7 +3,7 @@ from overflow import *
 
 class Memoria:
 
-	def __init__(self, name, memoria):
+	def __init__(self, name, memoria, temporales):
 		self.name  = name
 		self.ints  = memoria['INT'] * [""]
 		self.floats = memoria['FLOAT'] * [""]
@@ -13,6 +13,10 @@ class Memoria:
 		self.temp_float = 20 * [""]
 		self.temp_bool = 20 * [""]
 		self.temp_char = 20 * [""]
+		# self.temp_int = temporales['TEMP INT'] * [""]
+		# self.temp_float = temporales['TEMP FLOAT'] * [""]
+		# self.temp_bool = temporales['TEMP BOOL'] * [""]
+		# self.temp_char = temporales['TEMP CHAR'] * [""]
 
 
 	def offsetDireccion(self, direccion):
@@ -85,8 +89,8 @@ class Memoria:
 			# print("offset")
 			# print(offset)
 			real = direccion - dirBase - offset
-			print("Real")
-			print(real)
+			# print("Real")
+			# print(real)
 			mem = self.memoriaActual(scope, tipo)
 			# print("memoria")
 			# print(mem)

@@ -1,25 +1,27 @@
 program overflow;
 
-var a : int;
-var b : float;
+var a, za : int;
+var b, c, d : float;
 var x : char;
 var y : bool;
 
-arr m[5], z[10] : float;
+arr m[5], z[1] : int;
 
-float func suma( f : float)
-arr m[10] : bool;
+int func fib( f : int)
 {
-
+  if(f < 2) {
+    return(f);
+  }
+  else {
+    return( (call fib(f - 1)) + (call fib(f - 2)) );
+  }
+  
 }
-return(b);
+
 
 main () {
-	var i : int;
-	arr kappa[3] : bool;
-
-	z[4 + i] = 4.4 + 5.5;
-
-	kappa = [true, false, true];
+  a = 6;
+  za = call fib(a);
+  print(za);
 }
 end
