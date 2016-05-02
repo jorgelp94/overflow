@@ -926,18 +926,28 @@ def p_verify_func_type(p):
     global char_dir_temporales
     global bool_dir_temporales
 
-    #TODO llamadas a funcion sin tipo para todo
 
-    if dir_funciones[p[-7]]['Tipo'] != 'VOID' :
-        print("funcion " + str(p[-7]) + " ocupa ser asignada a variable")
-        exit()
-    #elif dir_funciones[p[-7]]['Tipo'] == 'INT' :
+    if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
+        pOperandos.append(-1)
+    elif dir_funciones[p[-6]]['Tipo'] == 'INT' :
+        pOperandos.append(dir_returns[p[-6]]['Dir'])
+        pTipos.append(INT)
+    elif dir_funciones[p[-6]]['Tipo'] == 'FLOAT' :
+        pOperandos.append(dir_returns[p[-6]]['Dir'])
+        pTipos.append(FLOAT)
+    elif dir_funciones[p[-6]]['Tipo'] == 'CHAR' :
+        pOperandos.append(dir_returns[p[-6]]['Dir'])
+        pTipos.append(CHAR)
+    elif dir_funciones[p[-6]]['Tipo'] == 'BOOL' :
+        pOperandos.append(dir_returns[p[-6]]['Dir'])
+        pTipos.append(BOOL)
 
-    #elif dir_funciones[p[-7]]['Tipo'] == 'FLOAT' :
+def p_verify_void_type(p):
+    '''verify_void_type : '''
 
-    #elif dir_funciones[p[-7]]['Tipo'] == 'CHAR' :
-
-    #elif dir_funciones[p[-7]]['Tipo'] == 'BOOL' :
+    if dir_funciones[p[-6]]['Tipo'] != 'VOID' :
+        print("La funcion ocupa ser asignada o evaluda")
+        exit();
 
 #############################
 ## Funcion cantidad vars   ##
@@ -1233,7 +1243,7 @@ def p_estatuto(p):
       | variables_locales
       | arreglos_locales
       | regreso
-      | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON verify_func_type'''
+      | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub verify_void_type SEMICOLON'''
 
 #############################
 ## Regreso                 ##
@@ -1536,6 +1546,11 @@ def p_nodo11(p):
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
+
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
+
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
                 pOperandos.append(bool_dir_temporales)
@@ -1592,6 +1607,10 @@ def p_nodo10(p):
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
+
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
 
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
@@ -1874,6 +1893,10 @@ def p_asign_arr(p):
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
+
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
 
             # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
@@ -2218,6 +2241,10 @@ def p_nodo8(p):
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
+
             # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
@@ -2316,6 +2343,10 @@ def p_nodo5(p):
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
+
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
 
             # Checamos si los tipos son compatibles
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR and (cuboSemantico[tipo_der][tipo_izq][operador] == INT or cuboSemantico[tipo_der][tipo_izq][operador] == FLOAT) :
@@ -2445,6 +2476,10 @@ def p_nodo4(p):
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
+            if opdo_der == -1 or opdo_izq == -1 :
+                print("Funcion void no regresa valor");
+                exit()
+
             # Checamos si los tipos son compatibles
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR and (cuboSemantico[tipo_der][tipo_izq][operador] == INT or cuboSemantico[tipo_der][tipo_izq][operador] == FLOAT) :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
@@ -2528,7 +2563,8 @@ def p_nodo4(p):
 def p_factor(p):
     '''factor : factor_var
     | factor_var LBRACKET expresion acceso_arr RBRACKET
-    | factor_exp'''
+    | factor_exp
+    | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub verify_func_type'''
     p[0] = p[1]
 
 def p_factor_var(p):
