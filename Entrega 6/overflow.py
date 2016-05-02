@@ -1180,12 +1180,10 @@ def p_update_dir_proc(p):
 
     dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
     dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
-    dir_temporales['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
-    # overflow
+
     dir_proc[p[-6]].update({
     'Variables Globales' : dir_var_globales,
     'Variables Locales' : dir_var_locales,
-    'Temporales' : dir_temporales,
     'Funciones' : dir_funciones
     })
 
@@ -1198,10 +1196,12 @@ def p_second_update_dir_proc(p):
 
   dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
   dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
+  dir_temporales['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
 
   dir_proc[p[-13]].update({
   'Variables Globales' : dir_var_globales,
-  'Variables Locales' : dir_var_locales
+  'Variables Locales' : dir_var_locales,
+  'Temporales' : dir_temporales
   })
 
 #############################
