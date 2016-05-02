@@ -519,41 +519,41 @@ def p_programa(p):
     global cantidad_bool
     global cantidad_vars
 
-    print("Variables Globales")
-    print(dir_var_globales)
-    print("\n")
+    #print("Variables Globales")
+    #print(dir_var_globales)
+    #print("\n")
 
-    print("Arreglos Globales")
-    print(dir_arr_globales)
-    print("\n")
+    #print("Arreglos Globales")
+    #print(dir_arr_globales)
+    #print("\n")
 
-    print("Variables Locales")
-    print(dir_var_locales)
-    print("\n")
+    #print("Variables Locales")
+    #print(dir_var_locales)
+    #print("\n")
 
-    print("Arreglos Locales")
-    print(dir_arr_locales)
-    print("\n")
+    #print("Arreglos Locales")
+    #print(dir_arr_locales)
+    #print("\n")
 
-    print("Variables Constantes")
-    print(dir_constantes)
-    print("\n")
+    #print("Variables Constantes")
+    #print(dir_constantes)
+    #print("\n")
 
-    print("Funciones")
-    print(dir_funciones)
-    print("\n")
+    #print("Funciones")
+    #print(dir_funciones)
+    #print("\n")
 
-    print("Arr Funciones")
-    print(dir_arr_locales_funciones)
-    print("\n")
+    #print("Arr Funciones")
+    #print(dir_arr_locales_funciones)
+    #print("\n")
 
     print("Cuadruplos")
     print(dir_cuadruplos)
     print("\n")
 
-    print("Contador de variables")
-    print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
-    print("\n")
+    #print("Contador de variables")
+    #print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
+    #print("\n")
 
 
 def p_add_main_goto(p):
@@ -1893,12 +1893,6 @@ def p_set_arr_values(p):
             dir_base = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
             tipo_arr = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
 
-        # Checa si el arreglo esta declarado en los parametros de la funcion
-        elif p[-5] in dir_param_funciones[pila_funciones[-1][0]].keys() :
-            cant_casillas = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tam']
-            dir_base = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
-            tipo_arr = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
-
         # Checa si el arreglo esta declarado en los arreglos globales
         elif p[-5] in dir_arr_globales.keys() :
             cant_casillas = dir_arr_globales[p[-5]]['Tam']
@@ -1954,7 +1948,8 @@ def p_set_arr_values(p):
                 cantidad_char += 1
 
         # Checa que el valor sea compatible con booleanos
-        elif valor == 'true' or valor == 'false' and tipo_arr == 'BOOL ARR' :
+        elif (valor == 'true' or valor == 'false') and tipo_arr == 'BOOL ARR' :
+            print("Entre")
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
                 bool_dir_constantes += 1
@@ -3357,7 +3352,7 @@ if __name__ == '__main__':
 			f.close()
 			# Parse the data
 			if (parser.parse(data, tracking=True) == 'OK'):
-				exit();ejecutaMaquina(dir_proc, dir_cuadruplos, dir_constantes)
+				ejecutaMaquina(dir_proc, dir_cuadruplos, dir_constantes)
 
 		except EOFError:
 	   		print(EOFError)
