@@ -555,20 +555,27 @@ def p_programa(p):
     print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
     print("\n")
 
+
 def p_add_main_goto(p):
     '''add_main_goto : '''
     global contador_cuadruplos
+
+    # Gener el primer cuadruplo goto
     dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", ""]
     contador_cuadruplos += 1
 
 def p_init_goto(p):
     '''init_goto : '''
     global contador_cuadruplos
+
+    # Inicializa el cuadruplo goto
     dir_cuadruplos[0] = ['GOTO', "", "", contador_cuadruplos]
 
 def p_end_cuad(p):
     '''end_cuad : '''
     global contador_cuadruplos
+
+    # Genera cuadruplo end program
     dir_cuadruplos[contador_cuadruplos] = ['ENDPROGRAM', "", "", ""]
     contador_cuadruplos += 1
 
@@ -579,15 +586,19 @@ def p_variables_globales(p):
     '''variables_globales : VAR var_global variables_globales
       |'''
 
+
 def p_var_global(p):
     '''var_global : variable_global_id_loop SEMICOLON variable_global_end_loop'''
+
 
 def p_variable_global_id_loop(p):
     '''variable_global_id_loop : ID add_pila_var_globales variable_global_id_loop_coma COLON tipo global_addType'''
 
+
 def p_variable_global_id_loop_coma(p):
     '''variable_global_id_loop_coma : COMA ID add_pila_var_globales variable_global_id_loop_coma
         |'''
+
 
 # Agrega las variabes de un solo tipo a la pila
 def p_add_pila_var_globales(p):
@@ -595,10 +606,12 @@ def p_add_pila_var_globales(p):
     global pila_var_globales
     pila_var_globales.append(p[-1])
 
+
 # En caso de querer seguir declarando variables de otro tipo
 def p_variable_end_loop(p):
     '''variable_global_end_loop : var_global
       |'''
+
 
 def p_global_addType(p):
     '''global_addType :'''
@@ -625,58 +638,74 @@ def p_global_addType(p):
         if dir_var_globales.has_key(tempPop) :
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
+
         else:
+
+            # Checa si el tipo de variable es entera
             if p[-1] == 'int' :
                 dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_globales}
                 int_dir_globales += 1
                 cant_int_globales += 1
                 cantidad_int += 1
+
+            # Checa si el tipo de variable es flotante
             elif p[-1] == 'float' :
                 dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_globales}
                 float_dir_globales += 1
                 cant_float_globales += 1
                 cantidad_float += 1
+
+            # Checa si el tipo de variable es char
             elif p[-1] == 'char' :
                 dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_globales}
                 char_dir_globales += 1
                 cant_char_globales += 1
                 cantidad_char += 1
+
+            # Checa si el tipo de variable es booleana
             elif p[-1] == 'bool' :
                 dir_var_globales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_globales}
                 bool_dir_globales += 1
                 cant_bool_globales += 1
                 cantidad_bool += 1
+
+            # Error en declaracion de variable global
             else :
                 print("Error al agregar variable global")
 
-#############################
-## Arreglos Globales       ##
-#############################
+
 def p_arreglos_globales(p):
     '''arreglos_globales : ARR arr_global arreglos_globales
       |'''
 
+
 def p_arr_global(p):
     '''arr_global : arr_global_id_loop SEMICOLON arr_global_end_loop'''
 
+
 def p_arr_global_id_loop(p):
     '''arr_global_id_loop : ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_globales arr_global_id_loop_coma COLON tipo arr_global_addType'''
+
 
 def p_arr_global_id_loop_coma(p):
     '''arr_global_id_loop_coma : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_globales arr_global_id_loop_coma
         |'''
 
+
 def p_arr_global_end_loop(p):
     '''arr_global_end_loop : arr_global
       |'''
+
 
 def p_add_pila_arr_globales(p):
     '''add_pila_arr_globales :'''
     pila_arr_globales.append(p[-5])
 
+
 def p_add_arr_tam(p):
     '''add_arr_tam : '''
     pila_tam_arr.append(p[-1])
+
 
 def p_arr_global_addType(p):
     '''arr_global_addType :'''
@@ -704,52 +733,66 @@ def p_arr_global_addType(p):
         if dir_arr_globales.has_key(tempPop) or dir_var_globales.has_key(tempPop) :
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
+
         else:
+
+            # Checa si el tipo del arreglo es entero
             if p[-1] == 'int' :
                 dir_arr_globales[tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_globales, 'Tam' : tam}
                 int_dir_globales += tam
                 cant_int_globales += tam
                 cantidad_int += tam
+
+            # Checa si el tipo del arreglo es flotante
             elif p[-1] == 'float' :
                 dir_arr_globales[tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_globales, 'Tam' : tam}
                 float_dir_globales += tam
                 cant_float_globales += tam
                 cantidad_float += tam
+
+            # Checa si el tipo del arreglo es char
             elif p[-1] == 'char' :
                 dir_arr_globales[tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_globales, 'Tam' : tam}
                 char_dir_globales += tam
                 cant_char_globales += tam
                 cantidad_char += tam
+
+            # Checa si el tipo del arreglo es booleano
             elif p[-1] == 'bool' :
                 dir_arr_globales[tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_globales, 'Tam' : tam}
                 bool_dir_globales += tam
                 cant_bool_globales += tam
                 cantidad_bool += tam
-            else :
-              print("Error al agregar variable global")
 
-#############################
-## Variables Locales       ##
-#############################
+            # Error en arreglo global
+            else :
+              print("Error al agregar arreglo global")
+
+
 def p_variables_locales(p):
     '''variables_locales : VAR variable_local_id_loop SEMICOLON variable_local_end_loop'''
+
 
 def p_variable_local_id_loop(p):
     '''variable_local_id_loop : ID add_pila_var_locales variable_local_id_loop_coma COLON tipo local_addType'''
 
+
 def p_variable_local_id_loop_coma(p):
     '''variable_local_id_loop_coma : COMA ID add_pila_var_locales variable_local_id_loop_coma
         |'''
+
 
 # Agrega las variabes de un solo tipo a la pila
 def p_add_pila_var_locales(p):
     '''add_pila_var_locales :'''
     pila_var_locales.append(p[-1])
 
+
 # En caso de querer seguir declarando variables de otro tipo
 def p_variable_local_end_loop(p):
     '''variable_local_end_loop : variables_locales
       |'''
+
 
 def p_local_addType(p):
     '''local_addType :'''
@@ -776,50 +819,64 @@ def p_local_addType(p):
         if dir_var_locales.has_key(tempPop) :
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
+
         else:
+
+            # Checa si el tipo del arreglo es entero
             if p[-1] == 'int' :
                 dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_locales}
                 int_dir_locales += 1
                 cant_int_locales += 1
                 cantidad_int += 1
+
+            # Checa si el tipo del arreglo es flotante
             elif p[-1] == 'float' :
                 dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_locales}
                 float_dir_locales += 1
                 cant_float_locales += 1
                 cantidad_float += 1
+
+            # Checa si el tipo del arreglo es char
             elif p[-1] == 'char' :
                 dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_locales}
                 char_dir_locales += 1
                 cant_char_locales += 1
                 cantidad_char += 1
+
+            # Checa si el tipo del arreglo es booleano
             elif p[-1] == 'bool' :
                 dir_var_locales[tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_locales}
                 bool_dir_locales += 1
                 cant_bool_locales += 1
                 cantidad_bool += 1
-            else :
-                print("Error al agregar variable local")
 
-#############################
-## Arreglos Locales        ##
-#############################
+            # Error en declaracion de arreglos locales
+            else :
+                print("Error al arreglo local")
+
+
 def p_arreglos_locales(p):
     '''arreglos_locales : ARR arr_local_id_loop SEMICOLON arr_local_end_loop'''
 
+
 def p_arr_local_id_loop(p):
     '''arr_local_id_loop : ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_locales arr_local_id_loop_coma COLON tipo arr_local_addType'''
+
 
 def p_arr_local_id_loop_coma(p):
     '''arr_local_id_loop_coma : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_locales arr_local_id_loop_coma
         |'''
 
+
 def p_arr_end_loop(p):
     '''arr_local_end_loop : arreglos_locales
       |'''
 
+
 def p_add_pila_arr_locales(p):
     '''add_pila_arr_locales :'''
     pila_arr_locales.append(p[-5])
+
 
 def p_arr_local_addType(p):
     '''arr_local_addType :'''
@@ -847,29 +904,40 @@ def p_arr_local_addType(p):
         if dir_arr_locales.has_key(tempPop) :
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
+
         else:
+
+            # Checa si el tipo del arreglo es entero
             if p[-1] == 'int' :
                 dir_arr_locales[tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_locales, 'Tam' : tam}
                 int_dir_locales += tam
                 cant_int_locales += tam
                 cantidad_int += tam
+
+            # Checa si el tipo del arreglo es flotante
             elif p[-1] == 'float' :
                 dir_arr_locales[tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_locales, 'Tam' : tam}
                 float_dir_locales += tam
                 cant_float_locales += tam
                 cantidad_float += tam
+
+            # Checa si el tipo del arreglo es char
             elif p[-1] == 'char' :
                 dir_arr_locales[tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_locales, 'Tam' : tam}
                 char_dir_locales += tam
                 cant_char_locales += tam
                 cantidad_char += tam
+
+            # Checa si el tipo del arreglo es booleano
             elif p[-1] == 'bool' :
                 dir_arr_locales[tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_locales, 'Tam' : tam}
                 bool_dir_locales += tam
                 cant_bool_locales += tam
                 cantidad_bool += tam
+
+            # Error en variable global
             else :
-              print("Error al agregar variable global")
+              print("Error al agregar arreglo local")
 
 #############################
 ## Funciones               ##
@@ -878,9 +946,11 @@ def p_declaracion_funciones(p):
     '''declaracion_funciones : funcion declaracion_funciones
     |'''
 
+
 def p_funcion(p):
     '''funcion : tipo FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque ret_cuad
     | VOIDTYPE FUNC ID add_dir_funciones LPARENTHESIS params RPARENTHESIS vars_locales_funcion arrs_locales_funcion add_cantidad_vars bloque ret_cuad'''
+
 
 def p_add_dir_funciones(p):
     '''add_dir_funciones : '''
@@ -893,19 +963,22 @@ def p_add_dir_funciones(p):
         dir_funciones[p[-1]] = {'Tipo' : p[-3].upper(), 'Scope' : scope}
         dir_param_funciones[p[-1]] = {} # se les pone la llave de la funcion
         dir_var_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
-        dir_arr_locales_funciones[p[-1]] = {}
+        dir_arr_locales_funciones[p[-1]] = {} # se les pone la llave de la funcion
         pila_funciones.append([p[-1]])
     else :
         print("Ya existe una funcion con este nombre")
         exit()
 
+
 def p_params(p):
     '''params : ID add_pila_funciones params_loop COLON tipo function_add_type semicolon_function_loop
     |'''
 
+
 def p_params_loop(p):
     '''params_loop : COMA ID add_pila_funciones params_loop
     |'''
+
 
 def p_add_pila_funciones(p):
     '''add_pila_funciones : '''
@@ -916,9 +989,11 @@ def p_add_pila_funciones(p):
         print("Ya existe una variable con ese nombre - funcion")
         exit()
 
+
 def p_semicolon_function_loop(p):
     '''semicolon_function_loop : SEMICOLON params
     |'''
+
 
 def p_verify_func_type(p):
     '''verify_func_type : '''
@@ -927,6 +1002,7 @@ def p_verify_func_type(p):
     global char_dir_temporales
     global bool_dir_temporales
 
+    # Cecha si la funcion es void de lo contrario hace mete la dir a los operandos
     if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
         pOperandos.append(-1)
     else :
@@ -934,16 +1010,16 @@ def p_verify_func_type(p):
         pTipos.append(INT)
         pOperandos.append(dir_returns[pila_funciones[-1][0]]['Dir'])
 
+
 def p_verify_void_type(p):
     '''verify_void_type : '''
 
+    # Checa si la funcion es void
     if dir_funciones[p[-6]]['Tipo'] != 'VOID' :
         print("La funcion ocupa ser asignada o evaluda")
-        exit();
+        exit()
 
-#############################
-## Funcion cantidad vars   ##
-#############################
+
 def p_add_cantidad_vars(p):
     '''add_cantidad_vars : '''
     global cantidad_int_func
@@ -954,12 +1030,16 @@ def p_add_cantidad_vars(p):
     global contador_cuadruplos
     global pila_param_funciones
 
+    # Direccion donde incia la funcion
     dir_funciones[p[-7]].update({'Start' : contador_cuadruplos})
 
+    # Pila de parametros
     dir_funciones[p[-7]].update({'Parametros' : pila_param_funciones})
 
+    # directorio de variables locales
     dir_funciones[p[-7]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]})
 
+    # Actualiza el directorio de funciones
     dir_funciones[p[-7]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
 
@@ -970,9 +1050,7 @@ def p_add_cantidad_vars(p):
     cantidad_bool_func = 0
     cantidad_char_func = 0
 
-#############################
-## Funcion parametros      ##
-#############################
+
 def p_function_add_type(p):
     '''function_add_type : '''
     global int_dir_funciones
@@ -988,6 +1066,7 @@ def p_function_add_type(p):
     func_scope = pila_funciones[-1][0]
     scope = 'Funcion'
 
+    # Checa que existan parametros
     while (len(pila_params) > 0) :
         tempPop = pila_params.pop()
 
@@ -996,44 +1075,53 @@ def p_function_add_type(p):
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
 
-        # Checa si el tipo de las variables
+        # Checa si el tipo de las variables son eneteros
         if p[-1] == 'int' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
             pila_param_funciones.append([tempPop ,'INT', int_dir_funciones])
             int_dir_funciones += 1
             cantidad_int_func += 1
+
+        # Checa si el tipo de las variables son flotantes
         elif p[-1] == 'float' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
             pila_param_funciones.append([tempPop ,'FLOAT', float_dir_funciones])
             float_dir_funciones += 1
             cantidad_float_func += 1
+
+        # Checa si el tipo de las variables son chars
         elif p[-1] == 'char' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
             pila_param_funciones.append([tempPop ,'CHAR', char_dir_funciones])
             char_dir_funciones += 1
             cantidad_char_func += 1
+
+        # Checa si el tipo de las variables son booleanos
         elif p[-1] == 'bool' :
             dir_param_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
             pila_param_funciones.append([tempPop ,'BOOL', bool_dir_funciones])
             bool_dir_funciones += 1
             cantidad_bool_func += 1
-        else :
-            print("Error al agregar variable local")
 
-#############################
-## Funcion var locales     ##
-#############################
+        # Error de declaracion de parametro
+        else :
+            print("Error al agregar parametro en funcion")
+
+
 def p_vars_locales_funcion(p):
     '''vars_locales_funcion : VAR ID add_pila_funciones vars_locales_id_loop COLON tipo function_local_add_type semicolon_function_local_loop
     |'''
+
 
 def p_vars_locales_id_loop(p):
     '''vars_locales_id_loop : COMA ID add_pila_funciones vars_locales_id_loop
     |'''
 
+
 def p_semicolon_function_local_loop(p):
     '''semicolon_function_local_loop : SEMICOLON vars_locales_funcion
     |'''
+
 
 def p_function_local_add_type(p):
     '''function_local_add_type : '''
@@ -1050,6 +1138,7 @@ def p_function_local_add_type(p):
     func_scope = pila_funciones[-1][0]
     scope = 'Funcion'
 
+    # Checa si la variable local de repite
     while (len(pila_params) > 0) :
         tempPop = pila_params.pop()
 
@@ -1058,40 +1147,49 @@ def p_function_local_add_type(p):
             print("Error: Ya existe otra variable con el ID %s" % tempPop)
             exit()
 
-        # Checa si el tipo de las variables
+        # Checa si el tipo de las variables son eneteros
         if p[-1] == 'int' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : int_dir_funciones}
             int_dir_funciones += 1
             cantidad_int_func += 1
+
+        # Checa si el tipo de las variables son flotantes
         elif p[-1] == 'float' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : float_dir_funciones}
             float_dir_funciones += 1
             cantidad_float_func += 1
+
+        # Checa si el tipo de las variables es char
         elif p[-1] == 'char' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : char_dir_funciones}
             char_dir_funciones += 1
             cantidad_char_func += 1
+
+        # Checa si el tipo de las variables son booleanas
         elif p[-1] == 'bool' :
             dir_var_locales_funciones[func_scope][tempPop] = {'Tipo' : p[-1].upper(), 'Scope' : scope, 'Dir' : bool_dir_funciones}
             bool_dir_funciones += 1
             cantidad_bool_func += 1
-        else :
-            print("Error al agregar variable local")
 
-#############################
-## Funcion arr locales     ##
-#############################
+        # Error de declaracion de variable
+        else :
+            print("Error al agregar variable local en funcion")
+
+
 def p_arrs_locales_funcion(p):
     '''arrs_locales_funcion : ARR ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop COLON tipo function_local_arr_add_type semicolon_function_local_arr_loop
     |'''
+
 
 def p_arrs_locales_id_loop(p):
     '''arrs_locales_id_loop : COMA ID LBRACKET CTEINT add_arr_tam RBRACKET add_pila_arr_funciones arrs_locales_id_loop
     |'''
 
+
 def p_semicolon_function_local_arr_loop(p):
     '''semicolon_function_local_arr_loop : SEMICOLON arrs_locales_funcion
     |'''
+
 
 def p_add_pila_arr_funciones(p):
     '''add_pila_arr_funciones : '''
@@ -1101,6 +1199,7 @@ def p_add_pila_arr_funciones(p):
     else :
         print("Ya existe una variable con ese nombre - funcion")
         exit()
+
 
 def p_function_local_arr_add_type(p):
     '''function_local_arr_add_type : '''
@@ -1117,6 +1216,7 @@ def p_function_local_arr_add_type(p):
     func_scope = pila_funciones[-1][0]
     scope = 'Funcion'
 
+    # Saca las variables declarados
     while (len(pila_arr_funciones) > 0) :
         tempPop = pila_arr_funciones.pop()
         tam = pila_tam_arr.pop()
@@ -1127,34 +1227,44 @@ def p_function_local_arr_add_type(p):
             exit()
 
         else:
+
+            # Checa si el tipo de las variables son eneteros
             if p[-1] == 'int' :
                 dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'INT ARR', 'Scope' : scope, 'Dir Base' : int_dir_funciones, 'Tam' : tam}
                 int_dir_funciones += tam
                 cantidad_int_func += tam
+
+            # Checa si el tipo de las variables son flotantes
             elif p[-1] == 'float' :
                 dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'FLOAT ARR', 'Scope' : scope, 'Dir Base' : float_dir_funciones, 'Tam' : tam}
                 float_dir_funciones += tam
                 cantidad_float_func += tam
+
+            # Checa si el tipo de las variables son chars
             elif p[-1] == 'char' :
                 dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'CHAR ARR', 'Scope' : scope, 'Dir Base' : char_dir_funciones, 'Tam' : tam}
                 char_dir_funciones += tam
                 cantidad_char_func += tam
+
+            # Checa si el tipo de las variables son booleanos
             elif p[-1] == 'bool' :
                 dir_arr_locales_funciones[func_scope][tempPop] = {'Tipo' : 'BOOL ARR', 'Scope' : scope, 'Dir Base' : bool_dir_funciones, 'Tam' : tam}
                 bool_dir_funciones += tam
                 cantidad_bool_func += tam
-            else :
-              print("Error al agregar variable global")
 
-#############################
-## Funcion RET             ##
-#############################
+            # Error de declaracion
+            else :
+              print("Error al agregar variable local")
+
+
 def p_ret_cuad(p):
     '''ret_cuad : '''
     global contador_cuadruplos
 
+    # Genera el cuadruplo de ret
     dir_cuadruplos[contador_cuadruplos] = ['RET', "", "", ""]
     contador_cuadruplos += 1
+
 
 #############################
 ## Proc Dir                ##
@@ -1178,6 +1288,7 @@ def p_update_dir_proc(p):
     global cant_char_temporales
     global cant_bool_temporales
 
+    # Actualiza el directorio de procedimientos
     dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
     dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
 
@@ -1194,6 +1305,7 @@ def p_second_update_dir_proc(p):
   global cant_char_globales
   global cant_bool_globales
 
+  # Actualiza el directorio de procedimientos
   dir_var_globales['Memoria'] = {'INT' : cant_int_globales, 'FLOAT' : cant_float_globales, 'BOOL' : cant_bool_globales, 'CHAR' : cant_char_globales}
   dir_var_locales['Memoria'] = {'INT' : cant_int_locales, 'FLOAT' : cant_float_locales, 'BOOL' : cant_bool_locales, 'CHAR' : cant_char_locales}
   dir_temporales['Memoria'] = {'TEMP INT' : cant_int_temporales, 'TEMP FLOAT' : cant_float_temporales, 'TEMP BOOL' : cant_bool_temporales, 'TEMP CHAR' : cant_char_temporales}
@@ -1203,6 +1315,7 @@ def p_second_update_dir_proc(p):
   'Variables Locales' : dir_var_locales,
   'Temporales' : dir_temporales
   })
+
 
 #############################
 ## Tipos                   ##
@@ -1215,11 +1328,13 @@ def p_tipo(p):
           | VOIDTYPE'''
     p[0] = p[1]
 
+
 #############################
 ## Bloque                  ##
 #############################
 def p_bloque(p):
     '''bloque : LCURLY bloque_est_loop RCURLY'''
+
 
 def p_bloque_est_loop(p):
     '''bloque_est_loop : estatuto bloque_est_loop
@@ -1238,11 +1353,10 @@ def p_estatuto(p):
       | regreso
       | CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub verify_void_type SEMICOLON'''
 
-#############################
-## Regreso                 ##
-#############################
+
 def p_regreso(p):
     '''regreso : RETURN LPARENTHESIS expresion return_cuad RPARENTHESIS SEMICOLON'''
+
 
 def p_return_cuad(p):
     '''return_cuad : '''
@@ -1251,10 +1365,8 @@ def p_return_cuad(p):
     global scope
 
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
-        # Enteros
 
-        #print(dir_returns)
-
+        # Checa si el valor de retorno es una temporal entera
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'INT' :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
@@ -1263,7 +1375,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # Flotantes
+
+        # Checa si el valor de retorno es una temporal flotante
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'FLOAT' :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
@@ -1272,7 +1385,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # Chars
+
+        # Checa si el valor de retorno es una temporal char
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'CHAR' :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
@@ -1281,7 +1395,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # Bools
+
+        # Checa si el valor de retorno es una temporal booleana
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'BOOL' :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
@@ -1290,7 +1405,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # Variables locales de la funcion
+
+        # Checa si el valor de retorno es una variable local de la funcion
         elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
@@ -1299,7 +1415,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # parametros de la funcion
+
+        # Checa si el valor de retorno es un parametro de la funcion
         elif p[-1] in dir_param_funciones[pila_funciones[-1][0]].keys() :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
@@ -1308,7 +1425,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # En caso de que el argumento sea una constante
+
+        # Checa si el valor de retorno es una constante
         elif p[-1] in dir_constantes.keys() :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == dir_constantes[p[-1]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_constantes[p[-1]]['Dir'], "", ""]
@@ -1317,7 +1435,8 @@ def p_return_cuad(p):
             else :
                 print("Valor de retorno no compatible con tipo de funcion " + str(pila_funciones[-1][0]))
                 exit()
-        # En caso de variable global
+
+        # Checa si el valor de retorno es una variable global
         elif p[-1] in dir_var_globales.keys() :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == dir_var_globales[p[-1]]['Tipo'] :
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_var_globales[p[-1]]['Dir'], "", ""]
@@ -1329,9 +1448,12 @@ def p_return_cuad(p):
         else :
             print("El tipo de argumento no coincide con el parametro, return")
             exit()
+
+    # Error de retorno
     else :
         print("Declaracion de return no valida en funcion")
         exit()
+
 
 #############################
 ## Escritura               ##
@@ -1346,95 +1468,113 @@ def p_print_cuad(p):
     global scope
 
     if scope == 'Funcion' :
-        # Enteros
+
+        # Checa si el ultimo cuadruplo es una temporal entera
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Flotantes
+
+        # Checa si el ultimo cuadruplo es una temporal flotante
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Chars
+
+        # Checa si el ultimo cuadruplo es una temporal char
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Bools
+
+        # Checa si el ultimo cuadruplo es una temporal booleana
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Variables locales de la funcion
+
+        # Checa si la variable esta declarada en las variables locales de la funcion
         elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
-        # parametros de la funcion
+
+        # Checa si la variable esta declarada en los parametros de la funcion
         elif p[-1] in dir_param_funciones[pila_funciones[-1][0]].keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
-        # En caso de que el argumento sea una constante
+
+        # Checa si es constante
         elif p[-1] in dir_constantes.keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_constantes[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
-        # En caso de variable global
+
+        # Checa si la variable esta declarada en las variables globales
         elif p[-1] in dir_var_globales.keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
+
+        # Error de impresion
         else :
-            print("El tipo de argumento no coincide con el parametro, print funcion")
+            print("Error de impresion verificar contenido")
             exit()
+
+    # Scope MAIN
     else :
-        # Enteros
+
+        # Checa si el ultimo cuadruplo es una temporal entera
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Flotantes
+
+        # Checa si el ultimo cuadruplo es una temporal flotante
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Chars
+
+        # Checa si el ultimo cuadruplo es una temporal char
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
-        # Bools
+
+        # Checa si el ultimo cuadruplo es una temporal booleana
         elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
             contador_cuadruplos += 1
+
+        # Checa si la variable esta declarada en las variables locales de main
         elif p[-1] in dir_var_locales.keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_locales[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
-        # En caso de que el argumento sea una constante
+
+        # Checa si es constante
         elif p[-1] in dir_constantes.keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_constantes[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
-        # En caso de variable global
+
+        # Checa si la variable esta declarada en las variables global
         elif p[-1] in dir_var_globales.keys() :
             dir_cuadruplos[contador_cuadruplos] = ['PRINT', dir_var_globales[p[-1]]['Dir'], "", ""]
             contador_cuadruplos += 1
+
+        # Error de impresion
         else :
-            print("El tipo de argumento no coincide con el parametro, print local")
+            print("Error de impresion verificar contenido")
             exit()
 
 #############################
 ## Ciclo                   ##
 #############################
 def p_ciclo(p):
-    '''ciclo : WHILE LPARENTHESIS nodo16 expresion RPARENTHESIS nodo13 bloque nodo17'''
+    '''ciclo : WHILE LPARENTHESIS salto_while expresion RPARENTHESIS cuad_gotof bloque end_while'''
 
-#############################
-## Nodo16                  ##
-#############################
-def p_nodo16(p):
-    '''nodo16 : '''
+
+def p_salto_while(p):
+    '''salto_while : '''
     global contador_cuadruplos
-
     pSaltos.append(contador_cuadruplos)
 
-#############################
-## Nodo17                  ##
-#############################
-def p_nodo17(p):
-    '''nodo17 : '''
+
+def p_end_while(p):
+    '''end_while : '''
     global contador_cuadruplos
 
+    # Asigna la dir de salto del goto y genera el endWhile
     salto_en_falso = pSaltos.pop()
     dir_salto = pSaltos.pop()
     dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", dir_salto]
@@ -1443,46 +1583,44 @@ def p_nodo17(p):
     dir_cuadruplos[contador_cuadruplos] = ['ENDWHILE', "", "", ""]
     contador_cuadruplos += 1
 
+
 #############################
 ## Condicion               ##
 #############################
 def p_condicion(p):
-    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS nodo13 bloque condicion_option nodo15'''
+    '''condicion : IF LPARENTHESIS expresion RPARENTHESIS cuad_gotof bloque condicion_option end_if'''
+
 
 def p_condicion_option(p):
-    '''condicion_option : ELSE nodo14 bloque
+    '''condicion_option : ELSE cuad_goto bloque
       |'''
 
-#############################
-## Nodo15                  ##
-#############################
-def p_nodo15(p):
-    '''nodo15 : '''
+
+def p_end_if(p):
+    '''end_if : '''
     global contador_cuadruplos
 
+    # Genera el cuadruplo de EndIf en condiciones
     salto_en_falso = pSaltos.pop()
     dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
     dir_cuadruplos[contador_cuadruplos] = ['ENDIF', "", "", ""]
     contador_cuadruplos += 1
 
-#############################
-## Nodo14                  ##
-#############################
-def p_nodo14(p):
-    '''nodo14 : '''
+
+def p_cuad_goto(p):
+    '''cuad_goto : '''
     global contador_cuadruplos
 
+    # Genera el cuadruplo de goto para condiciones
     salto_en_falso = pSaltos.pop()
     dir_cuadruplos[contador_cuadruplos] = ['GOTO', "", "", ""]
     pSaltos.append(contador_cuadruplos)
     contador_cuadruplos += 1
     dir_cuadruplos[salto_en_falso][3] = contador_cuadruplos
 
-#############################
-## Nodo13                  ##
-#############################
-def p_nodo13(p):
-    '''nodo13 : '''
+
+def p_cuad_gotof(p):
+    '''cuad_gotof : '''
     global contador_cuadruplos
 
     #Checa si el ultimo valor en la pila es booleano
@@ -1496,38 +1634,38 @@ def p_nodo13(p):
         print ("Expresion no booleana")
         exit()
 
+
 #############################
 ## Expresion               ##
 #############################
 def p_expresion(p):
-    '''expresion : nuevaexp expresion_option nodo11 expresion_loop'''
+    '''expresion : nuevaexp expresion_option evalua_nueva_exp expresion_loop'''
     p[0] = p[1]
 
+
 def p_expresion_option(p):
-    '''expresion_option : AND nodo12_and nuevaexp
-        | OR nodo12_or nuevaexp
+    '''expresion_option : AND agregar_operador_and nuevaexp
+        | OR agregar_operador_or nuevaexp
         |'''
+
 
 def p_expresion_loop(p):
     '''expresion_loop : expresion
         |'''
 
-#############################
-## Nodo12                  ##
-#############################
-def p_nodo12_and(p):
-    '''nodo12_and : '''
+
+def p_agregar_operador_and(p):
+    '''agregar_operador_and : '''
     pOperadores.append(AND)
 
-def p_nodo12_or(p):
-    '''nodo12_or : '''
+
+def p_agregar_operador_or(p):
+    '''agregar_operador_or : '''
     pOperadores.append(OR)
 
-#############################
-## Nodo11                  ##
-#############################
-def p_nodo11(p):
-    '''nodo11 : '''
+
+def p_evalua_nueva_exp(p):
+    '''evalua_nueva_exp : '''
     global contador_cuadruplos
     global bool_dir_temporales
     global cant_bool_temporales
@@ -1535,26 +1673,35 @@ def p_nodo11(p):
 
     # Checa si hay algun operador relacional en la pila
     if pOperadores:
+
         # Checa si es operador es un AND o un OR
         if pOperadores[-1] == AND or pOperadores[-1] == OR:
+
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
             tipo_der = pTipos.pop()
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
+            # Checa si los operadores son negativos en caso de serlo es funcion void
             if opdo_der == -1 or opdo_izq == -1 :
                 print("Funcion void no regresa valor");
                 exit()
 
+            # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
                 pOperandos.append(bool_dir_temporales)
 
+                # Checa si el operador es Or
                 if operador == 6 :
                     dir_cuadruplos[contador_cuadruplos] = ['OR', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es And
                 elif operador == 7 :
                     dir_cuadruplos[contador_cuadruplos] = ['AND', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Error de operador
                 else :
                     print("Error en el operador de asignaciones - Expresion")
                     exit()
@@ -1564,31 +1711,32 @@ def p_nodo11(p):
                 cant_bool_temporales += 1
                 pTipos.append(tipo_res)
                 contador_cuadruplos += 1
+
+            # Error de condicion
             else:
-                print("Error de condicion - valor no booleano")
+                print("Error de condicion valor no booleano")
                 exit()
 
 #############################
 ## NuevaExp                ##
 #############################
 def p_nuevaexp(p):
-    '''nuevaexp : exp nuevaexp_type nodo10'''
+    '''nuevaexp : exp nuevaexp_type evalua_exp'''
     p[0] = p[1]
 
+
 def p_nuevaexp_type(p):
-    '''nuevaexp_type : LESS nodo9_menor exp
-      | GREATER nodo9_mayor exp
-      | LESSEQUAL nodo9_menorig exp
-      | GREATEREQUAL nodo9_mayorig exp
-      | NOTEQUAL nodo9_dif exp
-      | EQUAL nodo9_igual exp
+    '''nuevaexp_type : LESS agregar_operador_menor exp
+      | GREATER agregar_operador_mayor exp
+      | LESSEQUAL agregar_operador_menorig exp
+      | GREATEREQUAL agregar_operador_mayorig exp
+      | NOTEQUAL agregar_operador_dif exp
+      | EQUAL agregar_operador_igual exp
       |'''
 
-#############################
-## Nodo10                  ##
-#############################
-def p_nodo10(p):
-    '''nodo10 : '''
+
+def p_evalua_exp(p):
+    '''evalua_exp : '''
     global contador_cuadruplos
     global bool_dir_temporales
     global cant_bool_temporales
@@ -1596,6 +1744,7 @@ def p_nodo10(p):
 
     # Checa si hay algun operador relacional en la pila
     if pOperadores:
+
         # Checa si es un operador relacional
         if pOperadores[-1] == MENOR or pOperadores[-1] == MAYOR or pOperadores[-1] == MENORIG or pOperadores[-1] == MAYORIG or pOperadores[-1] == IGUAL or pOperadores[-1] == DIF:
             operador = pOperadores.pop()
@@ -1604,26 +1753,41 @@ def p_nodo10(p):
             opdo_izq = pOperandos.pop()
             tipo_izq = pTipos.pop()
 
+            # Checa si los operadores son negativos en caso de serlo es funcion void
             if opdo_der == -1 or opdo_izq == -1 :
                 print("Funcion void no regresa valor");
                 exit()
 
+            # Se verifica que los tipos seran validos en el cubo semantico
             if cuboSemantico[tipo_der][tipo_izq][operador] != ERR :
                 tipo_res = cuboSemantico[tipo_der][tipo_izq][operador]
                 pOperandos.append(bool_dir_temporales)
 
+                # Checa si el operador es Mayor
                 if operador == 8 :
                     dir_cuadruplos[contador_cuadruplos] = ['MAYOR', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es Menor
                 elif operador == 9 :
                     dir_cuadruplos[contador_cuadruplos] = ['MENOR', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es Mayor Igual
                 elif operador == 10 :
                     dir_cuadruplos[contador_cuadruplos] = ['MAYORIG', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es Menor Igual
                 elif operador == 11 :
                     dir_cuadruplos[contador_cuadruplos] = ['MENORIG', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es Igual
                 elif operador == 12 :
                     dir_cuadruplos[contador_cuadruplos] = ['IGUAL', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Checa si el operador es Diferente
                 elif operador == 13 :
                     dir_cuadruplos[contador_cuadruplos] = ['DIF', opdo_izq, opdo_der, bool_dir_temporales]
+
+                # Error en el operador relacional
                 else :
                     print("Error en el operador de asignaciones - Nueva exp")
                     exit()
@@ -1633,35 +1797,40 @@ def p_nodo10(p):
                 cantidad_bool += 1
                 pTipos.append(tipo_res)
                 contador_cuadruplos += 1
+
+            # Error en operadores relacionales
             else:
-                print("Error arimetico - tipos no validos - Nueva exp")
+                print("Error en los operadores relacionales")
                 exit()
 
-#############################
-## Nodo9                   ##
-#############################
-def p_nodo9_menor(p):
-    '''nodo9_menor : '''
+
+def p_agregar_operador_menor(p):
+    '''agregar_operador_menor : '''
     pOperadores.append(MENOR)
 
-def p_nodo9_mayor(p):
-    '''nodo9_mayor : '''
+
+def p_agregar_operador_mayor(p):
+    '''agregar_operador_mayor : '''
     pOperadores.append(MAYOR)
 
-def p_nodo9_menorig(p):
-    '''nodo9_menorig : '''
+
+def p_agregar_operador_menorig(p):
+    '''agregar_operador_menorig : '''
     pOperadores.append(MENORIG)
 
-def p_nodo9_mayorig(p):
-    '''nodo9_mayorig : '''
+
+def p_agregar_operador_mayorig(p):
+    '''agregar_operador_mayorig : '''
     pOperadores.append(MAYORIG)
 
-def p_nodo9_dif(p):
-    '''nodo9_dif : '''
+
+def p_agregar_operador_dif(p):
+    '''agregar_operador_dif : '''
     pOperadores.append(DIF)
 
-def p_nodo9_igual(p):
-    '''nodo9_igual : '''
+
+def p_agregar_operador_igual(p):
+    '''agregar_operador_igual : '''
     pOperadores.append(IGUAL)
 
 #############################
@@ -1670,11 +1839,13 @@ def p_nodo9_igual(p):
 def p_asignacion(p):
     '''asignacion : ID asignacion_option'''
 
+
 def p_asignacion_option(p):
     '''asignacion_option : ASSIGN expresion evalua_asignacion SEMICOLON
       | ASSIGN CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON asign_return_cuad
       | ASSIGN LBRACKET asignacion_type RBRACKET set_arr_values SEMICOLON
       | LBRACKET expresion arr_pos RBRACKET ASSIGN expresion asign_arr SEMICOLON'''
+
 
 def p_asignacion_type(p):
     '''asignacion_type : CTEINT add_arr_valores_pila asignacion_coma_loop
@@ -1682,9 +1853,11 @@ def p_asignacion_type(p):
     | CTECHAR add_arr_valores_pila asignacion_coma_loop
     | CTEBOOL add_arr_valores_pila asignacion_coma_loop'''
 
+
 def p_asignacion_coma_loop(p):
     '''asignacion_coma_loop : COMA asignacion_type_loop
     |'''
+
 
 def p_asignacion_type_loop(p):
     '''asignacion_type_loop : CTEINT add_arr_valores_pila asignacion_coma_loop
@@ -1693,9 +1866,11 @@ def p_asignacion_type_loop(p):
     | CTEBOOL add_arr_valores_pila asignacion_coma_loop
     |'''
 
+
 def p_add_arr_valores_pila(p):
     '''add_arr_valores_pila : '''
     pila_arr_valores.insert(0, p[-1])
+
 
 def p_set_arr_values(p):
     '''set_arr_values : '''
@@ -1711,48 +1886,64 @@ def p_set_arr_values(p):
     global cantidad_bool
 
     if scope == 'Funcion' :
+
+        # Checa si el arreglo esta declarado en las variables locales de la funcion
         if p[-5] in dir_arr_locales_funciones[pila_funciones[-1][0]].keys() :
             cant_casillas = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Tam']
             dir_base = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
             tipo_arr = dir_arr_locales_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
 
+        # Checa si el arreglo esta declarado en los parametros de la funcion
         elif p[-5] in dir_param_funciones[pila_funciones[-1][0]].keys() :
             cant_casillas = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tam']
             dir_base = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Dir Base']
             tipo_arr = dir_param_funciones[pila_funciones[-1][0]][p[-5]]['Tipo']
 
+        # Checa si el arreglo esta declarado en los arreglos globales
         elif p[-5] in dir_arr_globales.keys() :
             cant_casillas = dir_arr_globales[p[-5]]['Tam']
             dir_base = dir_arr_globales[p[-5]]['Dir Base']
             tipo_arr = dir_arr_globales[p[-5]]['Tipo']
+
+    # Scope MAIN
     else :
+
+        # Checa si el arreglo esta declarado en los arreglos locales en main
         if p[-5] in dir_arr_locales.keys() :
             cant_casillas = dir_arr_locales[p[-5]]['Tam']
             dir_base = dir_arr_locales[p[-5]]['Dir Base']
             tipo_arr = dir_arr_locales[p[-5]]['Tipo']
 
+        # Checa si el arreglo esta declarado en los arreglos globales
         elif p[-5] in dir_arr_globales.keys() :
             cant_casillas = dir_arr_globales[p[-5]]['Tam']
             dir_base = dir_arr_globales[p[-5]]['Dir Base']
             tipo_arr = dir_arr_globales[p[-5]]['Tipo']
 
 
+    # Checa que la cantidad de casillas sea la correcta
     if cant_casillas != len(pila_arr_valores) :
         print("El tamano del arreglo asignado no coincide con el tamano del arreglo declarado")
         exit()
 
     while(cant_casillas > 0) :
         valor = pila_arr_valores.pop()
+
+        # Checa que el valor sea compatible con enteros
         if isinstance(valor, int) and tipo_arr == 'INT ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'INT', 'Scope' : 'CONSTANTE', 'Dir' : int_dir_constantes}
                 int_dir_constantes += 1
                 cantidad_int += 1
+
+        # Checa que el valor sea compatible con flotantes
         elif isinstance(valor, float) and tipo_arr == 'FLOAT ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'FLOAT', 'Scope' : 'CONSTANTE', 'Dir' : float_dir_constantes}
                 float_dir_constantes += 1
                 cantidad_float += 1
+
+        # Checa que el valor sea compatible con chars
         elif isinstance(valor, str) and tipo_arr == 'CHAR ARR' :
             if valor not in dir_constantes.keys() :
                 if len(valor) > 3:
@@ -1761,53 +1952,82 @@ def p_set_arr_values(p):
                 dir_constantes[valor] = {'Tipo' : 'CHAR', 'Scope' : 'CONSTANTE', 'Dir' : char_dir_constantes}
                 char_dir_constantes += 1
                 cantidad_char += 1
+
+        # Checa que el valor sea compatible con booleanos
         elif valor == 'true' or valor == 'false' and tipo_arr == 'BOOL ARR' :
             if valor not in dir_constantes.keys() :
                 dir_constantes[valor] = {'Tipo' : 'BOOL', 'Scope' : 'CONSTANTE', 'Dir' : bool_dir_constantes}
                 bool_dir_constantes += 1
                 cantidad_bool += 1
+
+        # Error de asignacion de valores en arreglo
         else :
             print("Los valores asignados no concuerdan con el tipo de arreglo")
             exit()
 
+        # Genera el cuadruplo de asignacion
         dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_constantes[valor]['Dir'], "", dir_base]
         contador_cuadruplos += 1
         dir_base += 1
         cant_casillas -= 1
 
-#############################
-## Asignacion  Areglos     ##
-#############################
+
+# Asignacion de lista a un arreglo
 def p_arr_pos(p):
     '''arr_pos : '''
     global contador_cuadruplos
 
     if scope == 'Funcion' :
+
+        # Checa si la expresion evalua a una temporal
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
             pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
+
+        # Checa si la variable esta declarada en las variables locales de la funcion
         elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]].keys() :
             pila_tam_arr.append(dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir'])
+
+        # Checa si la variable esta declarada en los parametros de la funcion
         elif p[-1] in dir_param_funciones[pila_funciones[-1][0]].keys() :
             pila_tam_arr.append(dir_param_funciones[pila_funciones[-1][0]][p[-1]]['Dir'])
+
+        # Checa si la variable esta declarada en las variables globales
         elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
             pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+
+        # Checa si es una constante
         elif p[-1] in dir_constantes.keys():
             pila_tam_arr.append(dir_constantes[p[-1]]['Dir'])
+
+        # Error en la posicion
         else :
             print("Tipo de valor para posicion de arreglo no valida")
             exit()
+
+    #Scope MAIN
     else :
+
+        # Checa si la expresion evalua a una temporal
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32399 :
             pila_tam_arr.append(dir_cuadruplos[contador_cuadruplos-1][3])
+
+        # Checa si la variable esta declarada en las variables locales del main
         elif p[-1] in dir_var_locales.keys() and dir_var_locales[p[-1]]['Tipo'] == 'INT' :
             pila_tam_arr.append(dir_var_locales[p[-1]]['Dir'])
+
+        # Checa si la variable esta declarada en las variables globales
         elif p[-1] in dir_var_globales.keys() and dir_var_globales[p[-1]]['Tipo'] == 'INT' :
             pila_tam_arr.append(dir_var_globales[p[-1]]['Dir'])
+
+        # Checa si es constante
         elif p[-1] in dir_constantes.keys():
             pila_tam_arr.append(dir_constantes[p[-1]]['Dir'])
+
+        # Error en la posicion
         else :
             print("Tipo de valor para posicion de arreglo no valida")
             exit()
+
 
 # Valor de la expresion evaluda que se le asignara al arreglo
 def p_asign_arr(p):
