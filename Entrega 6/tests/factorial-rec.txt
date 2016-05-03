@@ -1,0 +1,16 @@
+program overflow;
+
+int func factorial( n : int ) {
+  if( n == 1 ) {
+    return(1);
+  } else {
+    return(n * ( call factorial(n - 1) ));
+  }
+}
+
+main () {
+  var a : int;
+  a = call factorial(3);
+  print(a);
+}
+end

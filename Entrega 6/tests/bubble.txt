@@ -1,0 +1,45 @@
+program bubble;
+var n: int;
+main() 
+{
+	var swap : bool;
+	var j, tmp, i, x : int;
+	arr vector[10] : int;
+	vector = [4,1,22,9,120,2,89,12,0,99];
+	n = 10;
+	x = 0;
+
+	while (x < 10) {
+		print(vector[x]);
+		x = x + 1;
+	}
+
+	swap = true;
+    j = 0;
+    i = 0;
+    while (swap) {
+    	print(swap);
+          swap = false;
+          j = j + 1;
+          print(i);
+          print(n-j);
+          while(i < n-j){
+          	print(2222222222222222222);
+          	if((vector[i]) > (vector[i + 1])){
+          		print(111111111111111111111111);
+          		tmp = vector[i];
+          		vector[i] = vector[i + 1];
+          		vector[i + 1] = tmp;
+          		swap = true;
+          	}
+          	i = i + 1;
+
+          }
+          print(444444444444444);
+
+    }
+
+
+	
+}
+end

@@ -1,0 +1,24 @@
+program overflow;
+
+var a, b, c : int;
+var d, e, f : float;
+var x : char;
+var y : bool;
+
+arr m[5], z[5] : int;
+
+int func suma() {
+  b = 4;
+  c = 5;
+  a = b + c;
+  return(a);
+}
+
+main () {
+  m = [1,2,3,4,5];
+  z = [1,2,3,4,5];
+
+  a = (m[2]) + (m[3]);
+  print(a);
+}
+end

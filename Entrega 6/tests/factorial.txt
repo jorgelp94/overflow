@@ -15,7 +15,7 @@ var acum, i : int;
 }
 
 main () {
-  a = 6;
+  a = 5;
   f = call factorial(a);
   print(f);
 }

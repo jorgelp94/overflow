@@ -1,0 +1,36 @@
+program bubblesort;
+      
+main() 
+{     
+      var notsorted,j,hold,i:int;
+      arr t[5]:int;
+      t[0] = 5;
+            t[1] = 6;
+            t[2] = 1;
+            t[3] = 4;
+            print (1);
+            i = 0;
+            j = 0;
+            while(i < (4 - 1))
+            {     j = 0;
+                  while(j < (4 - 1))
+                  {
+                        if((t[j]) > (t[j+1]))
+                        {
+                              hold = t[j];
+                              t[j] = t[j+1];
+                              t[j+1] = hold;
+                        }
+                        j = j + 1;
+                  }
+                  i = i + 1;
+            }
+
+            print (10000000);
+            print (t[0]);
+            print (t[1]);
+            print (t[2]);
+            print (t[3]);
+           
+}
+end

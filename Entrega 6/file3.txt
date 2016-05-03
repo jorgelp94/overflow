@@ -1,42 +1,27 @@
 program overflow;
 
-var a, g, h : int;
-var b, c, d : float;
-var x : char;
-var y : bool;
 
-arr m[5], z[1] : int;
 
-float func resta( f : float)
-var peso : float;
-arr m[10] : bool;
+void func imprimenumeros()
 {
-	peso = f * 3.0;
-	return(peso);
+	print(123123);
 }
 
-
 main () {
- 	var i, acum : int;
- 	arr kappa[3] : bool;
- 	a = 3 + 12;
- 	b = 10.0 - 4.0;
- 	c = a * b;
- 	i = 123;
- 	d = c/10;
- 	acum = 0;
-
- 	y = a < 5;
- 	m[4] = 10;
- 	m[3] = 1;
- 	m[2] = 5;
- 	m[1] = 2;
- 	m[0] = 33;
- 	g = m[2];
- 	i = 2;
- 	h = m[2/i];
- 	c = call resta(b);
-
- 	print(h);
+ 	arr t[5] :int;
+ 	var hold, j :int;
+ 	j = 0;
+ 	t = [1,2,3,4,5];
+ 	print(t[j+1]);
+    
+    if ((t[4]) > (t[1])){
+    	print(11111);
+    }
+    else {
+    	print(22222);
+    }
+    
+    call imprimenumeros();
+ 	
 }
 end
