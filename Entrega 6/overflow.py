@@ -2232,39 +2232,39 @@ def p_gosub(p):
     contador_cuadruplos += 1
     contador_params = 0
 
-    #overflow
-    if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
-        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
-        #pOperandos.append(int_dir_temporales)
-        #pOperandos[-3] = int_dir_temporales
-        int_dir_temporales += 1
-        cant_int_temporales += 1
-        contador_cuadruplos += 1
+    if len(dir_returns) > 0 :
+        if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+            #pOperandos.append(int_dir_temporales)
+            #pOperandos[-3] = int_dir_temporales
+            int_dir_temporales += 1
+            cant_int_temporales += 1
+            contador_cuadruplos += 1
 
-    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
-        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
-        #pOperandos[-3] = float_dir_temporales
-        float_dir_temporales += 1
-        cant_float_temporales += 1
-        contador_cuadruplos += 1
+        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
+            #pOperandos[-3] = float_dir_temporales
+            float_dir_temporales += 1
+            cant_float_temporales += 1
+            contador_cuadruplos += 1
 
-    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
-        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
-        #pOperandos[-3] = char_dir_temporales
-        char_dir_temporales += 1
-        cant_char_temporales += 1
-        contador_cuadruplos += 1
+        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
+            #pOperandos[-3] = char_dir_temporales
+            char_dir_temporales += 1
+            cant_char_temporales += 1
+            contador_cuadruplos += 1
 
-    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
-        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
-        #pOperandos[-3] = bool_dir_temporales
-        bool_dir_temporales += 1
-        cant_bool_temporales += 1
-        contador_cuadruplos += 1
+        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
+            #pOperandos[-3] = bool_dir_temporales
+            bool_dir_temporales += 1
+            cant_bool_temporales += 1
+            contador_cuadruplos += 1
 
-    else :
-        print("Error en dir de retornos")
-        exit()
+        else :
+            print("Error en dir de retornos")
+            exit()
 
 def p_args_cuad(p):
     '''args_cuad : '''
@@ -3051,15 +3051,15 @@ def p_acceso_arr(p):
             dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
 
         # Checa si la posicion a accesar es una variable local
-        elif p[-1] in dir_var_locales.keys() :            
+        elif p[-1] in dir_var_locales.keys() :
             dir_temporal = dir_var_locales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una variable global
-        elif p[-1] in dir_var_globales.keys() :            
+        elif p[-1] in dir_var_globales.keys() :
             dir_temporal = dir_var_globales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una constante
-        elif p[-1] in dir_constantes.keys() :            
+        elif p[-1] in dir_constantes.keys() :
             dir_temporal = dir_constantes[p[-1]]['Dir']
 
 
