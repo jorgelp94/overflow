@@ -125,6 +125,7 @@ pila_arr_locales = []
 pila_arr_funciones = []
 pila_tam_arr = []
 pila_arr_valores = []
+pila_retornos = []
 
 ###########################
 ## Scope                 ##
@@ -1365,16 +1366,23 @@ def p_return_cuad(p):
     '''return_cuad : '''
     global contador_cuadruplos
     global contador_params
+    global int_dir_temporales
     global scope
 
-    pOperandos.pop()
+    pOperandos.pop() #overflow
+
+    if dir_cuadruplos[contador_cuadruplos-3][0] == 'GOSUB' and dir_cuadruplos[contador_cuadruplos-2][0] == 'ASIG':
+        if len(pila_retornos) == 2 :
+            dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
+            dir_cuadruplos[contador_cuadruplos-1][1] = pila_retornos.pop()
+        elif len(pila_retornos) == 1 :
+            dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
 
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
 
         # Checa si el valor de retorno es una temporal entera
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'INT' :
-                dir_cuadruplos[contador_cuadruplos-1][2] = 30001 #overflow
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'INT'}
@@ -1647,7 +1655,6 @@ def p_expresion(p):
     '''expresion : nuevaexp expresion_option evalua_nueva_exp expresion_loop'''
     p[0] = p[1]
 
-
 def p_expresion_option(p):
     '''expresion_option : AND agregar_operador_and nuevaexp
         | OR agregar_operador_or nuevaexp
@@ -1678,7 +1685,6 @@ def p_evalua_nueva_exp(p):
 
     # Checa si hay algun operador relacional en la pila
     if pOperadores:
-
         # Checa si es operador es un AND o un OR
         if pOperadores[-1] == AND or pOperadores[-1] == OR:
 
@@ -1748,7 +1754,6 @@ def p_evalua_exp(p):
 
     # Checa si hay algun operador relacional en la pila
     if pOperadores:
-
         # Checa si es un operador relacional
         if pOperadores[-1] == MENOR or pOperadores[-1] == MAYOR or pOperadores[-1] == MENORIG or pOperadores[-1] == MAYORIG or pOperadores[-1] == IGUAL or pOperadores[-1] == DIF:
             operador = pOperadores.pop()
@@ -2232,36 +2237,36 @@ def p_gosub(p):
     contador_cuadruplos += 1
     contador_params = 0
 
-    if len(dir_returns) > 0 : #overflow
-        if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
-            pOperandos = []
-            pOperandos.append(int_dir_temporales)
-            int_dir_temporales += 1
-            cant_int_temporales += 1
-            contador_cuadruplos += 1
+    if scope == 'Funcion' :
+        if len(dir_returns) > 0 : #overflow
+            if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+                pila_retornos.append(int_dir_temporales)
+                int_dir_temporales += 1
+                cant_int_temporales += 1
+                contador_cuadruplos += 1
 
-        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
-            float_dir_temporales += 1
-            cant_float_temporales += 1
-            contador_cuadruplos += 1
+            elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
+                float_dir_temporales += 1
+                cant_float_temporales += 1
+                contador_cuadruplos += 1
 
-        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
-            char_dir_temporales += 1
-            cant_char_temporales += 1
-            contador_cuadruplos += 1
+            elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
+                char_dir_temporales += 1
+                cant_char_temporales += 1
+                contador_cuadruplos += 1
 
-        elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
-            bool_dir_temporales += 1
-            cant_bool_temporales += 1
-            contador_cuadruplos += 1
+            elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
+                dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
+                bool_dir_temporales += 1
+                cant_bool_temporales += 1
+                contador_cuadruplos += 1
 
-        else :
-            print("Error en dir de retornos")
-            exit()
+            else :
+                print("Error en dir de retornos")
+                exit()
 
 def p_args_cuad(p):
     '''args_cuad : '''
@@ -2659,6 +2664,7 @@ def p_evalua_asignacion(p):
 def p_exp(p):
     '''exp : termino evalua_termino exp_loop'''
     p[0] = p[1]
+
 
 def p_exp_loop(p):
     '''exp_loop : exp_type_loop
@@ -3112,8 +3118,6 @@ def p_validar_variable(p):
     global scope
     global contador_cuadruplos
 
-    #overflow
-
     # Checa que no sea una variable ya declarada previamente
     if scope == 'Funcion' :
         if p[-1] not in dir_var_locales_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_param_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_arr_globales.keys() and p[-1] not in dir_arr_locales_funciones[pila_funciones[-1][0]] :
@@ -3121,10 +3125,6 @@ def p_validar_variable(p):
     # Scope MAIN
     elif p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_funciones.keys() and p[-1] not in dir_arr_locales.keys() and p[-1] not in dir_arr_globales.keys() :
         pOperandos.append(dir_constantes[p[-1]]['Dir'])
-
-
-    #print(pOperandos)
-
 
 def p_agrega_parentesis_izq(p):
     '''agrega_parentesis_izq : '''
