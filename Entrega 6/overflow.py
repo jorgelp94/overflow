@@ -1367,6 +1367,8 @@ def p_return_cuad(p):
     global contador_params
     global scope
 
+    pOperandos.pop()
+
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
 
         # Checa si el valor de retorno es una temporal entera
@@ -1456,7 +1458,6 @@ def p_return_cuad(p):
     else :
         print("Declaracion de return no valida en funcion")
         exit()
-
 
 #############################
 ## Escritura               ##
@@ -1727,7 +1728,6 @@ def p_nuevaexp(p):
     '''nuevaexp : exp nuevaexp_type evalua_exp'''
     p[0] = p[1]
 
-
 def p_nuevaexp_type(p):
     '''nuevaexp_type : LESS agregar_operador_menor exp
       | GREATER agregar_operador_mayor exp
@@ -1848,7 +1848,6 @@ def p_asignacion_option(p):
       | ASSIGN CALL ID function_call LPARENTHESIS func_args RPARENTHESIS gosub SEMICOLON asign_return_cuad
       | ASSIGN LBRACKET asignacion_type RBRACKET set_arr_values SEMICOLON
       | LBRACKET expresion arr_pos RBRACKET ASSIGN expresion asign_arr SEMICOLON'''
-
 
 def p_asignacion_type(p):
     '''asignacion_type : CTEINT add_arr_valores_pila asignacion_coma_loop
@@ -2234,30 +2233,28 @@ def p_gosub(p):
 
     if len(dir_returns) > 0 :
         if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
-            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+            #dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+            pOperandos = []
             #pOperandos.append(int_dir_temporales)
-            #pOperandos[-3] = int_dir_temporales
-            int_dir_temporales += 1
-            cant_int_temporales += 1
-            contador_cuadruplos += 1
+            #print(pOperandos)                        
+            #int_dir_temporales += 1
+            #cant_int_temporales += 1
+            #contador_cuadruplos += 1
 
         elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
             dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
-            #pOperandos[-3] = float_dir_temporales
             float_dir_temporales += 1
             cant_float_temporales += 1
             contador_cuadruplos += 1
 
         elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
             dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
-            #pOperandos[-3] = char_dir_temporales
             char_dir_temporales += 1
             cant_char_temporales += 1
             contador_cuadruplos += 1
 
         elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
             dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
-            #pOperandos[-3] = bool_dir_temporales
             bool_dir_temporales += 1
             cant_bool_temporales += 1
             contador_cuadruplos += 1
@@ -2271,6 +2268,8 @@ def p_args_cuad(p):
     global contador_cuadruplos
     global contador_params
     global scope
+
+    pOperandos.pop()
 
     # Checa que el numero de parametros y argumentos sea el mismo
     if contador_params > len(dir_funciones[pila_llamadas_funcion[0]]['Parametros']) - 1 :
@@ -2661,7 +2660,6 @@ def p_exp(p):
     '''exp : termino evalua_termino exp_loop'''
     p[0] = p[1]
 
-
 def p_exp_loop(p):
     '''exp_loop : exp_type_loop
       |'''
@@ -2699,6 +2697,7 @@ def p_evalua_termino(p):
 
         # Checamos si el operador es Suma o Resta
         if pOperadores[-1] == SUMA or pOperadores[-1]== RESTA :
+
             operador = pOperadores.pop()
             opdo_der = pOperandos.pop()
             tipo_der = pTipos.pop()
@@ -3111,15 +3110,20 @@ def p_acceso_arr(p):
 def p_validar_variable(p):
     '''validar_variable : '''
     global scope
+    global contador_cuadruplos
+
+    #overflow
 
     # Checa que no sea una variable ya declarada previamente
     if scope == 'Funcion' :
         if p[-1] not in dir_var_locales_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_param_funciones[pila_funciones[-1][0]].keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_arr_globales.keys() and p[-1] not in dir_arr_locales_funciones[pila_funciones[-1][0]] :
             pOperandos.append(dir_constantes[p[-1]]['Dir'])
-
     # Scope MAIN
     elif p[-1] not in dir_var_locales.keys() and p[-1] not in dir_var_globales.keys() and p[-1] not in dir_funciones.keys() and p[-1] not in dir_arr_locales.keys() and p[-1] not in dir_arr_globales.keys() :
         pOperandos.append(dir_constantes[p[-1]]['Dir'])
+
+
+    #print(pOperandos)
 
 
 def p_agrega_parentesis_izq(p):
