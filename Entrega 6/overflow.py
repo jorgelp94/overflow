@@ -535,13 +535,13 @@ def p_programa(p):
     #print(dir_arr_locales)
     #print("\n")
 
-    #print("Variables Constantes")
-    #print(dir_constantes)
-    #print("\n")
+    print("Variables Constantes")
+    print(dir_constantes)
+    print("\n")
 
-    #print("Funciones")
-    #print(dir_funciones)
-    #print("\n")
+    print("Funciones")
+    print(dir_funciones)
+    print("\n")
 
     #print("Arr Funciones")
     #print(dir_arr_locales_funciones)
@@ -1009,7 +1009,7 @@ def p_verify_func_type(p):
     if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
         pOperandos.append(-1)
     else :
-        pOperandos.pop() #TODO checa que pedo con esto
+        #pOperandos.pop() #TODO checa que pedo con esto
         pTipos.append(INT)
         pOperandos.append(dir_returns[pila_funciones[-1][0]]['Dir'])
 
@@ -2235,8 +2235,8 @@ def p_gosub(p):
     #overflow
     if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
         dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+        #pOperandos.append(int_dir_temporales)
         #pOperandos[-3] = int_dir_temporales
-        #print(pOperandos)
         int_dir_temporales += 1
         cant_int_temporales += 1
         contador_cuadruplos += 1
@@ -2393,10 +2393,6 @@ def p_args_cuad(p):
 
             # Error de argumento
             else :
-                print(dir_cuadruplos)
-                print(dir_cuadruplos[contador_cuadruplos-1][3])
-                print(pila_llamadas_funcion[0])
-                print(dir_funciones[pila_llamadas_funcion[0]]['Parametros'])
                 print("El tipo de argumento no coincide con el parametro aqui")
                 exit()
 
@@ -3039,7 +3035,7 @@ def p_acceso_arr(p):
             dir_temporal = dir_constantes[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una temporal
-        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 and len(str(dir_cuadruplos[contador_cuadruplos-1][1])) != 7 :
             dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
 
         # Error de acceso a arreglo
@@ -3049,21 +3045,27 @@ def p_acceso_arr(p):
 
     # Scope MAIN
     else :
+
+        # Checa si la posicion a accesar es una temporal
+        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 and len(str(dir_cuadruplos[contador_cuadruplos-1][1])) != 7 :
+            print("Temps")
+            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
+
         # Checa si la posicion a accesar es una variable local
-        if p[-1] in dir_var_locales.keys() :
+        elif p[-1] in dir_var_locales.keys() :
+            print("var locales")
             dir_temporal = dir_var_locales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una variable global
         elif p[-1] in dir_var_globales.keys() :
+            print("var globales")
             dir_temporal = dir_var_globales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una constante
         elif p[-1] in dir_constantes.keys() :
+            print("constantes")
             dir_temporal = dir_constantes[p[-1]]['Dir']
 
-        # Checa si la posicion a accesar es una temporal
-        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
-            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
 
         # Error de acceso a arreglo
         else :
