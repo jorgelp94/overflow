@@ -567,6 +567,9 @@ def p_add_main_goto(p):
 def p_init_goto(p):
     '''init_goto : '''
     global contador_cuadruplos
+    global scope
+
+    scope = 'Local'
 
     # Inicializa el cuadruplo goto
     dir_cuadruplos[0] = ['GOTO', "", "", contador_cuadruplos]
@@ -2116,7 +2119,7 @@ def p_asign_arr(p):
 
             # Checa si los operadores son negativos en caso de serlo es funcion void
             if opdo_der == -1 or opdo_izq == -1 :
-                print("Funcion void no regresa valor");
+                print("Funcion void no regresa valor")
                 exit()
 
             # Se verifica que los tipos seran validos en el cubo semantico
@@ -2197,7 +2200,8 @@ def p_function_call(p):
 
 
 def p_func_args(p):
-    '''func_args : expresion args_cuad func_args_loop'''
+    '''func_args : expresion args_cuad func_args_loop
+    |'''
 
 
 def p_func_args_loop(p):
@@ -2209,6 +2213,14 @@ def p_gosub(p):
     '''gosub : '''
     global contador_params
     global contador_cuadruplos
+    global int_dir_temporales
+    global float_dir_temporales
+    global char_dir_temporales
+    global bool_dir_temporales
+    global cant_int_temporales
+    global cant_float_temporales
+    global cant_char_temporales
+    global cant_bool_temporales
 
     # Checa que el numero de parametros y argumentos sea el mismo
     if contador_params != len(dir_funciones[p[-5]]['Parametros']) :
@@ -2220,6 +2232,39 @@ def p_gosub(p):
     contador_cuadruplos += 1
     contador_params = 0
 
+    #overflow
+    if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+        #pOperandos[-3] = int_dir_temporales
+        #print(pOperandos)
+        int_dir_temporales += 1
+        cant_int_temporales += 1
+        contador_cuadruplos += 1
+
+    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
+        #pOperandos[-3] = float_dir_temporales
+        float_dir_temporales += 1
+        cant_float_temporales += 1
+        contador_cuadruplos += 1
+
+    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
+        #pOperandos[-3] = char_dir_temporales
+        char_dir_temporales += 1
+        cant_char_temporales += 1
+        contador_cuadruplos += 1
+
+    elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
+        dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
+        #pOperandos[-3] = bool_dir_temporales
+        bool_dir_temporales += 1
+        cant_bool_temporales += 1
+        contador_cuadruplos += 1
+
+    else :
+        print("Error en dir de retornos")
+        exit()
 
 def p_args_cuad(p):
     '''args_cuad : '''
@@ -2260,29 +2305,29 @@ def p_args_cuad(p):
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
                 else :
-                    print("El tipo de argumento no coincide con el parametro")
+                    print("El tipo de argumento no coincide con el parametro - global")
                     exit()
 
         # En caso de que sea una expresion
         else :
 
             # Checa si el resultado de la expresion es entera
-            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'INT' :
+            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es flotante
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'FLOAT' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es char
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'CHAR' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es booleana
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'BOOL' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
@@ -2302,7 +2347,7 @@ def p_args_cuad(p):
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_locales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
                 else :
-                    print("El tipo de argumento no coincide con el parametro")
+                    print("El tipo de argumento no coincide con el parametro - var local")
                     exit()
 
             # Checa si el argumento es una constante
@@ -2311,7 +2356,7 @@ def p_args_cuad(p):
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_constantes[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
                 else :
-                    print("El tipo de argumento no coincide con el parametro")
+                    print("El tipo de argumento no coincide con el parametro - constante")
                     exit()
 
             # Checa si el argumento es una variable global
@@ -2320,35 +2365,39 @@ def p_args_cuad(p):
                     dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_var_globales[p[-1]]['Dir'], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                     contador_cuadruplos += 1
                 else :
-                    print("El tipo de argumento no coincide con el parametro")
+                    print("El tipo de argumento no coincide con el parametro - var global")
                     exit()
 
         # En caso de que sea alguna operacion o comparacion
         else :
 
             # Checa si el resultado de la expresion es entera
-            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'INT' :
+            if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es flotante
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'FLOAT' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 32500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 34999 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es un char
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'CHAR' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 35000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 37499 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Checa si el resultado de la expresion es booleana
-            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 and dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][1] == 'BOOL' :
+            elif dir_cuadruplos[contador_cuadruplos-1][3] >= 37500 and dir_cuadruplos[contador_cuadruplos-1][3] <= 39999 :
                 dir_cuadruplos[contador_cuadruplos] = ['PARAM', dir_cuadruplos[contador_cuadruplos-1][3], "", dir_funciones[pila_llamadas_funcion[0]]['Parametros'][contador_params][2]]
                 contador_cuadruplos += 1
 
             # Error de argumento
             else :
-                print("El tipo de argumento no coincide con el parametro")
+                print(dir_cuadruplos)
+                print(dir_cuadruplos[contador_cuadruplos-1][3])
+                print(pila_llamadas_funcion[0])
+                print(dir_funciones[pila_llamadas_funcion[0]]['Parametros'])
+                print("El tipo de argumento no coincide con el parametro aqui")
                 exit()
 
     contador_params += 1
