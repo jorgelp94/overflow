@@ -3048,22 +3048,18 @@ def p_acceso_arr(p):
 
         # Checa si la posicion a accesar es una temporal
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 and len(str(dir_cuadruplos[contador_cuadruplos-1][1])) != 7 :
-            print("Temps")
             dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
 
         # Checa si la posicion a accesar es una variable local
-        elif p[-1] in dir_var_locales.keys() :
-            print("var locales")
+        elif p[-1] in dir_var_locales.keys() :            
             dir_temporal = dir_var_locales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una variable global
-        elif p[-1] in dir_var_globales.keys() :
-            print("var globales")
+        elif p[-1] in dir_var_globales.keys() :            
             dir_temporal = dir_var_globales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una constante
-        elif p[-1] in dir_constantes.keys() :
-            print("constantes")
+        elif p[-1] in dir_constantes.keys() :            
             dir_temporal = dir_constantes[p[-1]]['Dir']
 
 
