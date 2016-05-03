@@ -1,6 +1,4 @@
-program overflow;
-
-var a, f : int;
+program factorial;
 
 int func factorial(n :int)
 var acum, i : int;
@@ -15,8 +13,8 @@ var acum, i : int;
 }
 
 main () {
-  a = 5;
-  f = call factorial(a);
-  print(f);
+  var a : int;
+  a = call factorial(5);
+  print(a);
 }
 end

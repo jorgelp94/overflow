@@ -1,0 +1,36 @@
+program bubble;
+
+main () {
+  arr x[5] : int;
+  var i, j, temp, tam : int;
+
+  x = [3,2,1,5,4];
+  print(x[0]);
+  print(x[1]);
+  print(x[2]);
+  print(x[3]);
+  print(x[4]);
+
+  i = 1; j = 0; tam = 5;
+
+  while( i < tam ) {
+    while( j < (tam - 1) ) {
+      if( (x[j]) > (x[j + 1]) ) {
+        temp = x[j];
+        x[j] = x[j + 1];
+        x[j + 1] = temp;
+      }
+      j = j + 1;
+    }
+    i = i + 1;
+    j = 0;
+  }
+
+  print('#');
+  print(x[0]);
+  print(x[1]);
+  print(x[2]);
+  print(x[3]);
+  print(x[4]);
+}
+end

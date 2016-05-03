@@ -1,4 +1,4 @@
-program overflow;
+program factorial;
 
 int func factorial( n : int ) {
   if( n == 1 ) {
@@ -10,7 +10,7 @@ int func factorial( n : int ) {
 
 main () {
   var a : int;
-  a = call factorial(3);
+  a = call factorial(5);
   print(a);
 }
 end
