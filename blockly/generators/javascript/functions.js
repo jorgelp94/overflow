@@ -30,21 +30,25 @@ Blockly.JavaScript['function_param_coma'] = function(block) {
   if(value_name.indexOf("(") > -1) {
     value_name = value_name.substring(1,value_name.length-1);
   }
-  var code = text_var + ' : ' + dropdown_type + ', ' + value_name;
+  var code = text_var + ' : ' + dropdown_type + '; ' + value_name;
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['function_call'] = function(block) {
   var text_fname = block.getFieldValue('FNAME');
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = text_fname + value_name;
+  if (value_name.length < 1) {
+    value_name = "()";
+  }
+
+  var code = "call " + text_fname + value_name;
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['return'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
-  if(value_name.indexOf("(") > -1) {
-    value_name = value_name.substring(1,value_name.length-1);
+  if(value_name.indexOf("(") == -1) {
+    value_name = "(" + value_name + ")";
   }
   var code = 'return ' + value_name +';\n';
   return code;

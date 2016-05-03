@@ -54,19 +54,6 @@ Blockly.Blocks['char_variable'] = {
   }
 };
 
-Blockly.Blocks['string_variable'] = {
-  init: function() {
-    this.appendValueInput("NAME")
-        .setCheck("String")
-        .appendField("string")
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setColour(290);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-  }
-};
-
 Blockly.Blocks['int_arr_variable'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -93,6 +80,32 @@ Blockly.Blocks['float_arr_variable'] = {
   }
 };
 
+Blockly.Blocks['bool_arr_variable'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .setCheck("Number")
+        .appendField("bool []")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['char_arr_variable'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .setCheck("Number")
+        .appendField("char []")
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(290);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['assignment'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -107,12 +120,14 @@ Blockly.Blocks['assignment'] = {
   }
 };
 
-Blockly.Blocks['assignment_array'] = {
+Blockly.Blocks['assignment_arr'] = {
   init: function() {
     this.appendValueInput("NAME")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldTextInput("var"), "NAME")
-        .appendField(" [] =");
+        .appendField("var")
+        .appendField(new Blockly.FieldTextInput("default"), "NAME")
+        .appendField("[")
+        .appendField(new Blockly.FieldTextInput("default"), "EXP")
+        .appendField("] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
