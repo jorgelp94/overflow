@@ -3026,12 +3026,8 @@ def p_acceso_arr(p):
 
     if scope == 'Funcion' :
 
-        # Checa si la posicion a accesar es una temporal
-        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
-            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
-
         # Checa si la posicion a accesar es una variable local
-        elif p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]] :
+        if p[-1] in dir_var_locales_funciones[pila_funciones[-1][0]] :
             dir_temporal = dir_var_locales_funciones[pila_funciones[-1][0]][p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una variable global
@@ -3042,6 +3038,10 @@ def p_acceso_arr(p):
         elif p[-1] in dir_constantes.keys() :
             dir_temporal = dir_constantes[p[-1]]['Dir']
 
+        # Checa si la posicion a accesar es una temporal
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
+            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
+
         # Error de acceso a arreglo
         else :
             print("Valor para accesar el arreglo " + str(p[-1]) + " no valido")
@@ -3049,13 +3049,8 @@ def p_acceso_arr(p):
 
     # Scope MAIN
     else :
-
-        # Checa si la posicion a accesar es una temporal
-        if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
-            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
-
         # Checa si la posicion a accesar es una variable local
-        elif p[-1] in dir_var_locales.keys() :
+        if p[-1] in dir_var_locales.keys() :
             dir_temporal = dir_var_locales[p[-1]]['Dir']
 
         # Checa si la posicion a accesar es una variable global
@@ -3065,6 +3060,10 @@ def p_acceso_arr(p):
         # Checa si la posicion a accesar es una constante
         elif p[-1] in dir_constantes.keys() :
             dir_temporal = dir_constantes[p[-1]]['Dir']
+
+        # Checa si la posicion a accesar es una temporal
+        elif dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 324999 :
+            dir_temporal = dir_cuadruplos[contador_cuadruplos-1][3]
 
         # Error de acceso a arreglo
         else :
@@ -3105,6 +3104,7 @@ def p_acceso_arr(p):
 
     # Generamos el cuadruplo SUMA con la direccion indirecta y la direccion base del arreglo
     dir_cuadruplos[contador_cuadruplos] = ['SUMA', "(" + str(dir_temporal) + ")", dir_base, int_dir_temporales]
+    pOperandos.pop()
     pOperandos.append(int_dir_temporales)
     contador_cuadruplos += 1
     int_dir_temporales += 1
