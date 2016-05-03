@@ -1374,6 +1374,7 @@ def p_return_cuad(p):
         # Checa si el valor de retorno es una temporal entera
         if dir_cuadruplos[contador_cuadruplos-1][3] >= 30000 and dir_cuadruplos[contador_cuadruplos-1][3] <= 32499 :
             if dir_funciones[pila_funciones[-1][0]]['Tipo'] == 'INT' :
+                dir_cuadruplos[contador_cuadruplos-1][2] = 30001 #overflow
                 dir_cuadruplos[contador_cuadruplos] = ['RETURN', dir_cuadruplos[contador_cuadruplos-1][3], "", ""]
                 contador_cuadruplos += 1
                 dir_returns[pila_funciones[-1][0]] = {'Dir' : dir_cuadruplos[contador_cuadruplos-2][3], 'Tipo' : 'INT'}
@@ -2231,15 +2232,14 @@ def p_gosub(p):
     contador_cuadruplos += 1
     contador_params = 0
 
-    if len(dir_returns) > 0 :
+    if len(dir_returns) > 0 : #overflow
         if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
-            #dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
+            dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
             pOperandos = []
-            #pOperandos.append(int_dir_temporales)
-            #print(pOperandos)                        
-            #int_dir_temporales += 1
-            #cant_int_temporales += 1
-            #contador_cuadruplos += 1
+            pOperandos.append(int_dir_temporales)
+            int_dir_temporales += 1
+            cant_int_temporales += 1
+            contador_cuadruplos += 1
 
         elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
             dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
