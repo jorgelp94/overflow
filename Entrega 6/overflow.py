@@ -1264,10 +1264,19 @@ def p_function_local_arr_add_type(p):
 def p_ret_cuad(p):
     '''ret_cuad : '''
     global contador_cuadruplos
+    global int_dir_funciones
+    global float_dir_funciones
+    global char_dir_funciones
+    global bool_dir_funciones
 
     # Genera el cuadruplo de ret
     dir_cuadruplos[contador_cuadruplos] = ['RET', "", "", ""]
     contador_cuadruplos += 1
+
+    int_dir_funciones = 0
+    float_dir_funciones = 0
+    char_dir_funciones = 0
+    bool_dir_funciones = 0
 
 
 #############################
@@ -1371,12 +1380,13 @@ def p_return_cuad(p):
 
     pOperandos.pop() #overflow
 
-    if dir_cuadruplos[contador_cuadruplos-3][0] == 'GOSUB' and dir_cuadruplos[contador_cuadruplos-2][0] == 'ASIG':
-        if len(pila_retornos) == 2 :
-            dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
-            dir_cuadruplos[contador_cuadruplos-1][1] = pila_retornos.pop()
-        elif len(pila_retornos) == 1 :
-            dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
+    if contador_cuadruplos > 3 :
+        if dir_cuadruplos[contador_cuadruplos-3][0] == 'GOSUB' and dir_cuadruplos[contador_cuadruplos-2][0] == 'ASIG':
+            if len(pila_retornos) == 2 :
+                dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
+                dir_cuadruplos[contador_cuadruplos-1][1] = pila_retornos.pop()
+            elif len(pila_retornos) == 1 :
+                dir_cuadruplos[contador_cuadruplos-1][2] = pila_retornos.pop()
 
     if scope == 'Funcion' and dir_funciones[pila_funciones[-1][0]]['Tipo'] != 'VOID':
 
