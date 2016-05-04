@@ -1,0 +1,29 @@
+program ciclos;
+
+main() {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j : bool;
+  arr k[5] : float;
+
+  a = 0;
+
+  k[0] = 1.5;
+  k[1] = 2.2;
+  k[2] = 3.3;
+  k[3] = 4.4;
+  k[4] = 5.5;
+
+  while(a < 5) {
+    print(k[a]);
+    a = a + 1;
+  }
+
+  b = 2;
+  print('#');
+  e = k[ (k[0 + b]) / (k[1]) ];
+  print(e);
+
+}
+end
