@@ -292,6 +292,15 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
+			if valorOp1 == 'true':
+				valorOp1 = True
+			elif valorOp1 == 'false':
+				valorOp1 = False
+			
+			if valorOp2 == 'true':
+				valorOp2 = True
+			elif valorOp2 == 'false':
+				valorOp2 = False
 
 			result = valorOp1 and valorOp2
 			guarda =cuadruplo[3]
@@ -311,6 +320,16 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
+
+			if valorOp1 == 'true':
+				valorOp1 = True
+			elif valorOp1 == 'false':
+				valorOp1 = False
+			
+			if valorOp2 == 'true':
+				valorOp2 = True
+			elif valorOp2 == 'false':
+				valorOp2 = False
 
 			result = valorOp1 or valorOp2
 			guarda =cuadruplo[3]
