@@ -1,0 +1,165 @@
+{
+  "_args": [
+    [
+      "google-closure-library",
+      "/Users/Jose/Documents/Tec/blockly"
+    ]
+  ],
+  "_from": "google-closure-library@latest",
+  "_id": "google-closure-library@20160218.0.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/google-closure-library",
+  "_nodeVersion": "0.12.7",
+  "_npmOperationalInternal": {
+    "host": "packages-6-west.internal.npmjs.com",
+    "tmp": "tmp/google-closure-library-20160218.0.2.tgz_1455825982082_0.21439814870245755"
+  },
+  "_npmUser": {
+    "email": "jmarti221@gmail.com",
+    "name": "joeltine"
+  },
+  "_npmVersion": "2.11.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "google-closure-library",
+    "raw": "google-closure-library",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/google-closure-library/-/google-closure-library-20160218.0.2.tgz",
+  "_shasum": "223b71c68243e23671b1af2d049df2bbc61665fd",
+  "_shrinkwrap": null,
+  "_spec": "google-closure-library",
+  "_where": "/Users/Jose/Documents/Tec/blockly",
+  "author": {
+    "name": "The Closure Library Authors"
+  },
+  "bugs": {
+    "url": "https://github.com/google/closure-library/issues"
+  },
+  "contributors": [
+    {
+      "name": "Rich Dougherty",
+      "email": "rich@rd.gen.nz"
+    },
+    {
+      "name": "Google Inc."
+    },
+    {
+      "name": "Mohamed Mansour",
+      "email": "hello@mohamedmansour.com"
+    },
+    {
+      "name": "Bjorn Tipling",
+      "email": "bjorn.tipling@gmail.com"
+    },
+    {
+      "name": "SameGoal LLC",
+      "email": "help@samegoal.com"
+    },
+    {
+      "name": "Guido Tapia",
+      "email": "guido.tapia@gmail.com"
+    },
+    {
+      "name": "Andrew Mattie",
+      "email": "amattie@gmail.com"
+    },
+    {
+      "name": "Ilia Mirkin",
+      "email": "ibmirkin@gmail.com"
+    },
+    {
+      "name": "Ivan Kozik",
+      "email": "ivan.kozik@gmail.com"
+    },
+    {
+      "name": "gigmade ltd."
+    },
+    {
+      "name": "Chad Killingsworth",
+      "email": "chadkillingsworth@missouristate.edu"
+    },
+    {
+      "name": "Dan Pupius",
+      "email": "dan.pupius@gmail.com"
+    },
+    {
+      "name": "Mike Dunn",
+      "email": "dunn74@gmail.com"
+    },
+    {
+      "name": "Kengo Toda",
+      "email": "skypencil@gmail.com"
+    },
+    {
+      "name": "Remember The Milk Inc."
+    },
+    {
+      "name": "Anish Visaria",
+      "email": "anishvisaria98@gmail.com"
+    },
+    {
+      "name": "John Huân Vũ",
+      "email": "jvu.calpoly@gmail.com"
+    },
+    {
+      "name": "Peter Lu",
+      "email": "peterlu83+github@gmail.com"
+    },
+    {
+      "name": "Filipe Catraia",
+      "email": "filipe.catraia@deliveryhero.com"
+    }
+  ],
+  "dependencies": {},
+  "description": "Google's common JavaScript library",
+  "devDependencies": {
+    "promise": "^7.0.4",
+    "protractor": "^2.1.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "223b71c68243e23671b1af2d049df2bbc61665fd",
+    "tarball": "http://registry.npmjs.org/google-closure-library/-/google-closure-library-20160218.0.2.tgz"
+  },
+  "gitHead": "c61b016905d69da18ad1d91d6317526d61c059af",
+  "homepage": "https://developers.google.com/closure/library/",
+  "keywords": [
+    "closure",
+    "goog",
+    "javascript",
+    "library"
+  ],
+  "license": "Apache-2.0",
+  "main": "closure/goog/bootstrap/nodejs.js",
+  "maintainers": [
+    {
+      "name": "blickly",
+      "email": "blickly+npm@google.com"
+    },
+    {
+      "name": "chadhikes",
+      "email": "chadkillingsworth@gmail.com"
+    },
+    {
+      "name": "joeltine",
+      "email": "jmarti221@gmail.com"
+    }
+  ],
+  "name": "google-closure-library",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/google/closure-library.git"
+  },
+  "scripts": {},
+  "version": "20160218.0.2"
+}

@@ -1,0 +1,16 @@
+program fibonacci;
+
+int func fibonacci( n : int) {
+  if(n < 2) {
+    return(n);
+  } else {
+    return( (call fibonacci(n - 1)) + (call fibonacci(n - 2)) );
+  }
+}
+
+main () {
+  var a : int;
+  a = call fibonacci(10);
+  print(a);
+}
+end

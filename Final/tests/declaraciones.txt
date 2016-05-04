@@ -1,0 +1,94 @@
+program overflow;
+
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+
+int func entera(w : int; x : float; y : char; z : bool)
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+{
+
+}
+
+float func flotante(w : int; x : float; y : char; z : bool)
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+{
+
+}
+
+char func caracter(w : int; x : float; y : char; z : bool)
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+{
+
+}
+
+bool func booleanos(w : int; x : float; y : char; z : bool)
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+{
+
+}
+
+void func vacia(w : int; x : float; y : char; z : bool)
+var a, b, c, d : int;
+var e, f, g : float;
+var h, i : char;
+var j : bool;
+
+arr k[6] : int;
+arr l[7] : float;
+arr m[8] : char;
+arr n[9] : bool;
+{
+
+}
+
+main () {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j : bool;
+
+  arr k[6] : int;
+  arr l[7] : float;
+  arr m[8] : char;
+  arr n[9] : bool;
+}
+end
