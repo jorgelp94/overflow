@@ -5,10 +5,12 @@ class Memoria:
 
 	def __init__(self, name, memoria, temporales):
 		self.name  = name
+		# inicializa la memoria por tipo de datos
 		self.ints  = memoria['INT'] * [""]
 		self.floats = memoria['FLOAT'] * [""]
 		self.chars = memoria['CHAR'] * [""]
 		self.bools = memoria['BOOL'] * [""]
+		# inicializa los temporales por tipos
 		self.temp_int = 20 * [""]
 		self.temp_float = 20 * [""]
 		self.temp_bool = 20 * [""]
@@ -20,6 +22,7 @@ class Memoria:
 
 
 	def offsetDireccion(self, direccion):
+		# funcion que calcula el offset y tipo de una direccion recibida
 		addressScope = self.scopeDireccion(direccion)[1]
 
 		offset = direccion - addressScope
@@ -35,6 +38,7 @@ class Memoria:
 			return "Error"
 
 	def scopeDireccion(self, direccion):
+		# funcion que regresa el scope y la direccion base de una direccion recibida
 		if direccion >= 10000 and direccion < 20000:
 			return ['Local', 10000]
 
@@ -54,6 +58,7 @@ class Memoria:
 
 
 	def memoriaActual(self, scope, tipo):
+		# funcion que regresa la memoria requerida en base al scope
 		if scope == 'Global' or scope == 'Funcion' or scope == 'Local':
 			if tipo == 'INT':
 				return self.ints
@@ -75,27 +80,17 @@ class Memoria:
 
 
 	def getValorDeDireccion(self, direccion, constantes):
+
+		# funcion que regresa el valor almacenado en memoria al recibir una direccion
 		scope = self.scopeDireccion(direccion)[0]
-		# print("scope")
-		# print(scope)
 		tipo = self.offsetDireccion(direccion)[0]
-		# print("tipo")
-		# print(tipo)
-		if scope != 'CONSTANTE':
+		if scope != 'CONSTANTE': # si no es una constante, busca en la misma memoria
 			dirBase = self.scopeDireccion(direccion)[1]
-			# print("dir base")
-			# print(dirBase)
 			offset = self.offsetDireccion(direccion)[1]
-			# print("offset")
-			# print(offset)
 			real = direccion - dirBase - offset
-			# print("Real")
-			# print(real)
 			mem = self.memoriaActual(scope, tipo)
-			# print("memoria")
-			# print(mem)
 			return mem[real]
-		else:
+		else: # busca la constante en base a la direccion
 			keys = constantes.keys()
 			cons = constantes[keys[0]]
 			cantidad = len(constantes.keys())
@@ -108,25 +103,11 @@ class Memoria:
 
 	def setValorDeDireccion(self, direccion, valor):
 		scope = self.scopeDireccion(direccion)[0]
-		# print("scope")
-		# print(scope)
 		tipo = self.offsetDireccion(direccion)[0]
-		# print("tipo")
-		# print(tipo)
 		dirBase = self.scopeDireccion(direccion)[1]
-		# print("dir base")
-		# print(dirBase)
 		offset = self.offsetDireccion(direccion)[1]
-		# print("offset")
-		# print(offset)
 		real = direccion - dirBase - offset
-		# print("real")
-		# print(real)
 		mem = self.memoriaActual(scope, tipo)
-		# print("mem")
-		# print(mem)
-		# print("valor")
-		# print(valor)
 		if real >= len(mem):
 				print("Error: direccion no existente.")
 				exit()

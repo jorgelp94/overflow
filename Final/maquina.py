@@ -8,39 +8,19 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	print("------------------")
 	print("INICIA MV")
 	print("------------------")
-	#print(directorio)
-	#print(cuadruplos)
-	#print(len(cuadruplos))
+	
 	nombre_programa = directorio.keys()[0]
 	stack_memoria = []
 	saltos = []
 	cont_cuadruplos = 0
 	retunValue = None
 
+	# Se inicializa la memoria global y local
 	memoria_global = Memoria(nombre_programa, directorio[nombre_programa]['Variables Globales']['Memoria'], directorio[nombre_programa]['Temporales']['Memoria'])
 	memoria_activa = Memoria('main', directorio[nombre_programa]['Variables Locales']['Memoria'], directorio[nombre_programa]['Temporales']['Memoria'])
 	memoria_nueva = ""
 
-	# print(memoria_global.name)
-	# print(memoria_global.ints)
-	# print(memoria_global.floats)
-	# print(memoria_global.chars)
-	# print(memoria_global.bools)
-	# print(memoria_global.temp_int)
-	# print(memoria_global.temp_float)
-	# print(memoria_global.temp_char)
-	# print(memoria_global.temp_bool)
-	# print(memoria_activa.name)
-	# print(memoria_activa.ints)
-	# print(memoria_activa.floats)
-	# print(memoria_activa.chars)
-	# print(memoria_activa.bools)
-	# print(memoria_activa.temp_int)
-	# print(memoria_activa.temp_float)
-	# print(memoria_activa.temp_char)
-	# print(memoria_activa.temp_bool)
-	# print("------------------------------------------------------------------------------------")
-
+	# Funcion que resuelve todos los cuadruplos que se generaron en compilacion
 	while cuadruplos[cont_cuadruplos][0] != 'ENDPROGRAM':
 		cuadruplo = cuadruplos[cont_cuadruplos]
 		#print(cuadruplo)
@@ -79,36 +59,36 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				# es una suma normal
 				op1 = int(op1)
 
-				if op1 >= 20000 and op1 < 30000:
+				if op1 >= 20000 and op1 < 30000: # verifica si es global
 					valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
 				else:
 					valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
 
-				if op2 >= 20000 and op2 < 30000:
+				if op2 >= 20000 and op2 < 30000: # verifica si es global
 					valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 				else:
 					valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
-				result = valorOp1 + valorOp2
+				result = valorOp1 + valorOp2  # se realiza la suma de los valores
 
-			memoria_activa.setValorDeDireccion(guarda, result)
+			memoria_activa.setValorDeDireccion(guarda, result) # guarda el resultado en la direccion que recibe
 
 		elif cuadruplo[0] == 'RESTA':
 			op1 = cuadruplo[1]
 			op2 = cuadruplo[2]
 
-			if op1 >= 20000 and op1 < 30000:
+			if op1 >= 20000 and op1 < 30000: # verifica si es global
 				valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
 			else:
 				valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
 
-			if op2 >= 20000 and op2 < 30000:
+			if op2 >= 20000 and op2 < 30000: # verifica si es global
 				valorOp2 = memoria_global.getValorDeDireccion(op2, constantes)
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 - valorOp2
+			result = valorOp1 - valorOp2 # se realiza la resta de los valores
 			guarda =cuadruplo[3]
 
 			memoria_activa.setValorDeDireccion(guarda, result)
@@ -128,7 +108,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 * valorOp2
+			result = valorOp1 * valorOp2 # se realiza la multiplicacion de los valores
 			guarda =cuadruplo[3]
 
 			memoria_activa.setValorDeDireccion(guarda, result)
@@ -149,7 +129,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 / valorOp2
+			result = valorOp1 / valorOp2 # se realiza la division de los valores
 			guarda =cuadruplo[3]
 
 			memoria_activa.setValorDeDireccion(guarda, result)
@@ -170,7 +150,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 < valorOp2
+			result = valorOp1 < valorOp2 # se realiza la comparacion de los valores
 			guarda =cuadruplo[3]
 
 			memoria_activa.setValorDeDireccion(guarda, result)
@@ -191,8 +171,8 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 > valorOp2
-			guarda =cuadruplo[3]
+			result = valorOp1 > valorOp2 # se realiza la comparación de los valores
+			guarda =cuadruplo[3] # direccion donde se guardara el resultado
 			memoria_activa.setValorDeDireccion(guarda, result)
 
 
@@ -292,6 +272,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
+			# convierte el valor del string 'true' o 'false' a True o False y despues compara
 			if valorOp1 == 'true':
 				valorOp1 = True
 			elif valorOp1 == 'false':
@@ -321,6 +302,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
+			# convierte el valor del string 'true' o 'false' a True o False y despues compara
 			if valorOp1 == 'true':
 				valorOp1 = True
 			elif valorOp1 == 'false':
@@ -340,7 +322,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 		elif cuadruplo[0] == 'ASIG':
 			op1 = cuadruplo[1]
 
-			if len(cuadruplo) == 5:
+			if len(cuadruplo) == 5: # si viene un quintuplo, es una asignacion para un arreglo
 				if retunValue != None:
 					valorOp1 = retunValue
 					retunValue = None
@@ -348,7 +330,6 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 					if op1 >= 20000 and op1 < 30000:
 						valorOp1 = memoria_global.getValorDeDireccion(op1, constantes)
 					else:
-						#print(op1)
 						valorOp1 = memoria_activa.getValorDeDireccion(op1, constantes)
 
 				valorAgregado = cuadruplo[4]
@@ -365,10 +346,10 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 					sumale = memoria_activa.getValorDeDireccion(valorAgregado, constantes)
 
 
-				guarda = cuadruplo[3] + sumale
+				guarda = cuadruplo[3] + sumale # suma el calor de la direccion relativa a la direccion base para obtener la posicion del arreglo
 				guarda = int(guarda)
 
-			else:
+			else: # asignacion normal
 				if retunValue != None:
 					valorOp1 = retunValue
 					retunValue = None
@@ -389,11 +370,12 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 		elif cuadruplo[0] == 'GOTO':
 			nuevaPosicion = cuadruplo[3]
-			cont_cuadruplos = nuevaPosicion - 1
+			cont_cuadruplos = nuevaPosicion - 1 # salta a una nueva direccion de cuadruplo
 
 
 		elif cuadruplo[0] == 'ERA':
 			nombre = cuadruplo[1].lower()
+			# inicializa la memoria nueva de la funcion que se manda llamar
 			memoria = directorio[nombre_programa]['Funciones'][nombre]['Memoria']
 			temps = directorio[nombre_programa]['Temporales']['Memoria']
 			memoria_nueva = Memoria(nombre, memoria, temps)
@@ -401,8 +383,10 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 		elif cuadruplo[0] == 'GOSUB':
 			saltos.append(cont_cuadruplos)
 			nombre = cuadruplo[1].lower()
+			# almacena a cual cuadruplo va regresar cuando terine la funcion
 			salto = directorio[nombre_programa]['Funciones'][nombre]['Start']
 			cont_cuadruplos = salto - 1
+			# se guarda la memoria actual en un stack y se asgigna la nueva memoria a la actual
 			stack_memoria.append(memoria_activa)
 			memoria_activa = memoria_nueva
 
@@ -413,21 +397,15 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				retorno = memoria_activa.getValorDeDireccion(valor, constantes)
 
+			# guarda el valor de retorno en una variable global
 			retunValue = retorno
 
 
 		elif cuadruplo[0] == 'RET':
+			# hace el cambio de memoria y regresa la memoria del main
 			memoria_activa = stack_memoria.pop()
 			cont_cuadruplos = saltos.pop()
-			# print(memoria_activa.name)
-			# print(memoria_activa.ints)
-			# print(memoria_activa.floats)
-			# print(memoria_activa.chars)
-			# print(memoria_activa.bools)
-			# print(memoria_activa.temp_int)
-			# print(memoria_activa.temp_float)
-			# print(memoria_activa.temp_char)
-			# print(memoria_activa.temp_bool)
+			
 
 		elif cuadruplo[0] == 'PARAM':
 			op1 = cuadruplo[1]
@@ -439,14 +417,21 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 			guarda = cuadruplo[3]
 
+			# le asigna el valor que se envia como parametro a la nueva memoria y lo almacena
+
 			memoria_nueva.setValorDeDireccion(guarda, valorOp1)
 
 		elif cuadruplo[0] == 'GOTOF':
 			salto = cuadruplo[3]
 			verifica = cuadruplo[1]
+
+			# salta entre cuadruplos si el resultado de la expresion es falsa
+
 			res = memoria_activa.getValorDeDireccion(verifica, constantes)
 			if res == False:
 				cont_cuadruplos = salto-1
+
+
 
 		elif cuadruplo[0] == 'PRINT':
 			valor = cuadruplo[1]
@@ -456,14 +441,14 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			else:
 				retorno = memoria_activa.getValorDeDireccion(valor, constantes)
 
+			# imprime el valor de la direccion que recibe una vez que lo obtiene
+
 			print(retorno)
 
 
 
 		cont_cuadruplos += 1
-		#print("Contador cuadruplos: %s" % cont_cuadruplos)
-
-
+		
 
 		# print(memoria_global.name)
 		# print(memoria_global.ints)
