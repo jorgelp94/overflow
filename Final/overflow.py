@@ -81,7 +81,7 @@ def t_newline(t):
 
 # Manejo de errores
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    #print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 #############################################################################################
@@ -573,8 +573,6 @@ def p_programa(p):
     #print("Constantes")
     #print(dir_constantes)
     #print("\n")
-
-
 
     #print("Contador de variables")
     #print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})

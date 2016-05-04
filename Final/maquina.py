@@ -8,7 +8,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 	print("------------------")
 	print("INICIA MV")
 	print("------------------")
-	
+
 	nombre_programa = directorio.keys()[0]
 	stack_memoria = []
 	saltos = []
@@ -171,7 +171,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp2 = memoria_activa.getValorDeDireccion(op2, constantes)
 
 
-			result = valorOp1 > valorOp2 # se realiza la comparación de los valores
+			result = valorOp1 > valorOp2 # se realiza la comparacion de los valores
 			guarda =cuadruplo[3] # direccion donde se guardara el resultado
 			memoria_activa.setValorDeDireccion(guarda, result)
 
@@ -277,7 +277,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp1 = True
 			elif valorOp1 == 'false':
 				valorOp1 = False
-			
+
 			if valorOp2 == 'true':
 				valorOp2 = True
 			elif valorOp2 == 'false':
@@ -307,7 +307,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 				valorOp1 = True
 			elif valorOp1 == 'false':
 				valorOp1 = False
-			
+
 			if valorOp2 == 'true':
 				valorOp2 = True
 			elif valorOp2 == 'false':
@@ -405,7 +405,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 			# hace el cambio de memoria y regresa la memoria del main
 			memoria_activa = stack_memoria.pop()
 			cont_cuadruplos = saltos.pop()
-			
+
 
 		elif cuadruplo[0] == 'PARAM':
 			op1 = cuadruplo[1]
@@ -448,7 +448,7 @@ def ejecutaMaquina(directorio, cuadruplos, constantes):
 
 
 		cont_cuadruplos += 1
-		
+
 
 		# print(memoria_global.name)
 		# print(memoria_global.ints)
