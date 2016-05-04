@@ -1,0 +1,20 @@
+program ciclos;
+
+main() {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j : bool;
+  arr k[5] : int;
+
+  k = [1,2,3,4,5];
+
+  a = 0;
+
+  while(a < 5) {
+    print(k[a]);
+    a = a + 1;
+  }
+
+}
+end
