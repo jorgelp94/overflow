@@ -11,10 +11,10 @@ class Memoria:
 		self.chars = memoria['CHAR'] * [""]
 		self.bools = memoria['BOOL'] * [""]
 		# inicializa los temporales por tipos
-		self.temp_int = 20 * [""]
-		self.temp_float = 20 * [""]
-		self.temp_bool = 20 * [""]
-		self.temp_char = 20 * [""]
+		self.temp_int = 100 * [""]
+		self.temp_float = 100 * [""]
+		self.temp_bool = 100 * [""]
+		self.temp_char = 100 * [""]
 		# self.temp_int = temporales['TEMP INT'] * [""]
 		# self.temp_float = temporales['TEMP FLOAT'] * [""]
 		# self.temp_bool = temporales['TEMP BOOL'] * [""]
@@ -89,6 +89,9 @@ class Memoria:
 			offset = self.offsetDireccion(direccion)[1]
 			real = direccion - dirBase - offset
 			mem = self.memoriaActual(scope, tipo)
+			if real >= len(mem):
+				print("Error: posicion de arreglo no existente.")
+				exit()
 			return mem[real]
 		else: # busca la constante en base a la direccion
 			keys = constantes.keys()
