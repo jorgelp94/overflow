@@ -275,8 +275,8 @@ cuboSemantico[BOOL][BOOL] = {}
 
 # Operador +
 cuboSemantico[INT][INT][SUMA] = INT
-cuboSemantico[INT][FLOAT][SUMA] = INT
-cuboSemantico[FLOAT][INT][SUMA] = INT
+cuboSemantico[INT][FLOAT][SUMA] = FLOAT
+cuboSemantico[FLOAT][INT][SUMA] = FLOAT
 cuboSemantico[FLOAT][FLOAT][SUMA] = FLOAT
 cuboSemantico[CHAR][INT][SUMA] = ERR
 cuboSemantico[INT][CHAR][SUMA] = ERR
@@ -293,8 +293,8 @@ cuboSemantico[BOOL][BOOL][SUMA] = ERR
 
 # Operador -
 cuboSemantico[INT][INT][RESTA] = INT
-cuboSemantico[INT][FLOAT][RESTA] = INT
-cuboSemantico[FLOAT][INT][RESTA] = INT
+cuboSemantico[INT][FLOAT][RESTA] = FLOAT
+cuboSemantico[FLOAT][INT][RESTA] = FLOAT
 cuboSemantico[FLOAT][FLOAT][RESTA] = FLOAT
 cuboSemantico[CHAR][INT][RESTA] = ERR
 cuboSemantico[INT][CHAR][RESTA] = ERR
@@ -519,38 +519,64 @@ def p_programa(p):
     global cantidad_char
     global cantidad_bool
     global cantidad_vars
+    global cant_int_globales
+    global cant_float_globales
+    global cant_char_globales
+    global cant_bool_globales
+    global cant_int_locales
+    global cant_float_locales
+    global cant_char_locales
+    global cant_bool_locales
+    global cant_int_temporales
+    global cant_float_temporales
+    global cant_char_temporales
+    global cant_bool_temporales
 
-    #print("Variables Globales")
-    #print(dir_var_globales)
-    #print("\n")
+    print("Cuadruplos")
+    print(dir_cuadruplos)
+    print("\n")
 
-    #print("Arreglos Globales")
-    #print(dir_arr_globales)
-    #print("\n")
+    print("Variables Globales")
+    print(dir_var_globales)
+    print("\n")
 
-    #print("Variables Locales")
-    #print(dir_var_locales)
-    #print("\n")
+    print("Arreglos Globales")
+    print(dir_arr_globales)
+    print("\n")
 
-    #print("Arreglos Locales")
-    #print(dir_arr_locales)
-    #print("\n")
+    print("Variables Locales")
+    print(dir_var_locales)
+    print("\n")
 
-    print("Variables Constantes")
-    print(dir_constantes)
+    print("Arreglos Locales")
+    print(dir_arr_locales)
     print("\n")
 
     print("Funciones")
     print(dir_funciones)
     print("\n")
 
-    #print("Arr Funciones")
-    #print(dir_arr_locales_funciones)
+    print("Variables Funciones")
+    print(dir_var_locales_funciones)
+    print("\n")
+
+    print("Arr Funciones")
+    print(dir_arr_locales_funciones)
+    print("\n")
+
+    print("Params Funciones")
+    print(dir_param_funciones)
+    print("\n")
+
+    print("Temporales")
+    print(dir_temporales)
+    print("\n")
+
+    #print("Constantes")
+    #print(dir_constantes)
     #print("\n")
 
-    print("Cuadruplos")
-    print(dir_cuadruplos)
-    print("\n")
+
 
     #print("Contador de variables")
     #print({'INT' : cantidad_int, 'FLOAT' : cantidad_float, 'CHAR' : cantidad_char, 'BOOL' : cantidad_bool})
@@ -1043,6 +1069,9 @@ def p_add_cantidad_vars(p):
     # directorio de variables locales
     dir_funciones[p[-7]].update({'Vars Locales' : dir_var_locales_funciones[pila_funciones[-1][0]]})
 
+    # directorio de arreglos locales
+    dir_funciones[p[-7]].update({'Arrs Locales' : dir_arr_locales_funciones[pila_funciones[-1][0]]})
+
     # Actualiza el directorio de funciones
     dir_funciones[p[-7]].update({'Memoria' :
     {'INT' : cantidad_int_func, 'FLOAT' : cantidad_float_func, 'BOOL' : cantidad_bool_func, 'CHAR' : cantidad_char_func}})
@@ -1273,10 +1302,10 @@ def p_ret_cuad(p):
     dir_cuadruplos[contador_cuadruplos] = ['RET', "", "", ""]
     contador_cuadruplos += 1
 
-    int_dir_funciones = 0
-    float_dir_funciones = 0
-    char_dir_funciones = 0
-    bool_dir_funciones = 0
+    int_dir_funciones = 50000
+    float_dir_funciones = 52500
+    char_dir_funciones = 55000
+    bool_dir_funciones = 57500
 
 
 #############################
@@ -1378,7 +1407,7 @@ def p_return_cuad(p):
     global int_dir_temporales
     global scope
 
-    pOperandos.pop() #overflow
+    pOperandos.pop()
 
     if contador_cuadruplos > 3 :
         if dir_cuadruplos[contador_cuadruplos-3][0] == 'GOSUB' and dir_cuadruplos[contador_cuadruplos-2][0] == 'ASIG':
@@ -2248,7 +2277,7 @@ def p_gosub(p):
     contador_params = 0
 
     if scope == 'Funcion' :
-        if len(dir_returns) > 0 : #overflow
+        if len(dir_returns) > 0 :
             if dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'INT' :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", int_dir_temporales]
                 pila_retornos.append(int_dir_temporales)
@@ -2258,18 +2287,21 @@ def p_gosub(p):
 
             elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'FLOAT' :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", float_dir_temporales]
+                pila_retornos.append(float_dir_temporales)
                 float_dir_temporales += 1
                 cant_float_temporales += 1
                 contador_cuadruplos += 1
 
             elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'CHAR' :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", char_dir_temporales]
+                pila_retornos.append(char_dir_temporales)
                 char_dir_temporales += 1
                 cant_char_temporales += 1
                 contador_cuadruplos += 1
 
             elif dir_returns[pila_llamadas_funcion[0]]['Tipo'] == 'BOOL' :
                 dir_cuadruplos[contador_cuadruplos] = ['ASIG', dir_returns[pila_llamadas_funcion[0]]['Dir'], "", bool_dir_temporales]
+                pila_retornos.append(bool_dir_temporales)
                 bool_dir_temporales += 1
                 cant_bool_temporales += 1
                 contador_cuadruplos += 1

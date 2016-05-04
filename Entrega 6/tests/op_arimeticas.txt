@@ -1,0 +1,39 @@
+program arimetica;
+
+float func suma(x, y : int) var a : float; {
+  a = x + y * 4.5;
+  return(a);
+}
+
+main() {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j : bool;
+  arr k[5] : int;
+
+  k = [1,2,3,4,5];
+
+  a = 2; e = 3.5;
+  f = a + e;
+  print(f);
+
+  a = 5; b = 10;
+  c = a - b;
+  print(c);
+
+  a = 2; b = 3;
+  c = a * b;
+  print(c);
+
+  f = 2.5; g = 3.5;
+  e = g / f;
+  print(e);
+
+  f = call suma(5, 4);
+  print(f);
+
+  d = k[k[a - 1] + 2];
+  print(d);
+}
+end
