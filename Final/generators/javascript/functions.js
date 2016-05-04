@@ -53,3 +53,14 @@ Blockly.JavaScript['return'] = function(block) {
   var code = 'return ' + value_name +';\n';
   return code;
 };
+
+Blockly.JavaScript['func_call'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  if (value_name.length < 1) {
+    value_name = "()";
+  }
+
+  var code = "call " + text_name + value_name +';\n';
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};

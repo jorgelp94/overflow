@@ -1,0 +1,28 @@
+program ciclos;
+
+float func algo(){
+  return(3.5);
+}
+
+int func foo(x : int) {
+  if(x < 5) {
+    return(x);
+  } else {
+    return(1);
+  }
+}
+
+main() {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j : bool;
+
+  a = call foo(2);
+  print(a);
+
+  if((call algo()) < 4) {
+    print(true);
+  }
+}
+end

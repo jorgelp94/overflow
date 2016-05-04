@@ -93,6 +93,7 @@
       <block type="function_param"></block>
       <block type="function_param_coma"></block>
       <block type="function_call"></block>
+      <block type="func_call"></block>
       <block type="return"></block>
     </category>
 
@@ -125,7 +126,7 @@
   <script type="text/javascript">
     function makeFile() {
       var text = document.getElementById("importExport");
-      console.log(text.value);      
+      console.log(text.value);
       text_file(text.value);
       function text_file(text) {
         var blob = new Blob([text], {type: "text/plain;charset=utf-8"});

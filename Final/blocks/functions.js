@@ -64,3 +64,16 @@ Blockly.Blocks['return'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+ 
+Blockly.Blocks['func_call'] = {
+  init: function() {
+    this.appendValueInput("NAME")
+        .appendField("call function")
+        .appendField(new Blockly.FieldTextInput("default"), "NAME");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(210);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

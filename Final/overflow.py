@@ -1034,7 +1034,6 @@ def p_verify_func_type(p):
     if dir_funciones[p[-6]]['Tipo'] == 'VOID' :
         pOperandos.append(-1)
     else :
-        #pOperandos.pop() #TODO checa que pedo con esto
         pTipos.append(INT)
         pOperandos.append(dir_returns[pila_funciones[-1][0]]['Dir'])
 
@@ -2436,7 +2435,7 @@ def p_args_cuad(p):
 
             # Error de argumento
             else :
-                print("El tipo de argumento no coincide con el parametro aqui")
+                print("El tipo de argumento no coincide con el parametro")
                 exit()
 
     contador_params += 1
