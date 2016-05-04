@@ -1,0 +1,27 @@
+program andor;
+
+bool func compara(x, y : int) {
+  return (x > y);
+}
+
+main() {
+  var a, b, c, d : bool;
+  arr k[5] : bool;
+  var y : int;
+
+  y = 2;
+
+  k = [true, false, true, false, true];
+
+  a = true; b = false;
+
+  print(a and b);
+  print(a or b);
+  print((true and false) or (false and false));
+
+  d = call compara(3, 2);
+  print(d);
+
+  print(k[1 + y] and true);
+}
+end
