@@ -23,6 +23,7 @@
   <script src="blocks/functions.js"></script>
   <script src="blocks/program.js"></script>
   <script src="script.js"></script>
+  <script src="FileSaver.js"></script>
   <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
 </head>
 
@@ -69,7 +70,7 @@
       </block>
     </category>
 
-    <category name="Text" colour="160">      
+    <category name="Text" colour="160">
       <block type="char_var"></block>
       <block type="text_print">
         <value name="TEXT">
@@ -113,12 +114,25 @@
     &nbsp;
     <input type="button" value="Import from XML" onclick="fromXml()" id="import">
     <br><br>
-    <input type="button" value="To JavaScript" onclick="toCode('JavaScript')">
+    <input type="button" value="To JavaScrit" onclick="toCode('JavaScript')">
     &nbsp;
+    <input type="button" value="Make File" onclick="makeFile()">
     <br><br>
     <textarea id="importExport" style="width: 26%; height: 40em"
       onchange="taChange();" onkeyup="taChange()"></textarea>
   </p>
+
+  <script type="text/javascript">
+    function makeFile() {
+      var text = document.getElementById("importExport");
+      console.log(text.value);      
+      text_file(text.value);
+      function text_file(text) {
+        var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "code.txt");
+      }
+    }
+  </script>
 
 </body>
 </html>

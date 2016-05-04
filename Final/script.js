@@ -75,6 +75,8 @@ function taChange() {
   document.getElementById('import').disabled = !valid;
 }
 
+
+
 function logger(e) {
   console.log(e);
 }
