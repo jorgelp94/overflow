@@ -1,0 +1,41 @@
+program relacionales;
+
+void func imprime(){
+  print(false);
+}
+
+main() {
+  var a, b, c, d : int;
+  var e, f, g : float;
+  var h, i : char;
+  var j, x, y, z : bool;
+  arr k[5] : int;
+
+  k = [1,2,3,4,5];
+
+  a = 3; e = 3.5;
+  j = a > e;
+  print(j);
+
+  j = a < e;
+  print(j);
+
+  b = 4; f = 4.0;
+  x = b >=  4;
+  print(x);
+
+  b = 4; f = 4.0;
+  x = b <= 4;
+  print(x);
+
+  e = 3.2; f = 5.3;
+  y = e == f;
+  print(y);
+
+  a = 3;
+  z = (k[1]) != a;
+  print(z);
+
+  call imprime();
+}
+end
