@@ -40,37 +40,41 @@ Blockly.JavaScript['char_variable'] = function(block) {
 
 Blockly.JavaScript['int_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var text_exp = block.getFieldValue('EXP');
   if(value_name.indexOf("(") > -1) {
     value_name = value_name.substring(1,value_name.length-1);
   }
-  var code = 'arr ' + value_name + ' : int;\n';
+  var code = 'arr '+ value_name + '[' + text_exp + '] : int;\n';
   return code;
 };
 
 Blockly.JavaScript['float_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var text_exp = block.getFieldValue('EXP');
   if(value_name.indexOf("(") > -1) {
     value_name = value_name.substring(1,value_name.length-1);
   }
-  var code = 'arr ' + value_name + ' : float;\n';
+  var code = 'arr '+ value_name + '[' + text_exp + '] : float;\n';
   return code;
 };
 
 Blockly.JavaScript['char_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var text_exp = block.getFieldValue('EXP');
   if(value_name.indexOf("(") > -1) {
     value_name = value_name.substring(1,value_name.length-1);
   }
-  var code = 'arr ' + value_name + ' : char;\n';
+  var code = 'arr '+ value_name + '[' + text_exp + '] : char;\n';
   return code;
 };
 
 Blockly.JavaScript['bool_arr_variable'] = function(block) {
   var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+  var text_exp = block.getFieldValue('EXP');
   if(value_name.indexOf("(") > -1) {
     value_name = value_name.substring(1,value_name.length-1);
   }
-  var code = 'arr ' + value_name + ' : bool;\n';
+  var code = 'arr '+ value_name + '[' + text_exp + '] : bool;\n';
   return code;
 };
 

@@ -58,7 +58,10 @@ Blockly.Blocks['int_arr_variable'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setCheck("Number")
-        .appendField("int []")
+        .appendField("int")
+        .appendField("[")
+        .appendField(new Blockly.FieldTextInput("default"), "EXP")
+        .appendField("] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -71,7 +74,10 @@ Blockly.Blocks['float_arr_variable'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setCheck("Number")
-        .appendField("float []")
+        .appendField("float")
+        .appendField("[")
+        .appendField(new Blockly.FieldTextInput("default"), "EXP")
+        .appendField("] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -84,7 +90,10 @@ Blockly.Blocks['bool_arr_variable'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setCheck("Number")
-        .appendField("bool []")
+        .appendField("bool")
+        .appendField("[")
+        .appendField(new Blockly.FieldTextInput("default"), "EXP")
+        .appendField("] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
@@ -97,7 +106,10 @@ Blockly.Blocks['char_arr_variable'] = {
   init: function() {
     this.appendValueInput("NAME")
         .setCheck("Number")
-        .appendField("char []")
+        .appendField("char")
+        .appendField("[")
+        .appendField(new Blockly.FieldTextInput("default"), "EXP")
+        .appendField("] =");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(290);
